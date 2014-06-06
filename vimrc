@@ -1,11 +1,17 @@
 " Display
 set number
 set showcmd
+set t_Co=256
+set colorcolumn=81
 set background=dark
+set statusline=%f\ %y\ format:\ %{&ff};\ C%c\ L%l/%L
+
+colorscheme desert
+highlight ColorColumn ctermbg=8
 
 " Syntax highlighting
 set nocp
-syntax on
+syntax enable
 filetype plugin indent on
 
 " Remove error bells
