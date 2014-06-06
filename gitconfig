@@ -1,0 +1,6 @@
+[user]
+  name = Ivan Wang
+  email = icw@cmu.edu
+
+[push]
+  default = matching

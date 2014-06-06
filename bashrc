@@ -1,0 +1,11 @@
+# Git aliases
+alias gs='git status'
+alias gst='git status'
+alias ga='git add'
+alias gall='git add .'
+alias gc='git commit -m'
+alias gca='git commit -am'
+alias gco='git checkout'
+alias gl='git pull'
+alias gp='git push'
+alias grb='git rebase -i'
