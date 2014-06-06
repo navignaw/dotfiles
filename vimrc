@@ -6,9 +6,6 @@ set colorcolumn=81
 set background=dark
 set statusline=%f\ %y\ format:\ %{&ff};\ C%c\ L%l/%L
 
-colorscheme desert
-highlight ColorColumn ctermbg=8
-
 " Syntax highlighting
 set nocp
 syntax enable
@@ -38,6 +35,9 @@ set nobackup
 set nowb
 set noswapfile
 set so=5
+
+colorscheme desert
+highlight ColorColumn ctermbg=8
 
 " Mappings
 " jj to exit insert mode
