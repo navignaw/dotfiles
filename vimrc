@@ -11,6 +11,9 @@ set nocp
 syntax enable
 filetype plugin indent on
 
+" Highlight trailing whitespace
+set list listchars=tab:\ \ ,trail:·
+
 " Remove error bells
 set noerrorbells
 set novisualbell
@@ -35,6 +38,7 @@ set nobackup
 set nowb
 set noswapfile
 set so=5
+set backspace=indent,eol,start
 
 colorscheme desert
 highlight ColorColumn ctermbg=8
