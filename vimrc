@@ -11,8 +11,9 @@ set nocp
 syntax enable
 filetype plugin indent on
 
-" Highlight trailing whitespace
-set list listchars=tab:\ \ ,trail:·
+" Highlight trailing whitespace, tabs, and funny characters
+set list
+set listchars=nbsp:¬,tab:»·,trail:·
 
 " Remove error bells
 set noerrorbells
@@ -51,6 +52,7 @@ inoremap jj <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
+nmap <cr> i<cr><Esc>
 map j gj
 map k gk
 nore ; :
