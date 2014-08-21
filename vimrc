@@ -1,3 +1,17 @@
+" Packages (vundle)
+set nocp
+filetype off
+set rtp+=~/.dotfiles/vim/bundle/Vundle.vim/
+let path='~/.dotfiles/vim/bundle'
+call vundle#begin(path)
+
+" Plugins
+Plugin 'gmarik/Vundle.vim'
+
+
+call vundle#end()
+filetype plugin indent on
+
 " Display
 set number
 set showcmd
@@ -5,11 +19,7 @@ set t_Co=256
 set colorcolumn=81
 set background=dark
 set statusline=%f\ %y\ format:\ %{&ff};\ C%c\ L%l/%L
-
-" Syntax highlighting
-set nocp
 syntax enable
-filetype plugin indent on
 
 " Highlight trailing whitespace, tabs, and funny characters
 set list
