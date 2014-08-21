@@ -12,6 +12,11 @@ alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
 
+# Generate a gitignore file (http://www.gitignore.io/)
+function gi() {
+  curl http://www.gitignore.io/api/$@ ;
+}
+
 # Git aliases
 alias gs='git status'
 alias gst='git status'
