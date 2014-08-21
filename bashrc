@@ -1,9 +1,13 @@
+# History settings
+HISTCONTROL=ignoreboth # don't save dupes or commands that start with space
+shopt -s histappend    # append to history, don't overwrite
+
 # Aliases
 alias ls='ls --color'
 alias ll='ls -l --color'
 
 # Handy directory navigation
-shopt autocd
+shopt -s autocd
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
