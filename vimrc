@@ -40,6 +40,7 @@ set nowb
 set noswapfile
 set so=5
 set backspace=indent,eol,start
+set pastetoggle=<F2>
 
 colorscheme desert
 highlight ColorColumn ctermbg=8
