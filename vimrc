@@ -37,6 +37,14 @@ set hlsearch
 set showmatch
 set wildmenu
 
+" Ignore tmp dirs, binary images, compiled bytecode
+set wildignore+=*/tmp/*,*/vendor/*,*/\.git/*
+set wildignore+=*.aux,*.out,*.toc
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.pdf
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest
+set wildignore+=*.so,*.swp,*.zip
+set wildignore+=*.pyc
+
 " Tabs
 set expandtab
 set smarttab
@@ -63,7 +71,7 @@ set lazyredraw
 set nobackup
 set nowb
 set noswapfile
-set so=5
+set so=8
 set backspace=indent,eol,start
 set pastetoggle=<F2>
 
