@@ -68,6 +68,7 @@ inoremap <S-Tab> <c-n>
 " Misc
 set autoread
 set lazyredraw
+set laststatus=2
 set nobackup
 set nowb
 set noswapfile
@@ -100,5 +101,11 @@ nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 " Airline
 let g:airline#extensions#tabline#enabled=1
 let g:airline_powerline_fonts=1
-let g:airline_theme='zenburn'
+let g:airline_theme='hybrid'
 let g:airline_enable_branch=1
+
+" Ag with Ctrlp
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
