@@ -41,6 +41,20 @@ set smarttab
 set autoindent
 set tabstop=2 shiftwidth=2
 
+" Tab completion
+" insert tab at beginning of line; otherwise, tab complete
+set wildmode=list:longest,list:full
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <S-Tab> <c-n>
+
 " Misc
 set autoread
 set lazyredraw
@@ -49,6 +63,7 @@ set nowb
 set noswapfile
 set so=5
 set backspace=indent,eol,start
+set pastetoggle=<F2>
 
 colorscheme desert
 highlight ColorColumn ctermbg=8
