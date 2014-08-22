@@ -7,7 +7,7 @@ call vundle#begin(path)
 
 " Plugins
 Plugin 'gmarik/Vundle.vim'
-
+Plugin 'bling/vim-airline'
 
 call vundle#end()
 filetype plugin indent on
@@ -18,7 +18,6 @@ set showcmd
 set t_Co=256
 set colorcolumn=81
 set background=dark
-set statusline=%f\ %y\ format:\ %{&ff};\ C%c\ L%l/%L
 syntax enable
 
 " Highlight trailing whitespace, tabs, and funny characters
@@ -67,3 +66,10 @@ map j gj
 map k gk
 nore ; :
 nore , ;
+
+" Plugin Settings
+" Airline
+let g:airline#extensions#tabline#enabled=1
+let g:airline_powerline_fonts=1
+let g:airline_theme='zenburn'
+let g:airline_enable_branch=1
