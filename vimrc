@@ -92,6 +92,10 @@ map k gk
 nore ; :
 nore , ;
 
+" Edit and source vimrc!
+nmap ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
+nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
+
 " Plugin Settings
 " Airline
 let g:airline#extensions#tabline#enabled=1
