@@ -7,7 +7,9 @@ call vundle#begin(path)
 
 " Plugins
 Plugin 'gmarik/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
+Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
 filetype plugin indent on
