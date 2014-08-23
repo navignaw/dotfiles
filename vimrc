@@ -8,7 +8,7 @@ call vundle#begin(path)
 " Plugins
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
+Plugin 'itchyny/lightline.vim'
 Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
@@ -17,6 +17,7 @@ filetype plugin indent on
 " Display
 set number
 set showcmd
+set noshowmode
 set t_Co=256
 set colorcolumn=81
 set background=dark
@@ -98,11 +99,24 @@ nmap ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
 nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 
 " Plugin Settings
-" Airline
-let g:airline#extensions#tabline#enabled=1
-let g:airline_powerline_fonts=1
-let g:airline_theme='hybrid'
-let g:airline_enable_branch=1
+" Lightline
+let g:lightline = {
+    \ 'colorscheme': 'Tomorrow_Night_Blue',
+    \ 'active': {
+    \   'left': [['mode', 'paste'],
+    \             ['fugitive', 'readonly', 'filename', 'modified' ]]
+    \ },
+    \ 'component': {
+    \   'readonly': '%{&filetype=="help"?"":&readonly?"RO":""}',
+    \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+    \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+    \ },
+    \ 'component_visible_condition': {
+    \   'readonly': '(&filetype!="help"&& &readonly)',
+    \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+    \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+    \ }
+\ }
 
 " Ag with Ctrlp
 if executable('ag')
