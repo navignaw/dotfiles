@@ -13,9 +13,7 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 
 # Generate a gitignore file (http://www.gitignore.io/)
-function gi() {
-  curl http://www.gitignore.io/api/$@ ;
-}
+function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
 # Git aliases
 alias gs='git status'
