@@ -12,6 +12,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 " Plugin 'itchyny/lightline.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/syntastic'
 
 call vundle#end()
 filetype plugin indent on
@@ -132,6 +133,15 @@ let g:airline_detect_paste=1
 
 " Show airline for tabs too
 " let g:airline#extensions#tabline#enabled = 1
+
+
+" ----- scrooloose/syntastic settings -----
+let g:syntastic_error_symbol = '✘'
+let g:syntastic_warning_symbol = "▲"
+augroup mySyntastic
+  au!
+  au FileType tex let b:syntastic_mode = "passive"
+augroup END
 
 
 " Ag with Ctrlp
