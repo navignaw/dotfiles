@@ -8,7 +8,8 @@ call vundle#begin(path)
 " Plugins
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'itchyny/lightline.vim'
+Plugin 'bling/vim-airline'
+" Plugin 'itchyny/lightline.vim'
 Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
@@ -117,6 +118,20 @@ let g:lightline = {
     \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
     \ }
 \ }
+
+" ----- bling/vim-airline settings -----
+" Fancy arrow symbols, requires a patched font
+" To install a patched font, run over to
+"     https://github.com/abertsch/Menlo-for-Powerline
+" download all the .ttf files, double-click on them and click "Install"
+let g:airline_powerline_fonts = 1
+
+" Show PASTE if in paste mode
+let g:airline_detect_paste=1
+
+" Show airline for tabs too
+" let g:airline#extensions#tabline#enabled = 1
+
 
 " Ag with Ctrlp
 if executable('ag')
