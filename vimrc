@@ -7,6 +7,7 @@ call vundle#begin(path)
 
 " Plugins
 Plugin 'gmarik/Vundle.vim'
+Plugin 'tomasr/molokai'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 " Plugin 'itchyny/lightline.vim'
@@ -78,7 +79,7 @@ set so=8
 set backspace=indent,eol,start
 set pastetoggle=<F2>
 
-colorscheme desert
+colorscheme molokai
 highlight ColorColumn ctermbg=8
 
 " Mappings
