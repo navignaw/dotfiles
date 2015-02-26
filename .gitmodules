@@ -7,9 +7,6 @@
 [submodule "vim/bundle/ctrlp.vim"]
 	path = vim/bundle/ctrlp.vim
 	url = git@github.com:kien/ctrlp.vim.git
-[submodule "vim/bundle/lightline.vim"]
-	path = vim/bundle/lightline.vim
-	url = git@github.com:itchyny/lightline.vim.git
 [submodule "vim/bundle/vim-airline"]
 	path = vim/bundle/vim-airline
 	url = git@github.com:bling/vim-airline.git
