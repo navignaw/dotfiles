@@ -8,9 +8,9 @@ call vundle#begin(path)
 " Plugins
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tomasr/molokai'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
-" Plugin 'itchyny/lightline.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/a.vim'
@@ -103,25 +103,6 @@ nmap ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
 nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 
 " Plugin Settings
-" Lightline
-let g:lightline = {
-    \ 'colorscheme': 'Tomorrow_Night_Blue',
-    \ 'active': {
-    \   'left': [['mode', 'paste'],
-    \             ['fugitive', 'readonly', 'filename', 'modified' ]]
-    \ },
-    \ 'component': {
-    \   'readonly': '%{&filetype=="help"?"":&readonly?"RO":""}',
-    \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-    \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-    \ },
-    \ 'component_visible_condition': {
-    \   'readonly': '(&filetype!="help"&& &readonly)',
-    \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-    \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-    \ }
-\ }
-
 " ----- bling/vim-airline settings -----
 " Fancy arrow symbols, requires a patched font
 " To install a patched font, run over to
@@ -143,6 +124,13 @@ augroup mySyntastic
   au!
   au FileType tex let b:syntastic_mode = "passive"
 augroup END
+
+
+" ----- airblade/vim-gitgutter settings -----
+" Required after having changed the colorscheme
+hi clear SignColumn
+" In vim-airline, only display "hunks" if the diff is non-zero
+let g:airline#extensions#hunks#non_zero_only = 1
 
 
 " Ag with Ctrlp
