@@ -11,6 +11,13 @@ shopt -s autocd
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
+alias back='cd $OLDPWD'
+
+# Copy current working directory to clipboard
+alias cpwd='pwd | xclip -selection clipboard'
+
+# Source bashrc
+alias srcbash='source ~/.bashrc'
 
 # Generate a gitignore file (http://www.gitignore.io/)
 function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
