@@ -7,8 +7,7 @@ Installation
 --------
 
     git clone git@github.com:navignaw/dotfiles.git ~/.dotfiles
-    git submodule init
-    git submodule update
+    ./install-script.sh
 
 
 Add plugins
