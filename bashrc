@@ -1,3 +1,7 @@
+# Colorful command prompt
+source ~/.dotfiles/git-prompt.sh
+export PS1=' \[\033]0;$MSYSTEM:\w\007 \033[32m\]\u@\h \[\033[33m\w$(__git_ps1 " (%s)")\033[0m\]\n\$ '
+
 # History settings
 HISTCONTROL=ignoreboth # don't save dupes or commands that start with space
 shopt -s histappend    # append to history, don't overwrite
@@ -8,9 +12,6 @@ alias ll='ls -l --color'
 
 # Handy directory navigation
 shopt -s autocd
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
 alias back='cd $OLDPWD'
 
 # Copy current working directory to clipboard
