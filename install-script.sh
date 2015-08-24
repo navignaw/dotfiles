@@ -1,29 +1,34 @@
 #!/usr/bin/env bash
 
-PWD=$(pwd)
+BASEDIR=$(pwd)
 
 # Backup existing files, unless they are symlinks
 echo -e "Creating backups..."
-mkdir "$PWD/backups"
-
-if [[ -f "$HOME/.vimrc" && ! -L "$HOME/.vimrc" ]]; then
-  mv ~/.vimrc "$PWD/backups/vimrc"
+if [[ ! -d "$BASEDIR/backups" ]]; then
+  mkdir "$BASEDIR/backups"
 fi
 
-if [[ -f "$HOME/.bashrc" && ! -L "$HOME/.bashrc" ]]; then
-  mv ~/.bashrc "$PWD/backups/bashrc"
+for dotfile in vimrc bashrc gitconfig; do
+  if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
+    echo -e "Moving $dotfile to $BASEDIR/backups"
+    mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
+  fi
+
+  # Create symlinks to appropriate files
+  ln -s "$BASEDIR/$dotfile" "$HOME/.$dotfile"
+done
+
+if [ $? -eq 0 ]; then
+  echo -e "vimrc and bashrc successfully installed!"
 fi
-
-# Create symlinks to appropriate files
-ln -s "$PWD/vimrc" ~/.vimrc
-ln -s "$PWD/bashrc" ~/.bashrc
-
-echo -e "vimrc and bashrc successfully installed!"
 
 # Install and update submodules
 unset GIT_DIR
 git submodule init
 git submodule update
-echo -e "submodules successfully installed!"
+
+if [ $? -eq 0 ]; then
+  echo -e "submodules successfully installed!"
+fi
 
 # TODO: install font
