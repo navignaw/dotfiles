@@ -18,6 +18,9 @@ for dotfile in vimrc bashrc gitconfig; do
   ln -s "$BASEDIR/$dotfile" "$HOME/.$dotfile"
 done
 
+# Additional symlinks
+sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"
+
 if [ $? -eq 0 ]; then
   echo -e "vimrc and bashrc successfully installed!"
 fi
