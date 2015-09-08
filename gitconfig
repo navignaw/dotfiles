@@ -8,3 +8,6 @@
 
 [push]
   default = simple
+
+[core]
+  editor = vim

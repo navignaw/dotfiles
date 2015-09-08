@@ -13,6 +13,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
+Plugin 'bitc/vim-hdevtools'
 Plugin 'vim-scripts/a.vim'
 Plugin 'Raimondi/delimitMate'
 
@@ -126,6 +127,9 @@ augroup mySyntastic
   au FileType tex let b:syntastic_mode = "passive"
 augroup END
 
+" ----- bitc/vim-hdevtools settings -----
+au FileType haskell nnoremap <silent> <C-t> :HdevtoolsType<CR>
+au FileType haskell nnoremap <silent> <C-i> :HdevtoolsInfo<CR>
 
 " ----- airblade/vim-gitgutter settings -----
 " Required after having changed the colorscheme
@@ -133,6 +137,8 @@ hi clear SignColumn
 " In vim-airline, only display "hunks" if the diff is non-zero
 let g:airline#extensions#hunks#non_zero_only = 1
 
+" When in compilers directory, only load Haskell files
+au BufRead,BufNewFile ~/dev/numbskel/lab1/* nnoremap <silent> <C-p> :CtrlP ~/dev/numbskel/lab1/haskell<CR>
 
 " Ag with Ctrlp
 if executable('ag')
