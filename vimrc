@@ -87,10 +87,14 @@ colorscheme molokai
 highlight ColorColumn ctermbg=8
 
 " Mappings
-" jj to exit insert mode
+" Space as leader key: <Space-w>, <Space-q> to save and quit
+" jk to exit insert mode
 " <Ctrl-l> removes syntax highlighting
 " <Ctrl-j>, <Ctrl-k> to switch buffers
-inoremap jj <Esc>
+let mapleader = "\<Space>"
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+inoremap jk <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
