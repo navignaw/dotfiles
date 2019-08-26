@@ -8,21 +8,21 @@ if [[ ! -d "$BASEDIR/backups" ]]; then
   mkdir "$BASEDIR/backups"
 fi
 
-for dotfile in vimrc bashrc gitconfig; do
+for dotfile in vimrc bashrc gitconfig tmux.conf; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
     mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
   fi
 
-  # Create symlinks to appropriate files
-  ln -s "$BASEDIR/$dotfile" "$HOME/.$dotfile"
+  # Move dotfile to the appropriate location.
+  cp "$BASEDIR/$dotfile" "$HOME/.$dotfile"
 done
 
 # Additional symlinks
 sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"
 
 if [ $? -eq 0 ]; then
-  echo -e "vimrc and bashrc successfully installed!"
+  echo -e "dotfiles successfully installed!"
 fi
 
 # Install and update submodules
