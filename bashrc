@@ -53,3 +53,8 @@ function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 if [ -f ~/.dotfiles/bash_aliases ]; then
     . ~/.dotfiles/bash_aliases
 fi
+
+# Start tmux automatically
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    exec tmux
+fi
