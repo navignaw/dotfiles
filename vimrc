@@ -13,8 +13,6 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'bitc/vim-hdevtools'
-Plugin 'vim-scripts/a.vim'
 Plugin 'Raimondi/delimitMate'
 
 call vundle#end()
