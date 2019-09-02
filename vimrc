@@ -12,8 +12,11 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
+Plugin 'dense-analysis/ale'
 Plugin 'Raimondi/delimitMate'
+Plugin 'prettier/vim-prettier'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'tell-k/vim-autopep8'
 
 call vundle#end()
 filetype plugin indent on
@@ -92,6 +95,7 @@ highlight ColorColumn ctermbg=8
 let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
+nnoremap <Leader>f :ALEFix<CR>
 inoremap jk <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 nnoremap <silent> <C-j> :bprev<CR>
@@ -117,30 +121,48 @@ let g:airline_powerline_fonts = 1
 " Show PASTE if in paste mode
 let g:airline_detect_paste=1
 
+let g:airline_section_y=''
+let g:airline_skip_empty_sections = 1
+
 " Show airline for tabs too
 " let g:airline#extensions#tabline#enabled = 1
 
 
-" ----- scrooloose/syntastic settings -----
-let g:syntastic_error_symbol = '✘'
-let g:syntastic_warning_symbol = "▲"
-augroup mySyntastic
-  au!
-  au FileType tex let b:syntastic_mode = "passive"
-augroup END
+" ----- dense-analysis/ale settings -----
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '▲'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_linters = {
+\   'javascript': ['prettier', 'eslint'],
+\   'python': ['flake8', 'pyre']
+\}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['prettier', 'eslint'],
+\   'python': ['autopep8', 'flake8']
+\}
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
 
-" ----- bitc/vim-hdevtools settings -----
-au FileType haskell nnoremap <silent> <C-t> :HdevtoolsType<CR>
-au FileType haskell nnoremap <silent> <C-i> :HdevtoolsInfo<CR>
+let g:airline#extensions#ale#enabled = 1
+
+" ----- prettier/vim-prettier setings -----
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue PrettierAsync
+
+" ----- tell-k/vim-autopep8 settings -----
+"let g:autopep8_on_save = 1
+let g:autopep8_disable_show_diff=1
+let g:autopep8_ignore="E501"
+"autocmd BufWritePost *.py call flake8#Flake8()
 
 " ----- airblade/vim-gitgutter settings -----
 " Required after having changed the colorscheme
 hi clear SignColumn
 " In vim-airline, only display "hunks" if the diff is non-zero
 let g:airline#extensions#hunks#non_zero_only = 1
-
-" When in compilers directory, only load Haskell files
-au BufRead,BufNewFile ~/dev/numbskel/lab1/* nnoremap <silent> <C-p> :CtrlP ~/dev/numbskel/lab1/haskell<CR>
 
 " Ag with Ctrlp
 if executable('ag')
