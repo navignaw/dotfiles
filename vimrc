@@ -17,6 +17,9 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'prettier/vim-prettier'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'tell-k/vim-autopep8'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 call vundle#end()
 filetype plugin indent on
@@ -89,17 +92,24 @@ highlight ColorColumn ctermbg=8
 
 " Mappings
 " Space as leader key: <Space-w>, <Space-q> to save and quit
-" jk to exit insert mode
+" <Space-f> to fix ALE errors
+" <Space-d> to jump to definition
+" <Space-r> to see references
+" jk or kj to exit insert mode
 " <Ctrl-l> removes syntax highlighting
-" <Ctrl-j>, <Ctrl-k> to switch buffers
+" <Ctrl-n>, <Ctrl-b> to switch buffers
 let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>f :ALEFix<CR>
+nnoremap <Leader>d :ALEGoToDefinition<CR>
+nnoremap <Leader>r :ALEFindReferences<CR>
+
 inoremap jk <Esc>
+inoremap kj <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
-nnoremap <silent> <C-j> :bprev<CR>
-nnoremap <silent> <C-k> :bnext<CR>
+nnoremap <silent> <C-b> :bprev<CR>
+nnoremap <silent> <C-n> :bnext<CR>
 nmap <cr> i<cr><Esc>
 map j gj
 map k gk
@@ -150,7 +160,7 @@ let g:airline#extensions#ale#enabled = 1
 
 " ----- prettier/vim-prettier setings -----
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue PrettierAsync
+"autocmd BufWritePre *.js,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue PrettierAsync
 
 " ----- tell-k/vim-autopep8 settings -----
 "let g:autopep8_on_save = 1
@@ -170,6 +180,13 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
+" ----- YouCompleteMe and UltiSnips -----
+let g:ycm_key_list_select_completion = ["<C-j>"]
+let g:ycm_key_list_previous_completion = ["<C-k>"]
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 " ----- Raimondi/delimitMate settings -----
 let delimitMate_expand_cr = 1
