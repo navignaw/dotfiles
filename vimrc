@@ -6,7 +6,7 @@ let path='~/.dotfiles/vim/bundle'
 call vundle#begin(path)
 
 " Plugins
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'tomasr/molokai'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
