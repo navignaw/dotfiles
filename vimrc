@@ -21,6 +21,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
 
 call vundle#end()
 filetype plugin indent on
@@ -158,6 +160,9 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
 
 let g:airline#extensions#ale#enabled = 1
+
+" Show errors in two lines.
+set cmdheight=2
 
 " ----- prettier/vim-prettier setings -----
 let g:prettier#autoformat = 0
