@@ -8,7 +8,7 @@ if [[ ! -d "$BASEDIR/backups" ]]; then
   mkdir "$BASEDIR/backups"
 fi
 
-for dotfile in vimrc bashrc gitconfig tmux.conf; do
+for dotfile in vimrc zshrc gitconfig tmux.conf; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
     mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
@@ -17,6 +17,8 @@ for dotfile in vimrc bashrc gitconfig tmux.conf; do
   # Move dotfile to the appropriate location.
   cp "$BASEDIR/$dotfile" "$HOME/.$dotfile"
 done
+
+cp "$BASEDIR/lambda-mod.zsh-theme" "$HOME/.oh-my-zsh/themes"
 
 # Additional symlinks
 sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"
