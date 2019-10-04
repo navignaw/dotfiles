@@ -56,7 +56,7 @@ fi
 
 # Start tmux automatically
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    exec tmux
+    tmux new-session -A -s main
 fi
 
 # Auto-add SSH agent

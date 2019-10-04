@@ -12,6 +12,10 @@ GCALCLI_COMMAND = [
     'gcalcli', 'agenda', '--tsv', '--nodeclined', '--details', 'calendar']
 
 
+def truncate(value: str, max_length: int) -> str:
+    return value[:max_length] + (value[:max_length] and '…')
+
+
 def get_recent_meeting(meetings: List[str], calendar: str) -> str:
     for line in meetings:
         if calendar not in line:
@@ -27,7 +31,8 @@ def get_recent_meeting(meetings: List[str], calendar: str) -> str:
         if diff < timedelta(hours=-12):
             break  # Ignore meetings more than 12 hours away.
 
-        return '{}: {}'.format(naturaltime(diff), ' '.join(next_meeting[4:-1]))
+        return '{}: {}'.format(
+            naturaltime(diff), truncate(' '.join(next_meeting[4:-1]), 48))
     return 'No meetings today!'
 
 
@@ -38,4 +43,4 @@ if __name__ == '__main__':
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE).stdout
 
-    print(get_recent_meeting(meetings.split('\n'), CALENDAR))
+    print('📆  %s' % get_recent_meeting(meetings.split('\n'), CALENDAR))

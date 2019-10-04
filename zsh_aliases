@@ -8,8 +8,9 @@ alias back='cd $OLDPWD'
 # Copy current working directory to clipboard
 alias cpwd='pwd | xclip -selection clipboard'
 
-# Source bashrc
-alias srcbash='source ~/.bashrc'
+# Source dotfiles
+alias srczsh='source ~/.zshrc'
+alias srctmux='tmux source-file ~/.tmux.conf'
 
 # Git aliases
 alias gs='git status'
@@ -26,6 +27,6 @@ alias gam='git commit --amend'
 alias gama='git commit -a --amend'
 alias gco='git checkout'
 alias gl='git pull'
-alias glog='git log --color --graph --date=relative'
+alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gp='git push origin'
 alias grb='git rebase -i'
