@@ -8,7 +8,7 @@ if [[ ! -d "$BASEDIR/backups" ]]; then
   mkdir "$BASEDIR/backups"
 fi
 
-for dotfile in vimrc zshrc gitconfig tmux.conf; do
+for dotfile in vimrc zshrc gitconfig tmux.conf agignore; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
     mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
@@ -36,4 +36,5 @@ if [ $? -eq 0 ]; then
   echo -e "submodules successfully installed!"
 fi
 
-# TODO: install font
+echo -e "Installing powerline font"
+sudo apt-get install fonts-powerline

@@ -30,3 +30,7 @@ alias gl='git pull'
 alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gp='git push origin'
 alias grb='git rebase -i'
+
+# Python default
+alias python=python3
+alias pip=pip3

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Requires humanize (`pip3 install humanize`) and gcalcli.
 
