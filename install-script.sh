@@ -38,3 +38,7 @@ fi
 
 echo -e "Installing powerline font"
 sudo apt-get install fonts-powerline
+
+echo -e "Installing YouCompleteMe"
+sudo apt install build-essential cmake python3-dev
+cd "$BASEDIR/vim/bundle/YouCompleteMe" && python3 install.py
