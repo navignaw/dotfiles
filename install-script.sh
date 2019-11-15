@@ -36,6 +36,9 @@ if [ $? -eq 0 ]; then
   echo -e "submodules successfully installed!"
 fi
 
+echo -e "Installing spotify-now"
+sudo cp $BASEDIR/lib/spotify-now/spotify-now /usr/bin
+
 echo -e "Installing powerline font"
 sudo apt-get install fonts-powerline
 

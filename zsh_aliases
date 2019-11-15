@@ -26,7 +26,7 @@ alias gca='git commit -a -m'
 alias gam='git commit --amend'
 alias gama='git commit -a --amend'
 alias gco='git checkout'
-alias gl='git pull'
+alias gl='git pull --prune'
 alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gp='git push origin'
 alias grb='git rebase -i'
