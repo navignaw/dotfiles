@@ -14,9 +14,7 @@ Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'dense-analysis/ale'
 Plugin 'Raimondi/delimitMate'
-Plugin 'prettier/vim-prettier'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'tell-k/vim-autopep8'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -98,7 +96,7 @@ highlight ColorColumn ctermbg=8
 " <Space-f> to fix ALE errors
 " <Space-d> to jump to definition
 " <Space-r> to see references
-" jk or kj to exit insert mode
+" jk to exit insert mode
 " <Ctrl-l> removes syntax highlighting
 " <Ctrl-n>, <Ctrl-b> to switch buffers
 let mapleader = "\<Space>"
@@ -109,11 +107,10 @@ nnoremap <Leader>d :ALEGoToDefinition<CR>
 nnoremap <Leader>r :ALEFindReferences<CR>
 
 inoremap jk <Esc>
-inoremap kj <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 nnoremap <silent> <C-b> :bprev<CR>
 nnoremap <silent> <C-n> :bnext<CR>
-nmap <cr> i<cr><Esc>
+nmap <cr> i<cr>jk
 map j gj
 map k gk
 nore ; :
@@ -149,13 +146,13 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_linters = {
 \   'javascript': ['prettier', 'eslint'],
 \   'typescript': ['prettier', 'eslint'],
-\   'python': ['flake8', 'pyre']
+\   'python': ['autopep8', 'pyre']
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier', 'eslint'],
 \   'typescript': ['prettier', 'eslint'],
-\   'python': ['autopep8', 'flake8']
+\   'python': ['add_blank_lines_for_python_control_statements', 'autopep8', 'isort']
 \}
 let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
@@ -166,16 +163,6 @@ let g:airline#extensions#ale#enabled = 1
 
 " Show errors in two lines.
 set cmdheight=2
-
-" ----- prettier/vim-prettier setings -----
-let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue PrettierAsync
-
-" ----- tell-k/vim-autopep8 settings -----
-"let g:autopep8_on_save = 1
-let g:autopep8_disable_show_diff=1
-let g:autopep8_ignore="E501"
-"autocmd BufWritePost *.py call flake8#Flake8()
 
 " ----- airblade/vim-gitgutter settings -----
 " Required after having changed the colorscheme
@@ -192,6 +179,7 @@ endif
 " ----- YouCompleteMe and UltiSnips -----
 let g:ycm_key_list_select_completion = ["<C-j>"]
 let g:ycm_key_list_previous_completion = ["<C-k>"]
+let g:ycm_disable_signature_help = 1
 
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
