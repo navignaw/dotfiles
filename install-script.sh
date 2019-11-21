@@ -39,6 +39,9 @@ fi
 echo -e "Installing spotify-now"
 sudo cp $BASEDIR/lib/spotify-now/spotify-now /usr/bin
 
+echo -e "Installing gcalcli"
+cd "$BASEDIR/lib/gcalcli" && sudo python setup.py install
+
 echo -e "Installing powerline font"
 sudo apt-get install fonts-powerline
 

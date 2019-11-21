@@ -47,3 +47,6 @@
 [submodule "lib/spotify-now"]
 	path = lib/spotify-now
 	url = https://github.com/getmicah/spotify-now.git
+[submodule "lib/gcalcli"]
+	path = lib/gcalcli
+	url = https://github.com/insanum/gcalcli.git
