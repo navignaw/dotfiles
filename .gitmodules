@@ -19,19 +19,12 @@
 [submodule "vim/bundle/indentpython.vim"]
 	path = vim/bundle/indentpython.vim
 	url = git@github.com:vim-scripts/indentpython.vim.git
-[submodule "vim/bundle/ultisnips"]
-	path = vim/bundle/ultisnips
-	url = git@github.com:SirVer/ultisnips.git
 [submodule "vim/bundle/vim-snippets"]
 	path = vim/bundle/vim-snippets
 	url = git@github.com:honza/vim-snippets.git
 [submodule "vim/bundle/ale"]
 	path = vim/bundle/ale
 	url = git@github.com:dense-analysis/ale.git
-[submodule "vim/bundle/YouCompleteMe"]
-	path = vim/bundle/YouCompleteMe
-	url = git@github.com:ycm-core/YouCompleteMe.git
-  ignore = dirty
 [submodule "vim/bundle/vim-tmux-navigator"]
 	path = vim/bundle/vim-tmux-navigator
 	url = git@github.com:christoomey/vim-tmux-navigator.git
@@ -47,3 +40,6 @@
 [submodule "lib/gcalcli"]
 	path = lib/gcalcli
 	url = https://github.com/insanum/gcalcli.git
+[submodule "vim/bundle/coc.nvim"]
+	path = vim/bundle/coc.nvim
+	url = git@github.com:neoclide/coc.nvim.git
