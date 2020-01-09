@@ -1,37 +1,34 @@
-" Packages (vundle)
+" Plugins (vim-bundle)
 set nocp
 filetype off
-set rtp+=~/.dotfiles/vim/bundle/Vundle.vim/
-let path='~/.dotfiles/vim/bundle'
-call vundle#begin(path)
+call plug#begin('~/.dotfiles/vim/bundle')
 
 " Plugins
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tomasr/molokai'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
-Plugin 'kien/ctrlp.vim'
-Plugin 'dense-analysis/ale'
-Plugin 'Raimondi/delimitMate'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'peitalin/vim-jsx-typescript'
+Plug 'tomasr/molokai'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'bling/vim-airline'
+Plug 'kien/ctrlp.vim'
+Plug 'dense-analysis/ale'
+Plug 'Raimondi/delimitMate'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'honza/vim-snippets'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
-call vundle#end()
-filetype plugin indent on
+call plug#end()
 
 " Display
+set hidden
 set number
 set showcmd
 set noshowmode
 set t_Co=256
 set colorcolumn=81
 set background=dark
+set updatetime=300
 syntax enable
 
 " Highlight trailing whitespace, tabs, and funny characters
@@ -48,6 +45,7 @@ set ignorecase
 set hlsearch
 set showmatch
 set wildmenu
+set shortmess+=c
 
 " Ignore tmp dirs, binary images, compiled bytecode
 set wildignore+=*/tmp/*,*/vendor/*,*/\.git/*
@@ -63,25 +61,12 @@ set smarttab
 set autoindent
 set tabstop=2 shiftwidth=2
 
-" Tab completion
-" insert tab at beginning of line; otherwise, tab complete
-set wildmode=list:longest,list:full
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <S-Tab> <c-n>
-
 " Misc
 set autoread
 set lazyredraw
 set laststatus=2
 set nobackup
+set nowritebackup
 set nowb
 set noswapfile
 set so=8
@@ -98,7 +83,7 @@ highlight ColorColumn ctermbg=8
 " <Space-r> to see references
 " jk to exit insert mode
 " <Ctrl-l> removes syntax highlighting
-" <Ctrl-n>, <Ctrl-b> to switch buffers
+" <Ctrl-j>, <Ctrl-k> to switch buffers
 let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
@@ -108,8 +93,8 @@ nnoremap <Leader>r :ALEFindReferences<CR>
 
 inoremap jk <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
-nnoremap <silent> <C-b> :bprev<CR>
-nnoremap <silent> <C-n> :bnext<CR>
+nnoremap <silent> <C-j> :bprev<CR>
+nnoremap <silent> <C-k> :bnext<CR>
 nmap <cr> i<cr>jk
 map j gj
 map k gk
@@ -134,9 +119,6 @@ let g:airline_detect_paste=1
 let g:airline_section_y=''
 let g:airline_skip_empty_sections = 1
 
-" Show airline for tabs too
-" let g:airline#extensions#tabline#enabled = 1
-
 
 " ----- dense-analysis/ale settings -----
 let g:ale_sign_error = '✘'
@@ -144,15 +126,15 @@ let g:ale_sign_warning = '▲'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_linters = {
-\   'javascript': ['prettier', 'eslint'],
-\   'typescript': ['prettier', 'eslint'],
+\   'javascript': ['eslint'],
+\   'typescript': ['tsserver'],
 \   'python': ['autopep8', 'pyre']
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier', 'eslint'],
-\   'typescript': ['prettier', 'eslint'],
-\   'python': ['add_blank_lines_for_python_control_statements', 'autopep8', 'isort']
+\   'javascript': ['prettier'],
+\   'typescript': ['prettier'],
+\   'python': ['autopep8', 'isort']
 \}
 let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
@@ -176,14 +158,17 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" ----- YouCompleteMe and UltiSnips -----
-let g:ycm_key_list_select_completion = ["<C-j>"]
-let g:ycm_key_list_previous_completion = ["<C-k>"]
-let g:ycm_disable_signature_help = 1
+" ----- coc and UltiSnips -----
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+" Tab and shift-tab navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " ----- Raimondi/delimitMate settings -----
 let delimitMate_expand_cr = 1
