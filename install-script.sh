@@ -48,7 +48,3 @@ sudo apt-get install fonts-powerline
 echo -e "Installing vim-plug"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-echo -e "Installing YouCompleteMe"
-sudo apt install build-essential cmake python3-dev
-cd "$BASEDIR/vim/bundle/YouCompleteMe" && python3 install.py
