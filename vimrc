@@ -4,7 +4,7 @@ filetype off
 call plug#begin('~/.dotfiles/vim/bundle')
 
 " Plugins
-Plug 'tomasr/molokai'
+Plug 'joshdick/onedark.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
@@ -29,7 +29,6 @@ set t_Co=256
 set colorcolumn=81
 set background=dark
 set updatetime=300
-syntax enable
 
 " Highlight trailing whitespace, tabs, and funny characters
 set list
@@ -73,7 +72,13 @@ set so=8
 set backspace=indent,eol,start
 set pastetoggle=<F2>
 
-colorscheme molokai
+" Colors
+syntax on
+let g:onedark_color_overrides = {
+\   "black": {"gui": "#1c1c1c", "cterm": "234", "cterm16": "0" }
+\}
+
+colorscheme onedark
 highlight ColorColumn ctermbg=8
 
 " Mappings
