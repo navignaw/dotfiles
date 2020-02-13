@@ -6,6 +6,7 @@ call plug#begin('~/.dotfiles/vim/bundle')
 " Plugins
 Plug 'joshdick/onedark.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
 Plug 'kien/ctrlp.vim'
@@ -111,6 +112,11 @@ nmap ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
 nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 
 " Plugin Settings
+
+" ----- tpope/vim-abolish settings -----
+"(S)ubstitute all with vim-abolish
+nnoremap <leader>s *:%S/<C-r><C-w>//g<left><left>
+
 " ----- bling/vim-airline settings -----
 " Fancy arrow symbols, requires a patched font
 " To install a patched font, run over to
