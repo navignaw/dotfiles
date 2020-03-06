@@ -45,6 +45,9 @@ cd "$BASEDIR/lib/gcalcli" && sudo python setup.py install
 echo -e "Installing powerline font"
 sudo apt-get install fonts-powerline
 
+echo -e "Installing ripgrep"
+sudo apt-get install ripgrep
+
 echo -e "Installing vim-plug"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
