@@ -139,7 +139,7 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'typescript': ['tsserver'],
-\   'python': ['autopep8', 'pyre']
+\   'python': ['flake8', 'pylint', 'autopep8', 'pyre']
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
