@@ -16,4 +16,7 @@
   branch = false
 
 [pull]
-  rebase = preserve
+  rebase = merges
+
+[rebase]
+  autoStash = true
