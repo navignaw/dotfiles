@@ -95,6 +95,8 @@ nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>f :ALEFix<CR>
 nnoremap <Leader>d :ALEGoToDefinition<CR>
+nnoremap <Leader>ds :ALEGoToDefinition -split<CR>
+nnoremap <Leader>dv :ALEGoToDefinition -vsplit<CR>
 nnoremap <Leader>r :ALEFindReferences<CR>
 
 inoremap jk <Esc>
@@ -138,14 +140,14 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'typescript': ['tsserver'],
-\   'python': ['flake8', 'pylint', 'autopep8', 'pyre']
+\   'typescript': ['tsserver', 'eslint'],
+\   'python': ['pylsp', 'flake8', 'pylint', 'autopep8', 'pyre']
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
-\   'python': ['autopep8', 'isort']
+\   'python': ['isort', 'black']
 \}
 let g:ale_fix_on_save = 1
 let g:ale_echo_msg_error_str = 'E'
@@ -162,6 +164,7 @@ set cmdheight=2
 hi clear SignColumn
 " In vim-airline, only display "hunks" if the diff is non-zero
 let g:airline#extensions#hunks#non_zero_only = 1
+nmap <silent> vd :GitGutterDiffOrig<cr>
 
 " Ripgreg with Ctrlp
 if executable('rg')
