@@ -16,7 +16,10 @@
   branch = false
 
 [pull]
-  rebase = merges
+  rebase = true
 
 [rebase]
   autoStash = true
+
+[remote "origin"]
+  prune = true
