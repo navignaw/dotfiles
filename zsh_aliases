@@ -31,7 +31,18 @@ alias gl='git pull --prune'
 alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gp='git push origin'
 alias grb='git rebase -i'
+alias dev='git checkout develop'
 
 # Python default
 alias python=python3
 alias pip=pip3
+
+# Neovim
+alias v=nvim
+alias vim=nvim
+
+# Docker
+alias dex='docker exec -it'
+alias dlog='docker logs'
+alias dcb='docker-compose build'
+alias dcu='docker-compose up'

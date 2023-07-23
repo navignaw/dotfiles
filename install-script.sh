@@ -8,7 +8,7 @@ if [[ ! -d "$BASEDIR/backups" ]]; then
   mkdir "$BASEDIR/backups"
 fi
 
-for dotfile in vimrc zshrc ripgreprc gitconfig tmux.conf; do
+for dotfile in vimrc zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
     mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
@@ -21,7 +21,6 @@ done
 echo -e "Installing zsh and oh-my-zsh"
 sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-cp "$BASEDIR/lambda-mod.zsh-theme" "$HOME/.oh-my-zsh/themes"
 
 # Additional symlinks
 sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"

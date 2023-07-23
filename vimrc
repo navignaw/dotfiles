@@ -18,6 +18,7 @@ Plug 'honza/vim-snippets'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'github/copilot.vim'
 
 call plug#end()
 
