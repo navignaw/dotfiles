@@ -18,6 +18,9 @@ for dotfile in vimrc zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
   cp "$BASEDIR/$dotfile" "$HOME/.$dotfile"
 done
 
+echo -e "Moving coc-settings.json to ~/.config/nvim"
+cp "$BASEDIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
+
 echo -e "Installing zsh and oh-my-zsh"
 sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

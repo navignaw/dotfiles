@@ -19,6 +19,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'github/copilot.vim'
+Plug 'yasuhiroki/github-actions-yaml.vim'
+Plug 'hankei6km/ale-linter-actionlint.vim'
 
 call plug#end()
 
@@ -85,7 +87,6 @@ highlight ColorColumn ctermbg=8
 
 " Mappings
 " Space as leader key: <Space-w>, <Space-q> to save and quit
-" <Space-f> to fix ALE errors
 " <Space-d> to jump to definition
 " <Space-r> to see references
 " jk to exit insert mode
@@ -94,11 +95,10 @@ highlight ColorColumn ctermbg=8
 let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
-nnoremap <Leader>f :ALEFix<CR>
-nnoremap <Leader>d :ALEGoToDefinition<CR>
-nnoremap <Leader>ds :ALEGoToDefinition -split<CR>
-nnoremap <Leader>dv :ALEGoToDefinition -vsplit<CR>
-nnoremap <Leader>r :ALEFindReferences<CR>
+nnoremap <Leader>d <Plug>(coc-definition)
+nnoremap <Leader>t <Plug>(coc-type-definition)
+nnoremap <Leader>i <Plug>(coc-implementation)
+nnoremap <Leader>r <Plug>(coc-references)
 
 inoremap jk <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
@@ -135,22 +135,15 @@ let g:airline_skip_empty_sections = 1
 
 
 " ----- dense-analysis/ale settings -----
+" TODO: Replace these remaining linters with coc plugins
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '▲'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'typescript': ['tsserver', 'eslint'],
-\   'python': ['pylsp', 'flake8', 'pylint', 'autopep8', 'pyre']
+\   'yaml': ['actionlint', 'yamllint']
 \}
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier'],
-\   'typescript': ['prettier'],
-\   'python': ['isort', 'black']
-\}
-let g:ale_fix_on_save = 1
+let g:ale_fixers = {}
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
@@ -175,16 +168,37 @@ if executable('rg')
 endif
 
 " ----- coc and UltiSnips -----
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " Tab and shift-tab navigate the completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+let g:copilot_no_tab_map = v:true
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") :
+      \ CheckBackSpace() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Shift tab accepts Copilot by default, otherwise goes to the previous item
+inoremap <expr><S-TAB>
+      \ exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") :
+      \ coc#pum#visible() ? coc#pum#prev(1) :
+      \ "\<C-h>"
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " ----- Raimondi/delimitMate settings -----
 let delimitMate_expand_cr = 1
@@ -211,3 +225,9 @@ nnoremap <silent> <M-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <M-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <M-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <M-;> :TmuxNavigatePrevious<cr>
+" Mac characters
+nnoremap <silent> ˙ :TmuxNavigateLeft<cr>
+nnoremap <silent> ∆ :TmuxNavigateDown<cr>
+nnoremap <silent> ˚ :TmuxNavigateUp<cr>
+nnoremap <silent> ¬ :TmuxNavigateRight<cr>
+nnoremap <silent> … :TmuxNavigatePrevious<cr>
