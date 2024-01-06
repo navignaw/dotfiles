@@ -1,9 +1,6 @@
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/vim-fugitive
 	url = git@github.com:tpope/vim-fugitive.git
-[submodule "vim/bundle/ctrlp.vim"]
-	path = vim/bundle/ctrlp.vim
-	url = git@github.com:kien/ctrlp.vim.git
 [submodule "vim/bundle/vim-airline"]
 	path = vim/bundle/vim-airline
 	url = git@github.com:bling/vim-airline.git
@@ -13,9 +10,6 @@
 [submodule "vim/bundle/delimitMate"]
 	path = vim/bundle/delimitMate
 	url = git@github.com:Raimondi/delimitMate
-[submodule "vim/bundle/indentpython.vim"]
-	path = vim/bundle/indentpython.vim
-	url = git@github.com:vim-scripts/indentpython.vim.git
 [submodule "vim/bundle/vim-snippets"]
 	path = vim/bundle/vim-snippets
 	url = git@github.com:honza/vim-snippets.git
@@ -46,3 +40,9 @@
 [submodule "vim/bundle/vim-abolish"]
 	path = vim/bundle/vim-abolish
 	url = git@github.com:tpope/vim-abolish.git
+[submodule "vim/bundle/fzf-preview.vim"]
+	path = vim/bundle/fzf-preview.vim
+	url = git@github.com:yuki-yano/fzf-preview.vim
+[submodule "vim/bundle/fzf"]
+	path = vim/bundle/fzf
+	url = git@github.com:junegunn/fzf.git

@@ -25,7 +25,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-open-pr globalias docker docker-compose zsh-autosuggestions)
+plugins=(git fzf git-open-pr globalias docker docker-compose zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -104,5 +104,14 @@ load-nvmrc
 # zsh-autosuggestions
 bindkey '^I'   complete-word      # tab         | autosuggest
 bindkey '^[[Z' autosuggest-accept # shift + tab | complete
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND="rg --line-number --files --hidden --follow --color=always --no-heading"
+export FZF_DEFAULT_OPTS='--height 40%'
+
+# autocomplete
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
 
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"

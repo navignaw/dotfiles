@@ -9,10 +9,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
-Plug 'kien/ctrlp.vim'
 Plug 'dense-analysis/ale'
 Plug 'Raimondi/delimitMate'
-Plug 'vim-scripts/indentpython.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
 Plug 'christoomey/vim-tmux-navigator'
@@ -21,6 +19,8 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'github/copilot.vim'
 Plug 'yasuhiroki/github-actions-yaml.vim'
 Plug 'hankei6km/ale-linter-actionlint.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'antoinemadec/coc-fzf'
 
 call plug#end()
 
@@ -70,11 +70,14 @@ set lazyredraw
 set laststatus=2
 set nobackup
 set nowritebackup
-set nowb
 set noswapfile
 set so=8
 set backspace=indent,eol,start
 set pastetoggle=<F2>
+
+" Language specific settings
+au FileType python set colorcolumn=89          " ruff line limit at 88 chars
+au FileType python set tabstop=4 shiftwidth=4  " indent 4 spaces
 
 " Colors
 syntax on
@@ -113,6 +116,11 @@ nore , ;
 " Edit and source vimrc!
 nmap ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
 nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
+
+" Copy paste from system clipboard (Mac-specific)
+vnoremap \y y:call system("pbcopy", getreg("\""))<CR>
+nnoremap \p :call setreg("\"", system("pbpaste"))<CR>p
+noremap YY "+y<CR>
 
 " Plugin Settings
 
@@ -159,13 +167,6 @@ hi clear SignColumn
 " In vim-airline, only display "hunks" if the diff is non-zero
 let g:airline#extensions#hunks#non_zero_only = 1
 nmap <silent> vd :GitGutterDiffOrig<cr>
-
-" Ripgreg with Ctrlp
-if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-endif
 
 " ----- coc and UltiSnips -----
 
@@ -231,3 +232,28 @@ nnoremap <silent> ∆ :TmuxNavigateDown<cr>
 nnoremap <silent> ˚ :TmuxNavigateUp<cr>
 nnoremap <silent> ¬ :TmuxNavigateRight<cr>
 nnoremap <silent> … :TmuxNavigatePrevious<cr>
+
+" ----- antoinemadec/coc-fzf settings -----
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []
+
+" ----- fzf-preview settings -----
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+
+nnoremap <silent> <C-p>        :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> <Leader>gs   :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> <Leader>ga   :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap          <Leader>rg   :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          <Leader>rg   "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> <Leader>b    :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
