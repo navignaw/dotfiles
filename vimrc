@@ -22,6 +22,17 @@ Plug 'hankei6km/ale-linter-actionlint.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'antoinemadec/coc-fzf'
 
+Plug 'MunifTanjim/nui.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-neo-tree/neo-tree.nvim'
+
+Plug 'vim-test/vim-test'
+Plug 'mfussenegger/nvim-dap'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'mxsdev/nvim-dap-vscode-js'
+
 call plug#end()
 
 " Display
@@ -102,6 +113,10 @@ nnoremap <Leader>d <Plug>(coc-definition)
 nnoremap <Leader>t <Plug>(coc-type-definition)
 nnoremap <Leader>i <Plug>(coc-implementation)
 nnoremap <Leader>r <Plug>(coc-references)
+" Clear all buffers except current
+nnoremap <Leader>bc :%bd\|e#<CR>
+" Apply AutoFix to problem on the current line.
+nmap <Leader>qf  <Plug>(coc-fix-current)
 
 inoremap jk <Esc>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
@@ -121,6 +136,27 @@ nmap ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 vnoremap \y y:call system("pbcopy", getreg("\""))<CR>
 nnoremap \p :call setreg("\"", system("pbpaste"))<CR>p
 noremap YY "+y<CR>
+
+" Custom functions
+
+function! OpenCurrentDirectory()
+  let l:current_dir = expand('%:p:h')
+  silent execute 'edit ' . l:current_dir
+endfunction
+nnoremap <leader>cd :call OpenCurrentDirectory()<CR>
+
+function! GetGitRoot()
+  return systemlist('git -C ' . shellescape(expand('%:p:h')) . ' rev-parse --show-toplevel')[0]
+endfunction
+
+function! GitLinkFile()
+  let l:current_file = expand('%:p')
+  let l:current_line = line('.')
+  let l:git_root = GetGitRoot()
+  let l:git_file = substitute(l:current_file, l:git_root . '/', '', '')
+  call system('git link ' . l:git_file . '#' . l:current_line)
+endfunction
+nnoremap <leader>gl :call GitLinkFile()<CR>
 
 " Plugin Settings
 
@@ -238,9 +274,53 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:coc_fzf_preview = ''
 let g:coc_fzf_opts = []
 
+" ----- vim-test settings -----
+nmap <silent> <Leader>t :TestNearest<CR>
+nmap <silent> <Leader>tf :TestFile<CR>
+nmap <silent> <Leader>ta :TestSuite<CR>
+nmap <silent> <Leader>tl :TestLast<CR>
+nmap <silent> <Leader>tg :TestVisit<CR>
+
+let test#strategy = "neovim"
+let g:test#neovim#start_normal = 1
+let g:test#javascript#runner = 'jest'
+let g:test#javascript#jest#file_pattern = '\v(__tests__/)?.*\.test(\.web|native)?\.(j|t)sx?$'
+
+function! JestTestPath()
+  let l:current_dir = expand('%:p:h')
+  let l:jest_config = ''
+  while l:current_dir !=# '/'
+    let l:jest_config_ts = l:current_dir . '/jest.config.ts'
+    let l:jest_config_js = l:current_dir . '/jest.config.js'
+    if filereadable(l:jest_config_ts)
+      let l:jest_config = l:jest_config_ts
+      break
+    elseif filereadable(l:jest_config_js)
+      let l:jest_config = l:jest_config_js
+      break
+    endif
+    let l:current_dir = fnamemodify(l:current_dir, ':h')
+  endwhile
+
+  return l:current_dir
+  endfunction
+
+let test#project_root = function('JestTestPath')
+
 " ----- fzf-preview settings -----
+let g:fzf_preview_command = 'bat --color=always --plain {-1}'
+let g:fzf_preview_lines_command = 'bat --color=always --plain --number'
+let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never --hidden'
+
 nmap <Leader>f [fzf-p]
 xmap <Leader>f [fzf-p]
+
+" ----- neo-tree settings -----
+nnoremap \ :Neotree toggle current reveal_force_cwd<cr>
+nnoremap <Bar> :Neotree reveal<cr>
+nnoremap gd :Neotree float reveal_file=<cfile> reveal_force_cwd<cr>
+nnoremap <leader>b :Neotree toggle show buffers right<cr>
+"nnoremap <leader>gs :Neotree float git_status<cr>
 
 nnoremap <silent> <C-p>        :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
 nnoremap <silent> <Leader>gs   :<C-u>CocCommand fzf-preview.GitStatus<CR>
