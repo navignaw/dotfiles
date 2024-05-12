@@ -102,13 +102,23 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 # zsh-autosuggestions
-bindkey '^I'   complete-word      # tab         | autosuggest
+#bindkey '^I'   complete-word      # tab         | autosuggest
 bindkey '^[[Z' autosuggest-accept # shift + tab | complete
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND="rg --line-number --files --hidden --follow --color=always --no-heading"
+export FZF_DEFAULT_COMMAND="fd --hidden --follow --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--height 40%'
+export FZF_PREVIEW_PREVIEW_BAT_THEME='OneHalfDark'
+
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude .git . "$1"
+}
+
+_fzf_compgen_dir() {
+  fd --type=d --hidden --follow --exclude .git . "$1"
+}
 
 # autocomplete
 fpath+=~/.zfunc

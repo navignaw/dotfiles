@@ -5,12 +5,26 @@
 [alias]
   unstage = reset HEAD
   giveup = reset HEAD^ --hard
+  link = "!f() { ~/.dotfiles/git_scripts/git-link.rb \"$1\"; }; f"
+  diff-image = "!f() { cd -- \"${GIT_PREFIX:-.}\"; GIT_DIFF_IMAGE_ENABLED=1 git diff \"$@\"; }; f"
+  main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
 
 [push]
   default = simple
 
 [core]
   editor = vim
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  side-by-side = true
+
+[merge]
+  conflictstyle = diff3
 
 [pager]
   branch = false
@@ -23,3 +37,9 @@
 
 [remote "origin"]
   prune = true
+
+[diff]
+  colorMoved = default
+
+[diff "image"]
+  command = ~/dev/github/git-diff-image/git_diff_image
