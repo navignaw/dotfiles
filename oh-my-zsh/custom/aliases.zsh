@@ -11,9 +11,14 @@ alias cpwd='pwd | xclip -selection clipboard'
 # Source dotfiles
 alias srczsh='source ~/.zshrc'
 alias srctmux='tmux source-file ~/.tmux.conf'
+alias svenv='source .venv/bin/activate'
+
+# Zoxide and eza
+alias cd="z"
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 
 # Git aliases
-alias gs='git status'
+alias gs='git switch'
 alias gst='git status'
 alias ga='git add'
 alias gall='git add .'
@@ -29,9 +34,11 @@ alias gama='git commit -a --amend'
 alias gco='git checkout'
 alias gl='git pull --prune'
 alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gp='git push origin'
+alias gp='git push origin HEAD'
 alias grb='git rebase -i'
+alias grbo='git rebase-onto'
 alias dev='git checkout develop'
+alias up='revup upload'
 
 # Python default
 alias python=python3
@@ -46,3 +53,5 @@ alias dex='docker exec -it'
 alias dlog='docker logs'
 alias dcb='docker-compose build'
 alias dcu='docker-compose up'
+
+alias k=kubectl

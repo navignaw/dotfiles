@@ -89,6 +89,10 @@ set pastetoggle=<F2>
 " Language specific settings
 au FileType python set colorcolumn=89          " ruff line limit at 88 chars
 au FileType python set tabstop=4 shiftwidth=4  " indent 4 spaces
+" Fix godawful python indentation
+let g:pyindent_open_paren = '&sw * 2'
+let g:pyindent_nested_paren = '&sw * 2'
+let g:python_indent.closed_paren_align_last_line = v:false
 
 " Colors
 syntax on

@@ -8,6 +8,10 @@ if [[ ! -d "$BASEDIR/backups" ]]; then
   mkdir "$BASEDIR/backups"
 fi
 
+echo -e "Installing zsh and oh-my-zsh"
+sudo apt install zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 for dotfile in vimrc zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
@@ -18,12 +22,13 @@ for dotfile in vimrc zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
   cp "$BASEDIR/$dotfile" "$HOME/.$dotfile"
 done
 
+# Move files from oh-my-zsh/custom to the appropriate location
+for file in "$BASEDIR"/oh-my-zsh/custom/*; do
+  cp "$BASEDIR/oh-my-zsh/custom/$file" "$HOME/.oh-my-zsh/custom/$file"
+done
+
 echo -e "Moving coc-settings.json to ~/.config/nvim"
 cp "$BASEDIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
-
-echo -e "Installing zsh and oh-my-zsh"
-sudo apt install zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Additional symlinks
 sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"
@@ -54,9 +59,9 @@ echo -e "Installing ripgrep"
 curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
 sudo dpkg -i ripgrep_11.0.2_amd64.deb
 
-echo -e "Installing nvm"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+echo -e "Installing n"
+npm install -g n
 
 echo -e "Installing vim-plug"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
