@@ -12,7 +12,11 @@ echo -e "Installing zsh and oh-my-zsh"
 sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-for dotfile in vimrc zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
+echo -e "Installing stow for managing symlinks"
+sudo apt install stow  # or apt-get install stow
+
+# TODO: switch to using stow for these!
+for dotfile in zshrc p10k.zsh ripgreprc gitconfig tmux.conf; do
   if [[ -f "$HOME/.$dotfile" && ! -L "$HOME/.$dotfile" ]]; then
     echo -e "Moving $dotfile to $BASEDIR/backups"
     mv "$HOME/.$dotfile" "$BASEDIR/backups/$dotfile"
@@ -27,8 +31,8 @@ for file in "$BASEDIR"/oh-my-zsh/custom/*; do
   cp "$BASEDIR/oh-my-zsh/custom/$file" "$HOME/.oh-my-zsh/custom/$file"
 done
 
-echo -e "Moving coc-settings.json to ~/.config/nvim"
-cp "$BASEDIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
+# Symlink the rest of the dotfiles
+stow --dotfiles -v --target "$HOME/.config" .config
 
 # Additional symlinks
 sudo ln -s "$BASEDIR/open.sh" "/usr/bin/open"

@@ -1,0 +1,69 @@
+-- Mappings
+
+function map(mode, shortcut, command)
+  vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
+end
+
+function nmap(shortcut, command)
+  map('n', shortcut, command)
+end
+
+function imap(shortcut, command)
+  map('i', shortcut, command)
+end
+
+function vmap(shortcut, command)
+  map('v', shortcut, command)
+end
+
+function cmap(shortcut, command)
+  map('c', shortcut, command)
+end
+
+function tmap(shortcut, command)
+  map('t', shortcut, command)
+end
+
+-- Space as leader key: <Space-w>, <Space-q> to save and quit
+vim.g.mapleader = ' '
+
+-- <Space-d> to jump to definition
+-- <Space-r> to see references
+-- jk to exit insert mode
+-- <Ctrl-l> removes syntax highlighting
+-- <Ctrl-j>, <Ctrl-k> to switch buffers
+
+nmap('<Leader>w', ':w<CR>')
+nmap('<Leader>q', ':bd<CR>')
+nmap('<Leader>qa', ':q<CR>')
+nmap('<Leader>d', '<Plug>(coc-definition)')
+nmap('<Leader>ty', '<Plug>(coc-type-definition)')
+nmap('<Leader>i', '<Plug>(coc-implementation)')
+nmap('<Leader>r', '<Plug>(coc-references)')
+
+-- Clear all buffers except current
+nmap('<Leader>bc', ':%bd|e#<CR>')
+
+-- Apply AutoFix to problem on the current line.
+nmap('<Leader>qf', '<Plug>(coc-fix-current)')
+
+imap('jk', '<Esc>')
+nmap('<C-l>', ':nohl<CR><C-l>')
+nmap('<C-j>', ':bprev<CR>')
+nmap('<C-k>', ':bnext<CR>')
+nmap('<cr>', 'i<cr>jk')
+nmap('j', 'gj')
+nmap('k', 'gk')
+nmap(';', ':')
+nmap(',', ';')
+
+-- Folds: toggle or open all folds recursively
+nmap('<Leader>z', 'za')
+nmap('<Leader>zo', 'zO')
+
+-- Edit and source vimrc!
+nmap('<Leader>ev', ':e ~/.config/nvim/init.lua<CR>')
+nmap('<Leader>sv', ':so ~/.config/nvim/init.lua<CR>')
+
+-- Copy paste from system clipboard
+vmap('YY', '"+y<CR>')

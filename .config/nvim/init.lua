@@ -1,0 +1,5 @@
+require('mappings')
+require('plugins')
+require('settings')
+require('themes')
+require('legacy')
