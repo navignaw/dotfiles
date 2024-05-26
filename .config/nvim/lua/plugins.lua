@@ -116,14 +116,84 @@ require("lazy").setup({
   -- Syntax highlighting
   -- {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
-  -- LSP
-  -- { 'neovim/nvim-lspconfig' },
-  'dense-analysis/ale',
-  'neoclide/coc.nvim', --{'branch': 'release'},
+  -- LSP and installers
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = { 'williamboman/mason.nvim' },
+      }
+    },
+    config = function ()
+      local lspconfig = require('lspconfig')
+      local lsps = { 'pyright', 'ruff' }
+      require('mason').setup()
+      require('mason-lspconfig').setup({
+        ensure_installed = lsps
+      })
+      local map = function(type, key, value)
+        vim.api.nvim_buf_set_keymap(0, type, key, value, {noremap = true, silent = true})
+      end
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+          map('n', '<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+          map('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<CR>')
+          map('n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>')
+          map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+          map('n', '<leader>td', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+          map('n', '<leader>i', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+        end,
+      })
+      local on_attach = function(client)
+        -- Highlight references when hovering over word
+        if client.server_capabilities.documentHighlightProvider then
+          vim.api.nvim_create_augroup('lsp_document_highlight', {
+            clear = false
+          })
+          vim.api.nvim_clear_autocmds({
+            buffer = bufnr,
+            group = 'lsp_document_highlight',
+          })
+          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+            group = 'lsp_document_highlight',
+            buffer = bufnr,
+            callback = vim.lsp.buf.document_highlight,
+          })
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+            group = 'lsp_document_highlight',
+            buffer = bufnr,
+            callback = vim.lsp.buf.clear_references,
+          })
+        end
+
+        -- Format on save
+        vim.api.nvim_create_augroup('AutoFormatting', {})
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          pattern = '*.py',
+          group = 'AutoFormatting',
+          callback = function()
+            vim.lsp.buf.format({ async = false })
+          end,
+        })
+      end
+
+      for _, lsp in pairs(lsps) do
+        lspconfig[lsp].setup({
+          on_attach = on_attach,
+        })
+      end
+    end,
+  },
+
+  -- 'dense-analysis/ale',
+  -- 'neoclide/coc.nvim', --{'branch': 'release'},
   'leafgarland/typescript-vim',
   'peitalin/vim-jsx-typescript',
   'yasuhiroki/github-actions-yaml.vim',
-  'hankei6km/ale-linter-actionlint.vim',
+  -- 'hankei6km/ale-linter-actionlint.vim',
   'junegunn/fzf', --{ 'do': { -> fzf#install() } },
   'antoinemadec/coc-fzf',
 

@@ -36,16 +36,12 @@ vim.g.mapleader = ' '
 nmap('<Leader>w', ':w<CR>')
 nmap('<Leader>q', ':bd<CR>')
 nmap('<Leader>qa', ':q<CR>')
-nmap('<Leader>d', '<Plug>(coc-definition)')
-nmap('<Leader>ty', '<Plug>(coc-type-definition)')
-nmap('<Leader>i', '<Plug>(coc-implementation)')
-nmap('<Leader>r', '<Plug>(coc-references)')
 
 -- Clear all buffers except current
 nmap('<Leader>bc', ':%bd|e#<CR>')
 
 -- Apply AutoFix to problem on the current line.
-nmap('<Leader>qf', '<Plug>(coc-fix-current)')
+--nmap('<Leader>qf', '<Plug>(coc-fix-current)')
 
 imap('jk', '<Esc>')
 nmap('<C-l>', ':nohl<CR><C-l>')

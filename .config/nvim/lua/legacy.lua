@@ -27,10 +27,10 @@ endfunction
 nnoremap <leader>gl :call GitLinkFile()<CR>
 
 " Custom function that runs CocCommand and grep from git root
-function! RgFromGitRoot()
-  let l:git_root = GetGitRoot()
-  call CocActionAsync('runCommand', 'fzf-preview.ProjectGrep', '"' . input('Search: ') . '"', l:git_root, '--add-fzf-arg="--delimiter=/"', '--add-fzf-arg="--with-nth -5.."')
-endfunction
+"function! RgFromGitRoot()
+  "let l:git_root = GetGitRoot()
+  "call CocActionAsync('runCommand', 'fzf-preview.ProjectGrep', '"' . input('Search: ') . '"', l:git_root, '--add-fzf-arg="--delimiter=/"', '--add-fzf-arg="--with-nth -5.."')
+"endfunction
 
 " Plugin Settings
 
@@ -39,6 +39,7 @@ endfunction
 nnoremap <leader>s *:%S/<C-r><C-w>//g<left><left>
 
 " " ----- dense-analysis/ale settings -----
+
 " TODO: Replace these remaining linters with coc plugins
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '▲'
@@ -80,24 +81,6 @@ endfunction
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call ShowDocumentation()<CR>
-
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor
-au CursorHold * silent call CocActionAsync('highlight')
-au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
 
 " ----- christoomey/vim-tmux-navigator settings -----
 let g:tmux_navigator_no_mappings = 1
