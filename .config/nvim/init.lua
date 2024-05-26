@@ -1,5 +1,5 @@
-require('mappings')
 require('plugins')
 require('settings')
-require('themes')
+require('mappings')
+require('commands')
 require('legacy')

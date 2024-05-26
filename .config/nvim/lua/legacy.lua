@@ -3,69 +3,6 @@
 
 vim.cmd([[
 
-" Plugins (vim-bundle)
-set nocp
-filetype off
-call plug#begin('~/.dotfiles/vim/bundle')
-
-" Plugins
-Plug 'joshdick/onedark.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-fugitive'
-Plug 'rhysd/conflict-marker.vim'
-Plug 'bling/vim-airline'
-Plug 'dense-analysis/ale'
-Plug 'Raimondi/delimitMate'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'honza/vim-snippets'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'github/copilot.vim'
-Plug 'yasuhiroki/github-actions-yaml.vim'
-Plug 'hankei6km/ale-linter-actionlint.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'antoinemadec/coc-fzf'
-Plug 'google/vim-maktaba'
-Plug 'google/vim-codefmt'
-
-Plug 'MunifTanjim/nui.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-neo-tree/neo-tree.nvim'
-
-Plug 'vim-test/vim-test'
-Plug 'mfussenegger/nvim-dap'
-Plug 'nvim-neotest/nvim-nio'
-Plug 'rcarriga/nvim-dap-ui'
-Plug 'mxsdev/nvim-dap-vscode-js'
-
-call plug#end()
-
-" Language specific settings
-au FileType python set colorcolumn=89          " ruff line limit at 88 chars
-au FileType python set tabstop=4 shiftwidth=4  " indent 4 spaces
-" Fix godawful python indentation
-let g:pyindent_open_paren = '&sw * 2'
-let g:pyindent_nested_paren = '&sw * 2'
-let g:python_indent = {}
-let g:python_indent.open_paren = 'shiftwidth() * 2'
-let g:python_indent.nested_paren = 'shiftwidth() * 2'
-let g:python_indent.continue = 'shiftwidth() * 2'
-let g:python_indent.closed_paren_align_last_line = v:false
-let g:python_indent.disable_parentheses_indenting = v:false
-let g:python_indent.searchpair_timeout = 150
-
-" Colors
-syntax on
-let g:onedark_color_overrides = {
-\   "black": {"gui": "#1c1c1c", "cterm": "234", "cterm16": "0" }
-\}
-
-colorscheme onedark
-highlight ColorColumn ctermbg=8
-
 " Custom functions
 
 nnoremap <leader>up :!revup upload<CR>
@@ -101,25 +38,6 @@ endfunction
 "(S)ubstitute all with vim-abolish
 nnoremap <leader>s *:%S/<C-r><C-w>//g<left><left>
 
-" ----- bling/vim-airline settings -----
-" Fancy arrow symbols, requires a patched font
-" To install a patched font, run over to
-"     https://github.com/abertsch/Menlo-for-Powerline
-" download all the .ttf files, double-click on them and click "Install"
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffers_label = ''
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'short_path_improved'
-
-" Show PASTE if in paste mode
-let g:airline_detect_paste=1
-
-let g:airline_section_y=''
-let g:airline_section_z= ''
-"let g:airline_section_z= '%#__accent_bold#%{g:airline_symbols.linenr}%l%#__restore__#%#__accent_bold#/%L%{g:airline_symbols.maxlinenr}%#__restore__#%#__accent_bold#%{g:airline_symbols.colnr}%v%#__restore__#'
-let g:airline_skip_empty_sections = 1
-
-
 " " ----- dense-analysis/ale settings -----
 " TODO: Replace these remaining linters with coc plugins
 let g:ale_sign_error = '✘'
@@ -133,18 +51,6 @@ let g:ale_fixers = {}
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
-
-let g:airline#extensions#ale#enabled = 1
-
-" Show errors in two lines.
-set cmdheight=2
-
-" ----- airblade/vim-gitgutter settings -----
-" Required after having changed the colorscheme
-hi clear SignColumn
-" In vim-airline, only display "hunks" if the diff is non-zero
-let g:airline#extensions#hunks#non_zero_only = 1
-nmap <silent> vd :GitGutterDiffOrig<cr>
 
 " ----- coc and UltiSnips -----
 
@@ -192,16 +98,6 @@ au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-
-" ----- Raimondi/delimitMate settings -----
-let delimitMate_expand_cr = 1
-augroup mydelimitMate
-  au!
-  au FileType markdown let b:delimitMate_nesting_quotes = ["`"]
-  au FileType tex let b:delimitMate_quotes = ""
-  au FileType tex let b:delimitMate_matchpairs = "(:),[:],{:},`:'"
-  au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
-augroup END
 
 " ----- christoomey/vim-tmux-navigator settings -----
 let g:tmux_navigator_no_mappings = 1
