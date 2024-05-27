@@ -24,9 +24,6 @@ local function tmap(shortcut, command)
   map('t', shortcut, command)
 end
 
--- Space as leader key: <Space-w>, <Space-q> to save and quit
-vim.g.mapleader = ' '
-
 -- <Space-d> to jump to definition
 -- <Space-r> to see references
 -- jk to exit insert mode
@@ -41,6 +38,7 @@ nmap('<Leader>qa', ':q<CR>')
 nmap('<Leader>bc', ':%bd|e#<CR>')
 
 imap('jk', '<Esc>')
+imap('kj', '<Esc>')
 nmap('<C-l>', ':nohl<CR><C-l>')
 nmap('<C-j>', ':bprev<CR>')
 nmap('<C-k>', ':bnext<CR>')

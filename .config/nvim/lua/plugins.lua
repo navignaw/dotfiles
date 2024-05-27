@@ -1,5 +1,8 @@
 -- Plugins, managed by lazy.nvim
 
+-- Space as leader key: <Space-w>, <Space-q> to save and quit
+vim.g.mapleader = ' '
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -164,8 +167,8 @@ require("lazy").setup({
     },
     keys = {
       { '<C-p>',      '<cmd>Telescope git_files<CR>',            desc = 'Find files in git repo' },
-      { '<leader>rg', '<cmd>Telescope live_grep<CR>',            mode = { 'n' },                         desc = 'Live grep' },
-      { '<leader>rg', '<cmd>Telescope grep_string<CR>',          mode = { 'x' },                         desc = 'Grep highlighted string' },
+      { '<C-f>',      '<cmd>Telescope live_grep<CR>',            mode = { 'n' },                         desc = 'Live grep' },
+      { '<C-f>',      '<cmd>Telescope grep_string<CR>',          mode = { 'x' },                         desc = 'Grep highlighted string' },
       { '<leader>b',  '<cmd>Telescope buffers<CR>',              desc = 'Open buffers' },
       { '<leader>h',  '<cmd>Telescope help_tags<CR>',            desc = 'Help tags' },
       { '<leader>qf', '<cmd>Telescope quickfix<CR>',             desc = 'Quickfix list' },
@@ -218,7 +221,6 @@ require("lazy").setup({
         },
       })
       telescope.load_extension("ui-select")
-      --require('telescope.themes').get_cursor({})
     end
   },
 
