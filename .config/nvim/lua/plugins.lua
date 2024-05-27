@@ -120,21 +120,9 @@ require("lazy").setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
-      --local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      --parser_config.github_action = {
-      --install_info = {
-      --url = "https://github.com/rewinfrey/tree-sitter-github-action",
-      --files = { "src/parser.c" },
-      --location = "tree-sitter-github-action/yaml",
-      --revision = "68ae5463fff054b7fc8037d36fce3a9e5ae2dfdc",
-      --},
-      --filetype = "yaml.gha",
-      --maintainers = { "@rewinfrey" },
-      --}
       require('nvim-treesitter.configs').setup {
         ensure_installed = {
           'python', 'lua', 'typescript', 'javascript', 'json', 'yaml', 'html', 'css', 'bash', 'dockerfile', 'go', 'ruby', 'vim', 'markdown',
-          --github_action
         },
         highlight = {
           enable = true,
@@ -219,15 +207,16 @@ require("lazy").setup({
     end
   },
 
-  -- Linters and formatters
+  -- Linters
   {
     'nvimtools/none-ls.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      local null_ls = require("null-ls")
+      local null_ls = require('null-ls')
       null_ls.setup({
+        root_dir = require('null-ls.utils').root_pattern('.git'),
         sources = {
           null_ls.builtins.code_actions.gitsigns,
           null_ls.builtins.diagnostics.actionlint,
@@ -236,24 +225,35 @@ require("lazy").setup({
           null_ls.builtins.diagnostics.hadolint,
           null_ls.builtins.diagnostics.markdownlint,
           null_ls.builtins.diagnostics.yamllint,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.shfmt,
           null_ls.builtins.hover.printenv,
         },
-        on_attach = function(client, bufnr)
-          -- Format on save (formatters)
-          local augroup = vim.api.nvim_create_augroup("NullLsAutoFormatting", {})
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              group = augroup,
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ async = false })
-              end,
-            })
-          end
-        end
+      })
+    end,
+  },
+
+  -- Formatters
+  -- Even though none-ls supports formatters, this plugin does a better job of picking up prettier config
+  {
+    'stevearc/conform.nvim',
+    event = 'BufWritePre',
+    config = function()
+      require('conform').setup({
+        formatters_by_ft = {
+          bazel = { 'buildifier' },
+          lua = { 'stylua' },
+          javascript = { { 'prettierd', 'prettier' } },
+          javascriptreact = { { 'prettierd', 'prettier' } },
+          json = { { 'prettierd', 'prettier' } },
+          markdown = { { 'prettierd', 'prettier' } },
+          sh = { 'shfmt' },
+          typescript = { { 'prettierd', 'prettier' } },
+          typescriptreact = { { 'prettierd', 'prettier' } },
+          yaml = { { 'prettierd', 'prettier' } },
+        },
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
       })
     end,
   },
@@ -289,23 +289,26 @@ require("lazy").setup({
           map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
         end,
       })
-      local on_attach = function(client)
+      local on_attach = function(client, bufnr)
         -- Highlight references when hovering over word
         if client.server_capabilities.documentHighlightProvider then
-          vim.api.nvim_create_augroup('lsp_document_highlight', {
+          local augroup = vim.api.nvim_create_augroup('lsp_document_highlight', {
             clear = false
           })
           vim.api.nvim_clear_autocmds({
             buffer = bufnr,
-            group = 'lsp_document_highlight',
+            group = augroup,
           })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            group = 'lsp_document_highlight',
+            group = augroup,
             buffer = bufnr,
-            callback = vim.lsp.buf.document_highlight,
+            callback = function()
+              vim.diagnostic.open_float() -- Show diagnostics in float window
+              vim.lsp.buf.document_highlight()
+            end,
           })
           vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            group = 'lsp_document_highlight',
+            group = augroup,
             buffer = bufnr,
             callback = vim.lsp.buf.clear_references,
           })

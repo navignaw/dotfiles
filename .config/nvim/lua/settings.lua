@@ -7,7 +7,6 @@ vim.opt.colorcolumn = '80'
 vim.opt.updatetime = 300
 vim.opt.foldmethod = 'indent'
 vim.opt.foldlevelstart = 99
-vim.opt.cmdheight = 2
 
 -- Highlight trailing whitespace, tabs, and funny characters
 vim.opt.list = true
