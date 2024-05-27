@@ -35,52 +35,53 @@ require("lazy").setup({
       'kyazdani42/nvim-web-devicons',
     },
     config = function()
-      require('gitsigns').setup {}
+      require('gitsigns').setup {
+        on_attach = function(client, bufnr)
+          local gitsigns = require('gitsigns')
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then
+              vim.cmd.normal({ ']c', bang = true })
+            else
+              gitsigns.nav_hunk('next')
+            end
+          end)
+
+          map('n', '[c', function()
+            if vim.wo.diff then
+              vim.cmd.normal({ '[c', bang = true })
+            else
+              gitsigns.nav_hunk('prev')
+            end
+          end)
+
+          -- Actions
+          map('n', '<leader>hs', gitsigns.stage_hunk)
+          map('n', '<leader>hr', gitsigns.reset_hunk)
+          map('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('n', '<leader>hS', gitsigns.stage_buffer)
+          map('n', '<leader>hu', gitsigns.undo_stage_hunk)
+          map('n', '<leader>hR', gitsigns.reset_buffer)
+          map('n', '<leader>hp', gitsigns.preview_hunk)
+          map('n', '<leader>hb', function() gitsigns.blame_line { full = true } end)
+          map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+          map('n', '<leader>hd', gitsigns.diffthis)
+          map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+          map('n', '<leader>td', gitsigns.toggle_deleted)
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
+      }
     end,
-    on_attach = function(client)
-      local gitsigns = require('gitsigns')
-
-      local function map(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-      end
-
-      -- Navigation
-      map('n', ']c', function()
-        if vim.wo.diff then
-          vim.cmd.normal({']c', bang = true})
-        else
-          gitsigns.nav_hunk('next')
-        end
-      end)
-
-      map('n', '[c', function()
-        if vim.wo.diff then
-          vim.cmd.normal({'[c', bang = true})
-        else
-          gitsigns.nav_hunk('prev')
-        end
-      end)
-
-      -- Actions
-      --map('n', '<leader>hs', gitsigns.stage_hunk)
-      --map('n', '<leader>hr', gitsigns.reset_hunk)
-      --map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-      --map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-      --map('n', '<leader>hS', gitsigns.stage_buffer)
-      --map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-      --map('n', '<leader>hR', gitsigns.reset_buffer)
-      --map('n', '<leader>hp', gitsigns.preview_hunk)
-      --map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
-      --map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-      --map('n', '<leader>hd', gitsigns.diffthis)
-      --map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-      --map('n', '<leader>td', gitsigns.toggle_deleted)
-
-      -- Text object
-      --map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-    end
   },
   'tpope/vim-fugitive',
   'rhysd/conflict-marker.vim',
@@ -100,21 +101,120 @@ require("lazy").setup({
         },
         sections = {
           lualine_a = { 'mode', 'vim.o.paste and "PASTE" or ""' },
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename'},
-          lualine_x = {'filetype'},
-          lualine_y = {'searchcount'},
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'filetype' },
+          lualine_y = { 'searchcount' },
           lualine_z = {}
         }
       }
     end
   },
 
-  -- Navigation
-  'christoomey/vim-tmux-navigator',
-
   -- Syntax highlighting
-  -- {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+  { 'yasuhiroki/github-actions-yaml.vim' },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      --local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      --parser_config.github_action = {
+      --install_info = {
+      --url = "https://github.com/rewinfrey/tree-sitter-github-action",
+      --files = { "src/parser.c" },
+      --location = "tree-sitter-github-action/yaml",
+      --revision = "68ae5463fff054b7fc8037d36fce3a9e5ae2dfdc",
+      --},
+      --filetype = "yaml.gha",
+      --maintainers = { "@rewinfrey" },
+      --}
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = {
+          'python', 'lua', 'typescript', 'javascript', 'json', 'yaml', 'html', 'css', 'bash', 'dockerfile', 'go', 'ruby', 'vim', 'markdown',
+          --github_action
+        },
+        highlight = {
+          enable = true,
+          disable = { 'yaml.gha' }
+        },
+        indent = {
+          enable = true,
+        },
+        incremental_selection = {
+          enable = true,
+        },
+        refactor = {
+          highlight_definitions = { enable = true },
+          highlight_current_scope = { enable = true },
+        },
+        textobjects = {
+          select = {
+            enable = true,
+            keymaps = {
+              ['af'] = '@function.outer',
+              ['if'] = '@function.inner',
+              ['ac'] = '@class.outer',
+              ['ic'] = '@class.inner',
+            },
+          },
+        },
+      }
+    end
+  },
+
+  -- Navigation
+  { 'christoomey/vim-tmux-navigator' },
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-lua/plenary.nvim',
+    },
+    keys = {
+      { '<C-p>',      '<cmd>Telescope git_files<CR>',            desc = 'Find files in git repo' },
+      { '<leader>rg', '<cmd>Telescope live_grep<CR>',            mode = { 'n' },                         desc = 'Live grep' },
+      { '<leader>rg', '<cmd>Telescope grep_string<CR>',          mode = { 'x' },                         desc = 'Grep highlighted string' },
+      { '<leader>b',  '<cmd>Telescope buffers<CR>',              desc = 'Open buffers' },
+      { '<leader>h',  '<cmd>Telescope help_tags<CR>',            desc = 'Help tags' },
+      { '<leader>qf', '<cmd>Telescope quickfix<CR>',             desc = 'Quickfix list' },
+      { '<leader>d',  '<cmd>Telescope lsp_definitions<CR>',      desc = 'Jump to definitions (LSP)' },
+      { '<leader>r',  '<cmd>Telescope lsp_references<CR>',       desc = 'Jump to references (LSP)' },
+      { '<leader>t',  '<cmd>Telescope lsp_type_definitions<CR>', desc = 'Jump to type definitions (LSP)' },
+      { '<leader>gs', '<cmd>Telescope git_status<CR>',           desc = 'Git status' },
+    },
+    config = function()
+      local actions = require("telescope.actions")
+      require('telescope').setup {
+        pickers = {
+          buffers = {
+            mappings = {
+              i = {
+                ["<C-d>"] = actions.delete_buffer + actions.move_to_top,
+              }
+            }
+          },
+          git_status = {
+            mappings = {
+              i = {
+                ["<C-a>"] = actions.git_staging_toggle,
+              }
+            }
+          },
+        },
+        defaults = {
+          mappings = {
+            i = {
+              ["<C-j>"] = require('telescope.actions').move_selection_next,
+              ["<C-k>"] = require('telescope.actions').move_selection_previous,
+              ["<C-s>"] = require('telescope.actions').select_horizontal,
+            },
+          },
+        },
+      }
+    end
+  },
 
   -- Linters and formatters
   {
@@ -128,6 +228,7 @@ require("lazy").setup({
         sources = {
           null_ls.builtins.code_actions.gitsigns,
           null_ls.builtins.diagnostics.actionlint,
+          null_ls.builtins.diagnostics.buildifier,
           null_ls.builtins.diagnostics.hadolint,
           null_ls.builtins.diagnostics.markdownlint,
           null_ls.builtins.diagnostics.yamllint,
@@ -147,7 +248,7 @@ require("lazy").setup({
                 vim.lsp.buf.format({ async = false })
               end,
             })
-        end
+          end
         end
       })
     end,
@@ -162,9 +263,9 @@ require("lazy").setup({
         dependencies = { 'williamboman/mason.nvim' },
       }
     },
-    config = function ()
+    config = function()
       local lspconfig = require('lspconfig')
-      local lsps = { 'pyright', 'ruff', 'tsserver' }
+      local lsps = { 'lua_ls', 'pyright', 'ruff', 'tsserver' }
       require('mason').setup({
         PATH = 'prepend'
       })
@@ -172,18 +273,13 @@ require("lazy").setup({
         ensure_installed = lsps
       })
       local map = function(type, key, value)
-        vim.api.nvim_buf_set_keymap(0, type, key, value, {noremap = true, silent = true})
+        vim.api.nvim_buf_set_keymap(0, type, key, value, { noremap = true, silent = true })
       end
       vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
+        callback = function()
           map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-          map('n', '<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-          map('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<CR>')
-          map('n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>')
+          map('n', '<leader>af', '<cmd>lua vim.lsp.buf.code_action()<CR>')
           map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-          map('n', '<leader>td', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-          map('n', '<leader>i', '<cmd>lua vim.lsp.buf.implementation()<CR>')
         end,
       })
       local on_attach = function(client)
@@ -211,7 +307,7 @@ require("lazy").setup({
         -- Format on save (LSPs)
         local augroup = vim.api.nvim_create_augroup('AutoFormatting', {})
         vim.api.nvim_create_autocmd('BufWritePre', {
-          pattern = '*.py',
+          pattern = { '*.lua', '*.py' },
           group = augroup,
           callback = function()
             vim.lsp.buf.format({ async = false })
@@ -227,12 +323,6 @@ require("lazy").setup({
     end,
   },
 
-  'leafgarland/typescript-vim',
-  'peitalin/vim-jsx-typescript',
-  'yasuhiroki/github-actions-yaml.vim',
-  'junegunn/fzf', --{ 'do': { -> fzf#install() } },
-  'antoinemadec/coc-fzf',
-
   -- Auto-completion
   'honza/vim-snippets',
   'github/copilot.vim',
@@ -244,15 +334,6 @@ require("lazy").setup({
       map_cr = true,
     }
     -- this is equalent to setup({}) function
-  },
-
-  -- Formatting
-  { 'google/vim-codefmt',
-    enabled = working,
-    dependencies = {
-      'google/vim-maktaba',
-      {'google/vim-glaive', config = function() vim.cmd('call glaive#Install()') end}
-    },
   },
 
   -- File explorer

@@ -40,9 +40,6 @@ nmap('<Leader>qa', ':q<CR>')
 -- Clear all buffers except current
 nmap('<Leader>bc', ':%bd|e#<CR>')
 
--- Apply AutoFix to problem on the current line.
---nmap('<Leader>qf', '<Plug>(coc-fix-current)')
-
 imap('jk', '<Esc>')
 nmap('<C-l>', ':nohl<CR><C-l>')
 nmap('<C-j>', ':bprev<CR>')
@@ -59,7 +56,7 @@ nmap('<Leader>zo', 'zO')
 
 -- Edit and source vimrc!
 nmap('<Leader>ev', ':e ~/.config/nvim/init.lua<CR>')
-nmap('<Leader>sv', ':so %<CR>')
+nmap('<Leader>sv', ':so ~/.config/nvim/init.lua<CR>')
 
 -- Copy paste from system clipboard
 vmap('YY', '"+y<CR>')
