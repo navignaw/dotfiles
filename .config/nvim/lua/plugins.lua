@@ -161,7 +161,6 @@ require("lazy").setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'nvim-lua/plenary.nvim',
     },
     keys = {
       { '<C-p>',      '<cmd>Telescope git_files<CR>',            desc = 'Find files in git repo' },
@@ -176,20 +175,20 @@ require("lazy").setup({
       { '<leader>gs', '<cmd>Telescope git_status<CR>',           desc = 'Git status' },
     },
     config = function()
-      local actions = require("telescope.actions")
+      local actions = require('telescope.actions')
       require('telescope').setup {
         pickers = {
           buffers = {
             mappings = {
               i = {
-                ["<C-d>"] = actions.delete_buffer + actions.move_to_top,
+                ['<C-d>'] = actions.delete_buffer + actions.move_to_top,
               }
             }
           },
           git_status = {
             mappings = {
               i = {
-                ["<C-a>"] = actions.git_staging_toggle,
+                ['<C-a>'] = actions.git_staging_toggle,
               }
             }
           },
@@ -197,13 +196,29 @@ require("lazy").setup({
         defaults = {
           mappings = {
             i = {
-              ["<C-j>"] = require('telescope.actions').move_selection_next,
-              ["<C-k>"] = require('telescope.actions').move_selection_previous,
-              ["<C-s>"] = require('telescope.actions').select_horizontal,
+              ['<C-j>'] = actions.move_selection_next,
+              ['<C-k>'] = actions.move_selection_previous,
+              ['<C-s>'] = actions.select_horizontal,
             },
           },
         },
       }
+    end
+  },
+  {
+    -- Setup telescope UI for select actions like "code_actions"
+    'nvim-telescope/telescope-ui-select.nvim',
+    config = function()
+      local telescope = require('telescope')
+      telescope.setup({
+        extensions = {
+          ['ui-select'] = {
+            require('telescope.themes').get_dropdown {}
+          }
+        },
+      })
+      telescope.load_extension("ui-select")
+      --require('telescope.themes').get_cursor({})
     end
   },
 
@@ -272,7 +287,7 @@ require("lazy").setup({
     config = function()
       require("neodev").setup({}) -- set up neovim config for Lua LSP
       local lspconfig = require('lspconfig')
-      local lsps = { 'lua_ls', 'pyright', 'ruff', 'tsserver' }
+      local lsps = { 'eslint', 'lua_ls', 'pyright', 'ruff', 'tsserver' }
       require('mason').setup({
         PATH = 'prepend'
       })
@@ -285,7 +300,7 @@ require("lazy").setup({
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function()
           map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-          map('n', '<leader>af', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+          map('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
           map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
         end,
       })
