@@ -11,7 +11,7 @@ vim.opt.cmdheight = 2
 
 -- Highlight trailing whitespace, tabs, and funny characters
 vim.opt.list = true
-vim.opt.listchars = { nbsp = '¬',tab = '»·', trail = '·' }
+vim.opt.listchars = { nbsp = '¬', tab = '»·', trail = '·' }
 
 -- Remove error bells
 vim.opt.errorbells = false
@@ -44,11 +44,9 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.swapfile = false
 vim.opt.so = 8
-vim.opt.pastetoggle = '<F2>'
+--vim.opt.pastetoggle = '<F2>'
 
 -- Language-specific settings
---vim.g.pyindent_open_paren = '&sw * 2'
---vim.g.pyindent_nested_paren = '&sw * 2'
 vim.g.python_indent = {
   open_paren = 'shiftwidth() * 1',
   nested_paren = 'shiftwidth() * 1',

@@ -92,8 +92,11 @@ require("lazy").setup({
   -- Statusline
   {
     'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'arkav/lualine-lsp-progress', -- Show LSP progress in statusbar
+    },
     config = function()
-      dependencies = { 'nvim-tree/nvim-web-devicons' }
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -104,7 +107,7 @@ require("lazy").setup({
           lualine_b = { 'branch', 'diff', 'diagnostics' },
           lualine_c = { 'filename' },
           lualine_x = { 'filetype' },
-          lualine_y = { 'searchcount' },
+          lualine_y = { 'searchcount', 'lsp_progress' },
           lualine_z = {}
         }
       }
@@ -238,7 +241,7 @@ require("lazy").setup({
         },
         on_attach = function(client, bufnr)
           -- Format on save (formatters)
-          local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+          local augroup = vim.api.nvim_create_augroup("NullLsAutoFormatting", {})
           if client.supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
@@ -305,7 +308,7 @@ require("lazy").setup({
         end
 
         -- Format on save (LSPs)
-        local augroup = vim.api.nvim_create_augroup('AutoFormatting', {})
+        local augroup = vim.api.nvim_create_augroup('LspAutoFormatting', {})
         vim.api.nvim_create_autocmd('BufWritePre', {
           pattern = { '*.lua', '*.py' },
           group = augroup,
