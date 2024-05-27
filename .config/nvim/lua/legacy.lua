@@ -38,21 +38,6 @@ nnoremap <leader>gl :call GitLinkFile()<CR>
 "(S)ubstitute all with vim-abolish
 nnoremap <leader>s *:%S/<C-r><C-w>//g<left><left>
 
-" " ----- dense-analysis/ale settings -----
-
-" TODO: Replace these remaining linters with coc plugins
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = '▲'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_linters = {
-\   'yaml': ['actionlint', 'yamllint']
-\}
-let g:ale_fixers = {}
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
-
 " ----- coc and UltiSnips -----
 
 " Tab and shift-tab navigate the completion list

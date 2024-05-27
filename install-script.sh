@@ -41,15 +41,6 @@ if [ $? -eq 0 ]; then
   echo -e "dotfiles successfully installed!"
 fi
 
-# Install and update submodules
-unset GIT_DIR
-git submodule init
-git submodule update
-
-if [ $? -eq 0 ]; then
-  echo -e "submodules successfully installed!"
-fi
-
 echo -e "Installing spotify-now"
 sudo cp $BASEDIR/lib/spotify-now/spotify-now /usr/bin
 
@@ -66,6 +57,5 @@ sudo dpkg -i ripgrep_11.0.2_amd64.deb
 echo -e "Installing n"
 npm install -g n
 
-echo -e "Installing vim-plug"
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo -e "Installing hadolint"
+brew install hadolint

@@ -64,22 +64,22 @@ require("lazy").setup({
       end)
 
       -- Actions
-      map('n', '<leader>hs', gitsigns.stage_hunk)
-      map('n', '<leader>hr', gitsigns.reset_hunk)
-      map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-      map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-      map('n', '<leader>hS', gitsigns.stage_buffer)
-      map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-      map('n', '<leader>hR', gitsigns.reset_buffer)
-      map('n', '<leader>hp', gitsigns.preview_hunk)
-      map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
-      map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-      map('n', '<leader>hd', gitsigns.diffthis)
-      map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-      map('n', '<leader>td', gitsigns.toggle_deleted)
+      --map('n', '<leader>hs', gitsigns.stage_hunk)
+      --map('n', '<leader>hr', gitsigns.reset_hunk)
+      --map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+      --map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+      --map('n', '<leader>hS', gitsigns.stage_buffer)
+      --map('n', '<leader>hu', gitsigns.undo_stage_hunk)
+      --map('n', '<leader>hR', gitsigns.reset_buffer)
+      --map('n', '<leader>hp', gitsigns.preview_hunk)
+      --map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
+      --map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+      --map('n', '<leader>hd', gitsigns.diffthis)
+      --map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+      --map('n', '<leader>td', gitsigns.toggle_deleted)
 
       -- Text object
-      map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+      --map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
     end
   },
   'tpope/vim-fugitive',
@@ -116,6 +116,43 @@ require("lazy").setup({
   -- Syntax highlighting
   -- {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
+  -- Linters and formatters
+  {
+    'nvimtools/none-ls.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.code_actions.gitsigns,
+          null_ls.builtins.diagnostics.actionlint,
+          null_ls.builtins.diagnostics.hadolint,
+          null_ls.builtins.diagnostics.markdownlint,
+          null_ls.builtins.diagnostics.yamllint,
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.shfmt,
+          null_ls.builtins.hover.printenv,
+        },
+        on_attach = function(client, bufnr)
+          -- Format on save (formatters)
+          local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+          if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ async = false })
+              end,
+            })
+        end
+        end
+      })
+    end,
+  },
+
   -- LSP and installers
   {
     'neovim/nvim-lspconfig',
@@ -127,8 +164,10 @@ require("lazy").setup({
     },
     config = function ()
       local lspconfig = require('lspconfig')
-      local lsps = { 'pyright', 'ruff' }
-      require('mason').setup()
+      local lsps = { 'pyright', 'ruff', 'tsserver' }
+      require('mason').setup({
+        PATH = 'prepend'
+      })
       require('mason-lspconfig').setup({
         ensure_installed = lsps
       })
@@ -169,11 +208,11 @@ require("lazy").setup({
           })
         end
 
-        -- Format on save
-        vim.api.nvim_create_augroup('AutoFormatting', {})
+        -- Format on save (LSPs)
+        local augroup = vim.api.nvim_create_augroup('AutoFormatting', {})
         vim.api.nvim_create_autocmd('BufWritePre', {
           pattern = '*.py',
-          group = 'AutoFormatting',
+          group = augroup,
           callback = function()
             vim.lsp.buf.format({ async = false })
           end,
@@ -188,12 +227,9 @@ require("lazy").setup({
     end,
   },
 
-  -- 'dense-analysis/ale',
-  -- 'neoclide/coc.nvim', --{'branch': 'release'},
   'leafgarland/typescript-vim',
   'peitalin/vim-jsx-typescript',
   'yasuhiroki/github-actions-yaml.vim',
-  -- 'hankei6km/ale-linter-actionlint.vim',
   'junegunn/fzf', --{ 'do': { -> fzf#install() } },
   'antoinemadec/coc-fzf',
 
