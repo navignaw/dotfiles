@@ -32,27 +32,6 @@ nnoremap <leader>gl :call GitLinkFile()<CR>
 "(S)ubstitute all with vim-abolish
 nnoremap <leader>s *:%S/<C-r><C-w>//g<left><left>
 
-" ----- coc and UltiSnips -----
-
-" Tab and shift-tab navigate the completion list
-let g:copilot_no_tab_map = v:true
-inoremap <silent><expr> <TAB>
-      \ exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") :
-      \ "\<Tab>"
-
-" Shift tab accepts Copilot by default, otherwise goes to the previous item
-inoremap <expr><S-TAB>
-      \ exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") :
-      \ "\<C-h>"
-
-"inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-"inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-"nmap <silent> [g <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
 " ----- christoomey/vim-tmux-navigator settings -----
 let g:tmux_navigator_no_mappings = 1
 
