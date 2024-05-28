@@ -1,6 +1,6 @@
 -- LSP and installers
 
-local lsps = { 'eslint', 'lua_ls', 'pyright', 'ruff', 'tsserver' }
+local lsps = { 'eslint', 'lua_ls', 'pyright', 'ruff', 'tailwindcss', 'tsserver' }
 
 return {
   { 'folke/neodev.nvim' },
@@ -47,7 +47,10 @@ return {
             group = augroup,
             buffer = bufnr,
             callback = function()
-              vim.diagnostic.open_float() -- Show diagnostics in float window
+              -- Show diagnostics in float window if in normal mode
+              if vim.api.nvim_get_mode().mode == 'n' then
+                vim.diagnostic.open_float()
+              end
               vim.lsp.buf.document_highlight()
             end,
           })
