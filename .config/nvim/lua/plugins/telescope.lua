@@ -10,10 +10,7 @@ local function get_git_root()
 end
 
 local function find_files_frecency()
-  require('telescope').extensions.frecency.frecency {
-    prompt_title = 'Find files',
-    workspace = 'CWD',
-  }
+  require('telescope').extensions.smart_open.smart_open()
 end
 
 local function live_grep_from_project_git_root()
@@ -113,27 +110,25 @@ return {
     end
   },
 
-  -- "frecency" algorithm to rank more common search results
+  -- intelligent ranking based on "frecency" algorithm
   {
-    'nvim-telescope/telescope-frecency.nvim',
+    'danielfalk/smart-open.nvim',
+    branch = "0.2.x",
     config = function()
       local telescope = require('telescope')
       telescope.setup({
         extensions = {
-          frecency = {
-            matcher = 'fuzzy',
-            db_safe_mode = false,
-            workspaces = {
-              ['conf'] = vim.fn.stdpath('config'),
-              ['app'] = 'frontend/ordering-app/',
-              ['cb'] = 'services/customer-backend/',
-              ['ns'] = 'services/nest-service/',
-              ['zms'] = 'services/zipline_manager_service/',
-            },
+          smart_open = {
+            ignore_patterns = { '*/node_modules/*', '*/.git/*', '*/tmp/*' },
+            match_algorithm = 'fzf',
           },
         },
       })
-      telescope.load_extension('frecency')
+      telescope.load_extension('smart_open')
     end,
+    dependencies = {
+      'kkharji/sqlite.lua',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    },
   },
 }
