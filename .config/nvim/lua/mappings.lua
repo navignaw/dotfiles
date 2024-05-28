@@ -52,8 +52,7 @@ nmap(',', ';')
 nmap('<Leader>z', 'za')
 nmap('<Leader>zo', 'zO')
 
--- Edit and source vimrc!
-nmap('<Leader>ev', ':e ~/.config/nvim/init.lua<CR>')
+-- Source neovim config
 nmap('<Leader>sv', ':so ~/.config/nvim/init.lua<CR>')
 
 -- Copy paste from system clipboard
