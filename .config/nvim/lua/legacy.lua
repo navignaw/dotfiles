@@ -55,16 +55,16 @@ nnoremap <silent> ¬ :TmuxNavigateRight<cr>
 nnoremap <silent> … :TmuxNavigatePrevious<cr>
 
 " ----- vim-test settings -----
-nmap <silent> <Leader>t :TestNearest<CR>
-nmap <silent> <Leader>tf :TestFile<CR>
-nmap <silent> <Leader>ta :TestSuite<CR>
-nmap <silent> <Leader>tl :TestLast<CR>
-nmap <silent> <Leader>tg :TestVisit<CR>
+"nmap <silent> <Leader>t :TestNearest<CR>
+"nmap <silent> <Leader>tf :TestFile<CR>
+"nmap <silent> <Leader>ta :TestSuite<CR>
+"nmap <silent> <Leader>tl :TestLast<CR>
+"nmap <silent> <Leader>tg :TestVisit<CR>
 
-let test#strategy = "neovim"
-let g:test#neovim#start_normal = 1
-let g:test#javascript#runner = 'jest'
-let g:test#javascript#jest#file_pattern = '\v(__tests__/)?.*\.test(\.web|native)?\.(j|t)sx?$'
+"let test#strategy = "neovim"
+"let g:test#neovim#start_normal = 1
+"let g:test#javascript#runner = 'jest'
+"let g:test#javascript#jest#file_pattern = '\v(__tests__/)?.*\.test(\.web|native)?\.(j|t)sx?$'
 
 function! JestTestPath()
   let l:current_dir = expand('%:p:h')
