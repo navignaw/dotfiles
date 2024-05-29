@@ -51,6 +51,7 @@ return {
       { '<leader>h',  '<cmd>Telescope help_tags<CR>',            desc = 'Help tags' },
       { '<leader>qf', '<cmd>Telescope quickfix<CR>',             desc = 'Quickfix list' },
       { '<leader>d',  '<cmd>Telescope lsp_definitions<CR>',      desc = 'Jump to definitions (LSP)' },
+      { '<leader>i',  '<cmd>Telescope lsp_implementations<CR>',  desc = 'Jump to implementations (LSP)' },
       { '<leader>r',  '<cmd>Telescope lsp_references<CR>',       desc = 'Jump to references (LSP)' },
       { '<leader>t',  '<cmd>Telescope lsp_type_definitions<CR>', desc = 'Jump to type definitions (LSP)' },
       { '<leader>gs', '<cmd>Telescope git_status<CR>',           desc = 'Git status' },

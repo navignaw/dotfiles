@@ -1,48 +1,6 @@
-[submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
-	url = git@github.com:tpope/vim-fugitive.git
-[submodule "vim/bundle/vim-airline"]
-	path = vim/bundle/vim-airline
-	url = git@github.com:bling/vim-airline.git
-[submodule "vim/bundle/vim-gitgutter"]
-	path = vim/bundle/vim-gitgutter
-	url = git@github.com:airblade/vim-gitgutter
-[submodule "vim/bundle/delimitMate"]
-	path = vim/bundle/delimitMate
-	url = git@github.com:Raimondi/delimitMate
-[submodule "vim/bundle/vim-snippets"]
-	path = vim/bundle/vim-snippets
-	url = git@github.com:honza/vim-snippets.git
-[submodule "vim/bundle/ale"]
-	path = vim/bundle/ale
-	url = git@github.com:dense-analysis/ale.git
-[submodule "vim/bundle/vim-tmux-navigator"]
-	path = vim/bundle/vim-tmux-navigator
-	url = git@github.com:christoomey/vim-tmux-navigator.git
-[submodule "vim/bundle/typescript-vim"]
-	path = vim/bundle/typescript-vim
-	url = git@github.com:leafgarland/typescript-vim.git
-[submodule "vim/bundle/vim-jsx-typescript"]
-	path = vim/bundle/vim-jsx-typescript
-	url = git@github.com:peitalin/vim-jsx-typescript.git
 [submodule "lib/spotify-now"]
 	path = lib/spotify-now
 	url = https://github.com/getmicah/spotify-now.git
 [submodule "lib/gcalcli"]
 	path = lib/gcalcli
 	url = https://github.com/insanum/gcalcli.git
-[submodule "vim/bundle/coc.nvim"]
-	path = vim/bundle/coc.nvim
-	url = git@github.com:neoclide/coc.nvim.git
-[submodule "vim/bundle/onedark.vim"]
-	path = vim/bundle/onedark.vim
-	url = git@github.com:joshdick/onedark.vim.git
-[submodule "vim/bundle/vim-abolish"]
-	path = vim/bundle/vim-abolish
-	url = git@github.com:tpope/vim-abolish.git
-[submodule "vim/bundle/fzf-preview.vim"]
-	path = vim/bundle/fzf-preview.vim
-	url = git@github.com:yuki-yano/fzf-preview.vim
-[submodule "vim/bundle/fzf"]
-	path = vim/bundle/fzf
-	url = git@github.com:junegunn/fzf.git

@@ -20,6 +20,10 @@ return {
           null_ls.builtins.diagnostics.yamllint,
           null_ls.builtins.hover.printenv,
         },
+        should_attach = function(bufnr)
+          -- Don't run on files matching yarn.loc
+          return not vim.api.nvim_buf_get_name(bufnr):match('yarn.lock')
+        end,
       })
     end,
   },
