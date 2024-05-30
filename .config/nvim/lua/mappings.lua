@@ -57,3 +57,6 @@ nmap('<Leader>sv', ':so ~/.config/nvim/init.lua<CR>')
 
 -- Copy paste from system clipboard
 vmap('YY', '"+y<CR>')
+
+-- Shortcuts for commands
+cmap('<C-a>', '<Home>')

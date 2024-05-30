@@ -1,6 +1,6 @@
 -- LSP and installers
 
-local lsps = { 'eslint', 'lua_ls', 'pyright', 'ruff', 'tailwindcss', 'tsserver' }
+local lsps = { 'dockerls', 'eslint', 'lua_ls', 'pyright', 'ruff', 'tailwindcss', 'tsserver' }
 
 return {
   { 'folke/neodev.nvim' },

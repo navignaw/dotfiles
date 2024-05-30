@@ -46,6 +46,7 @@ return {
       { '<C-p>',      find_files_frecency,                       desc = 'Find files by frecency' },
       { '<C-f>',      live_grep_from_project_git_root,           mode = { 'n' },                         desc = 'Live grep' },
       { '<C-f>',      '<cmd>Telescope grep_string<CR>',          mode = { 'x' },                         desc = 'Grep highlighted string' },
+      { '<C-f>',      '<cmd>Telescope command_history<CR>',      mode = { 'c' },                         desc = 'Search previous commands' },
       { '<leader>b',  '<cmd>Telescope buffers<CR>',              desc = 'Open buffers' },
       { '<leader>ev', edit_neovim,                               desc = 'Edit neovim' },
       { '<leader>h',  '<cmd>Telescope help_tags<CR>',            desc = 'Help tags' },
