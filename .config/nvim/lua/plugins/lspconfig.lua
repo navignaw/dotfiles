@@ -47,10 +47,6 @@ return {
             group = augroup,
             buffer = bufnr,
             callback = function()
-              -- Show diagnostics in float window if in normal mode
-              if vim.api.nvim_get_mode().mode == 'n' then
-                vim.diagnostic.open_float()
-              end
               vim.lsp.buf.document_highlight()
             end,
           })

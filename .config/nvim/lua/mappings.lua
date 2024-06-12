@@ -38,7 +38,6 @@ nmap('<Leader>qa', ':q<CR>')
 nmap('<Leader>bc', ':%bd|e#<CR>')
 
 imap('jk', '<Esc>')
-imap('kj', '<Esc>')
 nmap('<C-l>', ':nohl<CR><C-l>')
 nmap('<C-j>', ':bprev<CR>')
 nmap('<C-k>', ':bnext<CR>')

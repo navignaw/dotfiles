@@ -131,14 +131,36 @@ return {
             dap = { justMyCode = false },
           }),
         },
+        status = { enabled = true, virtual_text = true },
+        output = { enabled = true, open_on_run = true },
       })
     end,
     keys = {
-      { "<leader>tn", function() require("neotest").run.run() end,                   desc = "Test nearest" },
-      { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Test file" },
+      {
+        "<leader>tn",
+        function()
+          local neotest = require("neotest")
+          neotest.run.run()
+          neotest.output.open({ open_win = function() vim.cmd("vsplit") end })
+        end,
+        desc = "Test nearest"
+      },
+      {
+        "<leader>tf",
+        function()
+          local neotest = require("neotest")
+          neotest.run.run(vim.fn.expand("%"))
+          neotest.output.open({ open_win = function() vim.cmd("vsplit") end })
+        end,
+        desc = "Test file"
+      },
+      { "<leader>ts", function() require("neotest").summary.toggle() end,                 desc = "Open test summary" },
+      { "<leader>to", function() require("neotest").output_panel.toggle() end,            desc = "Toggle Output Panel" },
+      { "<silent>[t", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Jump to next failed test" },
+      { "<silent>]t", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Jump to next failed test" },
+
       -- TODO: Debug DAP for jest and python
       --{ "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Test nearest (debug)" },
     },
-
   }
 }
