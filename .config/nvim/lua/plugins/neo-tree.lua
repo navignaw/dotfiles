@@ -8,6 +8,10 @@ return {
       'nvim-tree/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
     },
+    keys = {
+      { '\\',    '<cmd>Neotree toggle current reveal_force_cwd<CR>', desc = 'Toggle file tree' },
+      { '<Bar>', '<cmd>Neotree reveal<CR>',                          desc = 'Reveal file tree' },
+    },
     config = function()
       require('neo-tree').setup {
         filesystem = {

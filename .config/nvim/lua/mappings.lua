@@ -1,7 +1,7 @@
 -- Mappings
 
 local function map(mode, shortcut, command)
-  vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
+  vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })
 end
 
 local function nmap(shortcut, command)
@@ -59,3 +59,34 @@ vmap('YY', '"+y<CR>')
 
 -- Shortcuts for commands
 cmap('<C-a>', '<Home>')
+
+-- Custom functions
+nmap('<Leader>up', ':!revp upload<CR>')
+
+-- Open directory of the current file
+local function OpenCurrentDirectory()
+  local current_dir = vim.fn.expand('%:p:h')
+  vim.cmd('silent edit ' .. current_dir)
+end
+nmap('<Leader>cd', OpenCurrentDirectory)
+
+local function GetGitRoot()
+  local current_dir = vim.fn.expand('%:p:h')
+  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(current_dir) .. ' rev-parse --show-toplevel')[1]
+  return git_root
+end
+
+-- Space + gl to open a Github link to the current line in the current file
+local function GitLinkFile()
+  local current_file = vim.fn.expand('%:p')
+  local current_line = vim.fn.line('.')
+  local git_root = GetGitRoot()
+  if git_root == '' then
+    print('Not a git repository')
+    return
+  end
+  local git_file = current_file:gsub(git_root .. '/', '')
+  vim.fn.system('git link ' .. git_file .. '#' .. current_line)
+end
+
+nmap('<Leader>gl', GitLinkFile)
