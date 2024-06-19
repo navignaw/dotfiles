@@ -41,6 +41,7 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
+      'tpope/vim-fugitive',
     },
     keys = {
       { '<C-p>',      find_files_frecency,                       desc = 'Find files by frecency' },
@@ -59,6 +60,13 @@ return {
     },
     config = function()
       local actions = require('telescope.actions')
+      local commit = function()
+        vim.cmd('Git commit')
+      end
+      local commit_amend = function()
+        vim.cmd('Git commit --amend')
+      end
+
       require('telescope').setup {
         pickers = {
           buffers = {
@@ -71,7 +79,8 @@ return {
           git_status = {
             mappings = {
               i = {
-                ['<C-a>'] = actions.git_staging_toggle,
+                ['<C-a>'] = commit_amend,
+                ['<C-c>'] = commit,
               }
             }
           },

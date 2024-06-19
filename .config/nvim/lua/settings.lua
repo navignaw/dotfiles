@@ -38,12 +38,10 @@ vim.opt.shiftwidth = 2
 
 -- Misc
 vim.opt.autoread = true
-vim.opt.lazyredraw = true
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.swapfile = false
 vim.opt.so = 8
---vim.opt.pastetoggle = '<F2>'
 
 -- Language-specific settings
 vim.g.python_indent = {
