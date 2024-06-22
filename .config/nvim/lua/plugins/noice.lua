@@ -26,6 +26,11 @@ return {
             lsp_doc_border = false,       -- add a border to hover docs and signature help
           },
         },
+        -- Default options for redirecting output
+        redirect = {
+          view = "popup",
+          filter = { event = "msg_show" },
+        },
         routes = {
           {
             -- Suppress a bunch of noisy messages
@@ -86,7 +91,18 @@ return {
             },
             opts = { skip = true },
           },
-        },
+          {
+            -- Redirect messages from Devcontainer into a popup
+            view = "popup",
+            filter = {
+              event = "notify",
+              any = {
+                { find = "Successfully executed command.*on container" },
+                { find = "Executing command.*on container" },
+              },
+            },
+          },
+        }
       })
     end
   }

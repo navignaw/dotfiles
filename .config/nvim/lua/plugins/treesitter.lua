@@ -1,8 +1,24 @@
 -- Syntax highlighting
 
 local configs = {
-  'python', 'lua', 'typescript', 'javascript', 'json', 'yaml', 'html', 'css', 'bash', 'dockerfile', 'go', 'ruby', 'vim',
-  'markdown', 'markdown_inline', 'regex',
+  'bash',
+  'css',
+  'dockerfile',
+  'go',
+  'html',
+  'javascript',
+  'json',
+  'jsonc',
+  'lua',
+  'markdown',
+  'markdown_inline',
+  'python',
+  'regex',
+  'ruby',
+  'typescript',
+  'vim',
+  'vimdoc',
+  'yaml',
 }
 
 return {

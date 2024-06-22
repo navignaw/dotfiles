@@ -152,7 +152,9 @@ return {
           neotest.run.run(vim.fn.expand("%"))
           neotest.output.open({ open_win = function() vim.cmd("vsplit") end })
         end,
-        desc = "Test file"
+        desc = "Test file",
+        -- NOTE: pytest is currently set up in nvim-dev-container to run inside docker.
+        ft = { "javascript", "typescript", "typescriptreact" },
       },
       { "<leader>ts", function() require("neotest").summary.toggle() end,                 desc = "Open test summary" },
       { "<leader>to", function() require("neotest").output_panel.toggle() end,            desc = "Toggle Output Panel" },
