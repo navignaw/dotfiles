@@ -2,7 +2,7 @@
 
 local configs = {
   'python', 'lua', 'typescript', 'javascript', 'json', 'yaml', 'html', 'css', 'bash', 'dockerfile', 'go', 'ruby', 'vim',
-  'markdown', 'markdown_inline',
+  'markdown', 'markdown_inline', 'regex',
 }
 
 return {

@@ -31,7 +31,6 @@ return {
             -- Suppress a bunch of noisy messages
             filter = {
               event = "msg_show",
-              kind = "",
               any = {
                 { find = "no lines in buffer" },
                 -- Edit
@@ -80,10 +79,13 @@ return {
                 -- General messages
                 { find = "Already at newest change" }, -- Redoing
                 { find = "Already at oldest change" },
+
+                -- Search tount
+                { kind = "search_count" }
               },
             },
+            opts = { skip = true },
           },
-          opts = { skip = true },
         },
       })
     end
