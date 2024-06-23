@@ -1,3 +1,5 @@
 backups/
 
 __pycache__/
+
+.config/nvim/lua/custom/

@@ -1,0 +1,2 @@
+-- Add custom settings here that shouldn't be saved upstream in dotfiles.
+-- Note: may require running `git update-index --assume-unchanged .config/nvim/lua/custom/init.lua`
