@@ -69,5 +69,28 @@ return {
         list_opener = 'copen',
       })
     end,
-  }
+  },
+
+  -- PR Reviews in Neovim!
+  {
+    "ldelossa/gh.nvim",
+    dependencies = {
+      {
+        "ldelossa/litee.nvim",
+        config = function()
+          require("litee.lib").setup()
+        end,
+      },
+    },
+    keys = {
+      { '<leader>ghpr', function() require("litee.gh.pr").open_pull() end,                                desc = "Open pull request" },
+      { '<leader>ghc',  function() require("litee.gh.pr.diff_view").create_comment({ range = true }) end, mode = { 'n', 'v', },        desc = "Create comment thread" },
+      { '<leader>ghn',  function() require("litee.gh.pr.diff_view").next_thread() end,                    desc = "Next comment thread" },
+    },
+    config = function()
+      require("litee.gh").setup({
+        icon_set = "nerd",
+      })
+    end,
+  },
 }
