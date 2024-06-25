@@ -17,13 +17,17 @@ eval "$(dircolors ~/.dotfiles/dircolors)"
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit this file.
+[[ ! -f ~/.config/p10k/p10k.zsh ]] || source ~/.config/p10k/p10k.zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git fzf fzf-tab git-open-pr globalias docker docker-compose zsh-autosuggestions zsh-syntax-highlighting zoxide)
+plugins=(bazel git fzf fzf-tab git-open-pr globalias docker docker-compose kubectl web-search yarn zsh-autosuggestions zsh-syntax-highlighting zoxide)
+
+ZSH_WEB_SEARCH_ENGINES=(
+  so "https://stackoverflow.com/search?q="
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -34,11 +38,11 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
     tmux new-session -A -s main
 fi
 
-# Auto-add SSH agent
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_rsa
-fi
+# # Auto-add SSH agent
+# if [ -z "$SSH_AUTH_SOCK" ] ; then
+#     eval "$(ssh-agent -s)"
+#     ssh-add ~/.ssh/id_rsa
+# fi
 
 # zsh-autosuggestions
 #bindkey '^I'   complete-word      # tab         | autosuggest
@@ -71,10 +75,10 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ez -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 
 # autocomplete
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
 
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+#zprof

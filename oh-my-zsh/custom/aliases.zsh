@@ -10,7 +10,7 @@ alias cpwd='pwd | xclip -selection clipboard'
 
 # Source dotfiles
 alias srczsh='source ~/.zshrc'
-alias srctmux='tmux source-file ~/.tmux.conf'
+alias srctmux='tmux source-file ~/.config/tmux/tmux.conf'
 alias svenv='source .venv/bin/activate'
 
 # Zoxide and eza
