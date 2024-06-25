@@ -1,26 +1,26 @@
 -- Statusline
 return {
   {
-    'nvim-lualine/lualine.nvim',
+    "nvim-lualine/lualine.nvim",
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
-      'arkav/lualine-lsp-progress', -- Show LSP progress in statusbar
+      "nvim-tree/nvim-web-devicons",
+      "arkav/lualine-lsp-progress", -- Show LSP progress in statusbar
     },
     config = function()
-      require('lualine').setup {
+      require("lualine").setup({
         options = {
           icons_enabled = true,
-          theme = 'onedark',
+          theme = "onedark",
         },
         sections = {
-          lualine_a = { 'mode', 'vim.o.paste and "PASTE" or ""' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { 'filename' },
-          lualine_x = { 'searchcount', 'lsp_progress' },
-          lualine_y = { 'filetype' },
-          lualine_z = {}
-        }
-      }
-    end
+          lualine_a = { "mode", 'vim.o.paste and "PASTE" or ""' },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { "filename" },
+          lualine_x = { "searchcount", "lsp_progress" },
+          lualine_y = { "filetype" },
+          lualine_z = {},
+        },
+      })
+    end,
   },
 }

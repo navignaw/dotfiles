@@ -5,5 +5,5 @@ return {
     cmd = "Screenkey",
     version = "*",
     config = true,
-  }
+  },
 }

@@ -2,14 +2,14 @@
 
 return {
   {
-    'nvimtools/none-ls.nvim',
+    "nvimtools/none-ls.nvim",
     dependencies = {
-      'nvim-lua/plenary.nvim',
+      "nvim-lua/plenary.nvim",
     },
     config = function()
-      local null_ls = require('null-ls')
+      local null_ls = require("null-ls")
       null_ls.setup({
-        root_dir = require('null-ls.utils').root_pattern('.git'),
+        root_dir = require("null-ls.utils").root_pattern(".git"),
         sources = {
           null_ls.builtins.code_actions.gitsigns,
           null_ls.builtins.diagnostics.actionlint,
@@ -22,7 +22,7 @@ return {
         },
         should_attach = function(bufnr)
           -- Don't run on files matching yarn.loc
-          return not vim.api.nvim_buf_get_name(bufnr):match('yarn.lock')
+          return not vim.api.nvim_buf_get_name(bufnr):match("yarn.lock")
         end,
       })
     end,

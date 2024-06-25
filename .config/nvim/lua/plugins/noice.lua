@@ -2,8 +2,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {
-    },
+    opts = {},
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
@@ -19,11 +18,11 @@ return {
             ["cmp.entry.get_documentation"] = true,
           },
           presets = {
-            bottom_search = true,         -- use a classic bottom cmdline for search
-            command_palette = true,       -- position the cmdline and popupmenu together
+            bottom_search = true, -- use a classic bottom cmdline for search
+            command_palette = true, -- position the cmdline and popupmenu together
             long_message_to_split = true, -- long messages will be sent to a split
-            inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-            lsp_doc_border = false,       -- add a border to hover docs and signature help
+            inc_rename = false, -- enables an input dialog for inc-rename.nvim
+            lsp_doc_border = false, -- add a border to hover docs and signature help
           },
         },
         -- Default options for redirecting output
@@ -50,14 +49,14 @@ return {
                 { find = "%d+ lines yanked" },
                 { find = "^Hunk %d+ of %d+$" },
                 { find = "%d+L, %d+B$" },
-                { find = "^[/?].*" },                  -- Searching up/down
+                { find = "^[/?].*" }, -- Searching up/down
                 { find = "E486: Pattern not found:" }, -- Searcingh not found
-                { find = "%d+ changes?;" },            -- Undoing/redoing
-                { find = "%d+ fewer lines" },          -- Deleting multiple lines
-                { find = "%d+ more lines" },           -- Undoing deletion of multiple lines
-                { find = "%d+ lines " },               -- Performing some other verb on multiple lines
+                { find = "%d+ changes?;" }, -- Undoing/redoing
+                { find = "%d+ fewer lines" }, -- Deleting multiple lines
+                { find = "%d+ more lines" }, -- Undoing deletion of multiple lines
+                { find = "%d+ lines " }, -- Performing some other verb on multiple lines
                 { find = "Already at newest change" }, -- Redoing
-                { find = '"[^"]+" %d+L, %d+B' },       -- Saving
+                { find = '"[^"]+" %d+L, %d+B' }, -- Saving
 
                 -- Save
                 { find = " bytes written" },
@@ -86,7 +85,7 @@ return {
                 { find = "Already at oldest change" },
 
                 -- Search tount
-                { kind = "search_count" }
+                { kind = "search_count" },
               },
             },
             opts = { skip = true },
@@ -102,8 +101,8 @@ return {
               },
             },
           },
-        }
+        },
       })
-    end
-  }
+    end,
+  },
 }

@@ -1,12 +1,12 @@
 local utils = require("utils")
 
 local function get_file_relative_to_root()
-  local current_file = vim.fn.expand('%:p')
+  local current_file = vim.fn.expand("%:p")
   local git_root = utils.get_git_root()
-  if git_root == '' then
+  if git_root == "" then
     return current_file
   end
-  return current_file:gsub(git_root, '')
+  return current_file:gsub(git_root, "")
 end
 
 local function nearest_test()
@@ -18,7 +18,7 @@ local function nearest_test()
   --@type ts_utils.TSNode?
   local expr = current_node
   while expr do
-    if expr:type() == 'function_definition' then
+    if expr:type() == "function_definition" then
       break
     end
     expr = expr:parent()
@@ -31,7 +31,7 @@ end
 
 local function run_pytest(nearest)
   -- Find the "service" name from the nearest devcontainer.json file
-  local devcontainer = require('devcontainer.config_file.parse').parse_nearest_devcontainer_config()
+  local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
   -- Find the current file relative to the root of the git repository
   local current_file = get_file_relative_to_root()
 
@@ -43,11 +43,11 @@ local function run_pytest(nearest)
     end
   end
 
-  require('devcontainer.container').exec(
-  -- TODO: Add support for customizing which container to run
-    devcontainer and devcontainer.service or 'service',
+  require("devcontainer.container").exec(
+    -- TODO: Add support for customizing which container to run
+    devcontainer and devcontainer.service or "service",
     {
-      command = { 'pytest', current_file, unpack(args) },
+      command = { "pytest", current_file, unpack(args) },
       tty = true,
     }
   )
@@ -55,25 +55,32 @@ end
 
 return {
   {
-    'https://codeberg.org/esensar/nvim-dev-container',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    "https://codeberg.org/esensar/nvim-dev-container",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require('devcontainer').setup({
+      require("devcontainer").setup({
         attach_mounts = {
           neovim_config = {
             enabled = true,
-            options = { "read_only" }
+            options = { "read_only" },
           },
           neovim_data = {
             enabled = true,
-            options = {}
+            options = {},
           },
-        }
+        },
       })
     end,
     keys = {
-      { '<leader>tf', run_pytest,                      desc = "Test file",    ft = { 'python' } },
-      { '<leader>tn', function() run_pytest(true) end, desc = "Test nearest", ft = { 'python' } }
-    }
-  }
+      { "<leader>tf", run_pytest, desc = "Test file", ft = { "python" } },
+      {
+        "<leader>tn",
+        function()
+          run_pytest(true)
+        end,
+        desc = "Test nearest",
+        ft = { "python" },
+      },
+    },
+  },
 }

@@ -9,29 +9,35 @@ return {
           {
             pattern = "(.*)/tests/test_(.*).py$",
             target = "%1/%2.py",
-            context = "implementation"
+            context = "implementation",
           },
           {
             pattern = "(.*)/(.*).py$",
             target = "%1/tests/test_%2.py",
-            context = "test"
+            context = "test",
           },
           -- TS(X) test file
           {
             pattern = "(.*)/(.*).test.ts(x?)$",
             target = "%1/%2.ts%3",
-            context = "implementation"
+            context = "implementation",
           },
           {
             pattern = "(.*)/(.*).ts(x?)$",
             target = "%1/%2.test.ts%3",
-            context = "test"
+            context = "test",
           },
-        }
+        },
       })
     end,
     keys = {
-      { "<leader>gt", function() require("other-nvim").open() end, desc = "Go to test file", },
+      {
+        "<leader>gt",
+        function()
+          require("other-nvim").open()
+        end,
+        desc = "Go to test file",
+      },
     },
-  }
+  },
 }

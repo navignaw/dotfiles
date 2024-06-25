@@ -12,21 +12,31 @@ end
 
 return {
   {
-    'lewis6991/gitsigns.nvim',
+    "lewis6991/gitsigns.nvim",
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
+      "nvim-lua/plenary.nvim",
+      "kyazdani42/nvim-web-devicons",
     },
     config = function()
-      require('gitsigns').setup {
+      require("gitsigns").setup({
         on_attach = function()
           local gitsigns = require("gitsigns")
           local wk = require("which-key")
 
           -- Navigation
           wk.register({
-            ["[c"] = { function() nav_hunk('prev') end, 'Previous changed hunk' },
-            ["]c"] = { function() nav_hunk('next') end, 'Next changed hunk' },
+            ["[c"] = {
+              function()
+                nav_hunk("prev")
+              end,
+              "Previous changed hunk",
+            },
+            ["]c"] = {
+              function()
+                nav_hunk("next")
+              end,
+              "Next changed hunk",
+            },
           })
 
           -- Hunk actions
@@ -38,30 +48,40 @@ return {
             u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
             R = { gitsigns.reset_buffer, "Reset buffer" },
             p = { gitsigns.preview_hunk, "Preview hunk" },
-            b = { function() gitsigns.blame_line { full = true } end, "Blame line" },
+            b = {
+              function()
+                gitsigns.blame_line({ full = true })
+              end,
+              "Blame line",
+            },
             d = { gitsigns.diffthis, "Diff hunk" },
-            D = { function() gitsigns.diffthis("~") end, "Diff hunk (reverse)" },
+            D = {
+              function()
+                gitsigns.diffthis("~")
+              end,
+              "Diff hunk (reverse)",
+            },
             t = {
               name = "Toggle",
               b = { gitsigns.toggle_current_line_blame, "Toggle blame" },
               d = { gitsigns.toggle_deleted, "Toggle deleted" },
             },
           }, { prefix = "<leader>h" })
-        end
-      }
+        end,
+      })
     end,
   },
 
-  { 'tpope/vim-fugitive' },
+  { "tpope/vim-fugitive" },
   {
-    'akinsho/git-conflict.nvim',
+    "akinsho/git-conflict.nvim",
     version = "*",
     config = function()
-      require('git-conflict').setup({
+      require("git-conflict").setup({
         default_mappings = true,
         default_commands = true,
         disable_diagnostics = true,
-        list_opener = 'copen',
+        list_opener = "copen",
       })
     end,
   },

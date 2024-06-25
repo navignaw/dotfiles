@@ -1,37 +1,37 @@
 -- Syntax highlighting
 
 local configs = {
-  'bash',
-  'css',
-  'dockerfile',
-  'go',
-  'html',
-  'javascript',
-  'json',
-  'jsonc',
-  'lua',
-  'markdown',
-  'markdown_inline',
-  'python',
-  'regex',
-  'ruby',
-  'typescript',
-  'vim',
-  'vimdoc',
-  'yaml',
+  "bash",
+  "css",
+  "dockerfile",
+  "go",
+  "html",
+  "javascript",
+  "json",
+  "jsonc",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "python",
+  "regex",
+  "ruby",
+  "typescript",
+  "vim",
+  "vimdoc",
+  "yaml",
 }
 
 return {
-  { 'yasuhiroki/github-actions-yaml.vim' },
+  { "yasuhiroki/github-actions-yaml.vim" },
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     config = function()
-      require('nvim-treesitter.configs').setup {
+      require("nvim-treesitter.configs").setup({
         ensure_installed = configs,
         highlight = {
           enable = true,
-          disable = { 'yaml.gha' }
+          disable = { "yaml.gha" },
         },
         indent = {
           enable = true,
@@ -47,14 +47,14 @@ return {
           select = {
             enable = true,
             keymaps = {
-              ['af'] = '@function.outer',
-              ['if'] = '@function.inner',
-              ['ac'] = '@class.outer',
-              ['ic'] = '@class.inner',
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["ac"] = "@class.outer",
+              ["ic"] = "@class.inner",
             },
           },
         },
-      }
-    end
+      })
+    end,
   },
 }

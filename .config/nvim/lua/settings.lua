@@ -3,14 +3,14 @@ HOME = os.getenv("HOME")
 -- Display
 vim.opt.number = true
 vim.opt.showmode = false
-vim.opt.colorcolumn = '80'
+vim.opt.colorcolumn = "80"
 vim.opt.updatetime = 300
-vim.opt.foldmethod = 'indent'
+vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 99
 
 -- Highlight trailing whitespace, tabs, and funny characters
 vim.opt.list = true
-vim.opt.listchars = { nbsp = '¬', tab = '»·', trail = '·' }
+vim.opt.listchars = { nbsp = "¬", tab = "»·", trail = "·" }
 
 -- Remove error bells
 vim.opt.errorbells = false
@@ -19,7 +19,7 @@ vim.opt.visualbell = false
 -- Searching
 vim.opt.ignorecase = true
 vim.opt.showmatch = true
-vim.opt.shortmess = 'filnxtToOFc'
+vim.opt.shortmess = "filnxtToOFc"
 
 -- Ignore tmp dirs, binary images, compiled bytecode
 vim.opt.wildignore = [[
@@ -45,10 +45,10 @@ vim.opt.so = 8
 
 -- Language-specific settings
 vim.g.python_indent = {
-  open_paren = 'shiftwidth() * 1',
-  nested_paren = 'shiftwidth() * 1',
-  continue = 'shiftwidth() * 1',
-  closed_paren_align_last_line = 'v:false',
-  disable_parentheses_indenting = 'v:false',
-  searchpair_timeout = 150
+  open_paren = "shiftwidth() * 1",
+  nested_paren = "shiftwidth() * 1",
+  continue = "shiftwidth() * 1",
+  closed_paren_align_last_line = "v:false",
+  disable_parentheses_indenting = "v:false",
+  searchpair_timeout = 150,
 }

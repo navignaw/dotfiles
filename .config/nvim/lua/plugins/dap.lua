@@ -26,8 +26,21 @@ return {
       {
         "rcarriga/nvim-dap-ui",
         keys = {
-          { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI", },
-          { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",   mode = { "n", "v" }, },
+          {
+            "<leader>du",
+            function()
+              require("dapui").toggle({})
+            end,
+            desc = "Dap UI",
+          },
+          {
+            "<leader>de",
+            function()
+              require("dapui").eval()
+            end,
+            desc = "Eval",
+            mode = { "n", "v" },
+          },
         },
         config = function()
           local dap = require("dap")
@@ -76,30 +89,138 @@ return {
     },
     config = function()
       vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-      vim.fn.sign_define("DapStopped", { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine", numhl = "" })
+      vim.fn.sign_define(
+        "DapStopped",
+        { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine", numhl = "" }
+      )
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" })
+      vim.fn.sign_define(
+        "DapBreakpointCondition",
+        { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" }
+      )
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
       vim.fn.sign_define("DapLogPoint", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
     end,
     keys = {
-      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,        desc = "Breakpoint Condition" },
-      { "<leader>db", function() require("dap").toggle_breakpoint() end,                                           desc = "Toggle Breakpoint" },
-      { "<leader>dc", function() require("dap").continue() end,                                                    desc = "Continue" },
-      { "<leader>dl", function() require("dap").set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, desc = "Set Log Point" },
-      { "<leader>dC", function() require("dap").run_to_cursor() end,                                               desc = "Run to Cursor" },
-      { "<leader>dg", function() require("dap").goto_() end,                                                       desc = "Go to line (no execute)" },
-      { "<leader>di", function() require("dap").step_into() end,                                                   desc = "Step Into" },
-      { "<leader>dj", function() require("dap").down() end,                                                        desc = "Down" },
-      { "<leader>dk", function() require("dap").up() end,                                                          desc = "Up" },
-      { "<leader>do", function() require("dap").step_out() end,                                                    desc = "Step Out" },
-      { "<leader>dO", function() require("dap").step_over() end,                                                   desc = "Step Over" },
-      { "<leader>dp", function() require("dap").pause() end,                                                       desc = "Pause" },
-      { "<leader>dr", function() require("dap").repl.toggle() end,                                                 desc = "Toggle REPL" },
-      { "<leader>ds", function() require("dap").session() end,                                                     desc = "Session" },
-      { "<leader>dt", function() require("dap").terminate() end,                                                   desc = "Terminate" },
-      { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                            desc = "Widgets" },
-      { "<leader>dR", function() require("dap").clear_breakpoints() end,                                           desc = "Removes all breakpoints" },
+      {
+        "<leader>dB",
+        function()
+          require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end,
+        desc = "Breakpoint Condition",
+      },
+      {
+        "<leader>db",
+        function()
+          require("dap").toggle_breakpoint()
+        end,
+        desc = "Toggle Breakpoint",
+      },
+      {
+        "<leader>dc",
+        function()
+          require("dap").continue()
+        end,
+        desc = "Continue",
+      },
+      {
+        "<leader>dl",
+        function()
+          require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+        end,
+        desc = "Set Log Point",
+      },
+      {
+        "<leader>dC",
+        function()
+          require("dap").run_to_cursor()
+        end,
+        desc = "Run to Cursor",
+      },
+      {
+        "<leader>dg",
+        function()
+          require("dap").goto_()
+        end,
+        desc = "Go to line (no execute)",
+      },
+      {
+        "<leader>di",
+        function()
+          require("dap").step_into()
+        end,
+        desc = "Step Into",
+      },
+      {
+        "<leader>dj",
+        function()
+          require("dap").down()
+        end,
+        desc = "Down",
+      },
+      {
+        "<leader>dk",
+        function()
+          require("dap").up()
+        end,
+        desc = "Up",
+      },
+      {
+        "<leader>do",
+        function()
+          require("dap").step_out()
+        end,
+        desc = "Step Out",
+      },
+      {
+        "<leader>dO",
+        function()
+          require("dap").step_over()
+        end,
+        desc = "Step Over",
+      },
+      {
+        "<leader>dp",
+        function()
+          require("dap").pause()
+        end,
+        desc = "Pause",
+      },
+      {
+        "<leader>dr",
+        function()
+          require("dap").repl.toggle()
+        end,
+        desc = "Toggle REPL",
+      },
+      {
+        "<leader>ds",
+        function()
+          require("dap").session()
+        end,
+        desc = "Session",
+      },
+      {
+        "<leader>dt",
+        function()
+          require("dap").terminate()
+        end,
+        desc = "Terminate",
+      },
+      {
+        "<leader>dw",
+        function()
+          require("dap.ui.widgets").hover()
+        end,
+        desc = "Widgets",
+      },
+      {
+        "<leader>dR",
+        function()
+          require("dap").clear_breakpoints()
+        end,
+        desc = "Removes all breakpoints",
+      },
     },
   },
   --{ 'mxsdev/nvim-dap-vscode-js' },
@@ -113,8 +234,8 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "folke/neodev.nvim",
       -- Language plugins
-      'nvim-neotest/neotest-jest',
-      'nvim-neotest/neotest-python',
+      "nvim-neotest/neotest-jest",
+      "nvim-neotest/neotest-python",
     },
     config = function()
       require("neodev").setup({
@@ -122,12 +243,12 @@ return {
       })
       require("neotest").setup({
         adapters = {
-          require('neotest-jest')({
+          require("neotest-jest")({
             jestCommand = "yarn jest",
             jestConfigFile = getJestConfigFile,
             cwd = getFrontendRoot,
           }),
-          require('neotest-python')({
+          require("neotest-python")({
             dap = { justMyCode = false },
           }),
         },
@@ -141,28 +262,60 @@ return {
         function()
           local neotest = require("neotest")
           neotest.run.run()
-          neotest.output.open({ open_win = function() vim.cmd("vsplit") end })
+          neotest.output.open({
+            open_win = function()
+              vim.cmd("vsplit")
+            end,
+          })
         end,
-        desc = "Test nearest"
+        desc = "Test nearest",
       },
       {
         "<leader>tf",
         function()
           local neotest = require("neotest")
           neotest.run.run(vim.fn.expand("%"))
-          neotest.output.open({ open_win = function() vim.cmd("vsplit") end })
+          neotest.output.open({
+            open_win = function()
+              vim.cmd("vsplit")
+            end,
+          })
         end,
         desc = "Test file",
         -- NOTE: pytest is currently set up in nvim-dev-container to run inside docker.
         ft = { "javascript", "typescript", "typescriptreact" },
       },
-      { "<leader>ts", function() require("neotest").summary.toggle() end,                 desc = "Open test summary" },
-      { "<leader>to", function() require("neotest").output_panel.toggle() end,            desc = "Toggle Output Panel" },
-      { "<silent>[t", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Jump to next failed test" },
-      { "<silent>]t", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Jump to next failed test" },
+      {
+        "<leader>ts",
+        function()
+          require("neotest").summary.toggle()
+        end,
+        desc = "Open test summary",
+      },
+      {
+        "<leader>to",
+        function()
+          require("neotest").output_panel.toggle()
+        end,
+        desc = "Toggle Output Panel",
+      },
+      {
+        "<silent>[t",
+        function()
+          require("neotest").jump.prev({ status = "failed" })
+        end,
+        desc = "Jump to next failed test",
+      },
+      {
+        "<silent>]t",
+        function()
+          require("neotest").jump.next({ status = "failed" })
+        end,
+        desc = "Jump to next failed test",
+      },
 
       -- TODO: Debug DAP for jest and python
       --{ "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Test nearest (debug)" },
     },
-  }
+  },
 }

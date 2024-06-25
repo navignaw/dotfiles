@@ -1,56 +1,56 @@
 -- Mappings, using which-key
 
-local utils = require('utils')
+local utils = require("utils")
 
 local function map(mode, shortcut, command)
   vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })
 end
 
 local function nmap(shortcut, command)
-  map('n', shortcut, command)
+  map("n", shortcut, command)
 end
 
 local function imap(shortcut, command)
-  map('i', shortcut, command)
+  map("i", shortcut, command)
 end
 
 local function vmap(shortcut, command)
-  map('v', shortcut, command)
+  map("v", shortcut, command)
 end
 
 local function cmap(shortcut, command)
-  map('c', shortcut, command)
+  map("c", shortcut, command)
 end
 
-imap('jk', '<Esc>')             -- Exit insert mode
-nmap('<C-l>', ':nohl<CR><C-l>') -- Remove highlighting
-nmap('j', 'gj')                 -- Move down visual line
-nmap('k', 'gk')                 -- Move up visual line
-nmap(';', ':')                  -- Enter command mode
+imap("jk", "<Esc>") -- Exit insert mode
+nmap("<C-l>", ":nohl<CR><C-l>") -- Remove highlighting
+nmap("j", "gj") -- Move down visual line
+nmap("k", "gk") -- Move up visual line
+nmap(";", ":") -- Enter command mode
 
 -- Copy paste from system clipboard
-vmap('YY', '"+y<CR>')
+vmap("YY", '"+y<CR>')
 
 -- Shortcuts for commands
-cmap('<C-a>', '<Home>')
+cmap("<C-a>", "<Home>")
 
 --- Open directory of the current file
 local function open_current_directory()
-  local current_dir = vim.fn.expand('%:p:h')
-  vim.cmd('silent edit ' .. current_dir)
+  local current_dir = vim.fn.expand("%:p:h")
+  vim.cmd("silent edit " .. current_dir)
 end
 
 --- Open a Github link to the current line in the current file
 local function git_link_file()
-  local current_file = vim.fn.expand('%:p')
-  local current_line = vim.fn.line('.')
+  local current_file = vim.fn.expand("%:p")
+  local current_line = vim.fn.line(".")
   local git_root = utils.get_git_root()
-  if git_root == '' then
-    print('Not a git repository')
+  if git_root == "" then
+    print("Not a git repository")
     return
   end
-  local git_file = current_file:gsub(git_root .. '/', '')
-  vim.fn.system('git link ' .. git_file .. '#' .. current_line)
+  local git_file = current_file:gsub(git_root .. "/", "")
+  vim.fn.system("git link " .. git_file .. "#" .. current_line)
 end
 
 local wk = require("which-key")
