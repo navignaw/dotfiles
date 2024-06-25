@@ -1,5 +1,15 @@
 -- Git configuration
 
+local function nav_hunk(direction)
+  local gitsigns = require("gitsigns")
+  if vim.wo.diff then
+    local cmd = direction == "prev" and "]c" or "[c"
+    vim.cmd.normal({ cmd, bang = true })
+  else
+    gitsigns.nav_hunk(direction)
+  end
+end
+
 return {
   {
     'lewis6991/gitsigns.nvim',
@@ -9,49 +19,34 @@ return {
     },
     config = function()
       require('gitsigns').setup {
-        on_attach = function(client, bufnr)
-          local gitsigns = require('gitsigns')
-
-          local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
-          end
+        on_attach = function()
+          local gitsigns = require("gitsigns")
+          local wk = require("which-key")
 
           -- Navigation
-          map('n', ']c', function()
-            if vim.wo.diff then
-              vim.cmd.normal({ ']c', bang = true })
-            else
-              gitsigns.nav_hunk('next')
-            end
-          end)
+          wk.register({
+            ["[c"] = { function() nav_hunk('prev') end, 'Previous changed hunk' },
+            ["]c"] = { function() nav_hunk('next') end, 'Next changed hunk' },
+          })
 
-          map('n', '[c', function()
-            if vim.wo.diff then
-              vim.cmd.normal({ '[c', bang = true })
-            else
-              gitsigns.nav_hunk('prev')
-            end
-          end)
-
-          -- Actions
-          map('n', '<leader>hs', gitsigns.stage_hunk)
-          map('n', '<leader>hr', gitsigns.reset_hunk)
-          map('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
-          map('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
-          map('n', '<leader>hS', gitsigns.stage_buffer)
-          map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-          map('n', '<leader>hR', gitsigns.reset_buffer)
-          map('n', '<leader>hp', gitsigns.preview_hunk)
-          map('n', '<leader>hb', function() gitsigns.blame_line { full = true } end)
-          map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-          map('n', '<leader>hd', gitsigns.diffthis)
-          map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-          map('n', '<leader>td', gitsigns.toggle_deleted)
-
-          -- Text object
-          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+          -- Hunk actions
+          wk.register({
+            name = "+Hunk",
+            s = { gitsigns.stage_hunk, "Stage hunk" },
+            r = { gitsigns.reset_hunk, "Reset hunk" },
+            S = { gitsigns.stage_buffer, "Stage buffer" },
+            u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
+            R = { gitsigns.reset_buffer, "Reset buffer" },
+            p = { gitsigns.preview_hunk, "Preview hunk" },
+            b = { function() gitsigns.blame_line { full = true } end, "Blame line" },
+            d = { gitsigns.diffthis, "Diff hunk" },
+            D = { function() gitsigns.diffthis("~") end, "Diff hunk (reverse)" },
+            t = {
+              name = "Toggle",
+              b = { gitsigns.toggle_current_line_blame, "Toggle blame" },
+              d = { gitsigns.toggle_deleted, "Toggle deleted" },
+            },
+          }, { prefix = "<leader>h" })
         end
       }
     end,
@@ -82,15 +77,68 @@ return {
         end,
       },
     },
-    keys = {
-      { '<leader>ghpr', function() require("litee.gh.pr").open_pull() end,                                desc = "Open pull request" },
-      { '<leader>ghc',  function() require("litee.gh.pr.diff_view").create_comment({ range = true }) end, mode = { 'n', 'v', },        desc = "Create comment thread" },
-      { '<leader>ghn',  function() require("litee.gh.pr.diff_view").next_thread() end,                    desc = "Next comment thread" },
-    },
     config = function()
       require("litee.gh").setup({
         icon_set = "nerd",
       })
+
+      local wk = require("which-key")
+      wk.register({
+        -- Shortcuts for pull request
+        pr = {
+          name = "+PR",
+          o = { "<cmd>GHOpenPR<cr>", "Open" },
+          r = { "<cmd>GHRequestedReview<cr>", "Requested Review" },
+          s = { "<cmd>GHSearchPRs<cr>", "Search" },
+        },
+        g = {
+          name = "+Git",
+          h = {
+            name = "+Github",
+            c = {
+              name = "+Commits",
+              c = { "<cmd>GHCloseCommit<cr>", "Close" },
+              e = { "<cmd>GHExpandCommit<cr>", "Expand" },
+              o = { "<cmd>GHOpenToCommit<cr>", "Open To" },
+              p = { "<cmd>GHPopOutCommit<cr>", "Pop Out" },
+              z = { "<cmd>GHCollapseCommit<cr>", "Collapse" },
+            },
+            i = {
+              name = "+Issues",
+              p = { "<cmd>GHPreviewIssue<cr>", "Preview" },
+            },
+            l = {
+              name = "+Litee",
+              t = { "<cmd>LTPanel<cr>", "Toggle Panel" },
+            },
+            r = {
+              name = "+Review",
+              b = { "<cmd>GHStartReview<cr>", "Begin" },
+              c = { "<cmd>GHCloseReview<cr>", "Close" },
+              d = { "<cmd>GHDeleteReview<cr>", "Delete" },
+              e = { "<cmd>GHExpandReview<cr>", "Expand" },
+              s = { "<cmd>GHSubmitReview<cr>", "Submit" },
+              z = { "<cmd>GHCollapseReview<cr>", "Collapse" },
+            },
+            p = {
+              name = "+Pull Request",
+              c = { "<cmd>GHClosePR<cr>", "Close" },
+              d = { "<cmd>GHPRDetails<cr>", "Details" },
+              e = { "<cmd>GHExpandPR<cr>", "Expand" },
+              p = { "<cmd>GHPopOutPR<cr>", "PopOut" },
+              r = { "<cmd>GHRefreshPR<cr>", "Refresh" },
+              t = { "<cmd>GHOpenToPR<cr>", "Open To" },
+              z = { "<cmd>GHCollapsePR<cr>", "Collapse" },
+            },
+            t = {
+              name = "+Threads",
+              c = { "<cmd>GHCreateThread<cr>", "Create" },
+              n = { "<cmd>GHNextThread<cr>", "Next" },
+              t = { "<cmd>GHToggleThread<cr>", "Toggle" },
+            },
+          },
+        },
+      }, { prefix = "<leader>" })
     end,
   },
 }
