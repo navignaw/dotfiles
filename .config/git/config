@@ -39,8 +39,8 @@
 [rebase]
   autoStash = true
 
-[commit]
-  gpgsign = true
+#[commit]
+  #gpgsign = true
 
 [remote "origin"]
   prune = true
