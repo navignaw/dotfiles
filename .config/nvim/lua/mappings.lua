@@ -61,7 +61,7 @@ vmap('YY', '"+y<CR>')
 cmap('<C-a>', '<Home>')
 
 -- Custom functions
-nmap('<Leader>up', ':!revp upload<CR>')
+nmap('<Leader>up', ':!revup upload<CR>')
 
 -- Open directory of the current file
 local function OpenCurrentDirectory()
