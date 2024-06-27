@@ -26,7 +26,8 @@ local function nearest_test()
   if not expr then
     return ""
   end
-  return (vim.treesitter.query.get_node_text(expr:child(1)))[1]
+  return ts_utils.get_node_text(expr:child(1))[1]
+  --return (vim.treesitter.get_node_text(expr:child(1)))[1]
 end
 
 local function run_pytest(nearest)
@@ -44,7 +45,7 @@ local function run_pytest(nearest)
   end
 
   require("devcontainer.container").exec(
-    -- TODO: Add support for customizing which container to run
+  -- TODO: Add support for customizing which container to run
     devcontainer and devcontainer.service or "service",
     {
       command = { "pytest", current_file, unpack(args) },
