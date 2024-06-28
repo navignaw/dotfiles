@@ -22,6 +22,7 @@ brew "optipng"  # image optimization
 brew "ripgrep"  # better search
 brew "stow"  # symlink manager
 brew "tmux"  # terminal multiplexer
+brew "tree"  # file tree visualizer
 brew "zoxide"  # better cd
 brew "zsh"  # shell
 
