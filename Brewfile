@@ -30,6 +30,7 @@ brew "zsh"  # shell
 brew "hadolint"  # Dockerfile linter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
+brew "fsouza/prettierd/prettierd" # Prettier daemon
 
 # -- Version control
 brew "git"
