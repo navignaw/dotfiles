@@ -7,7 +7,7 @@
   giveup = reset HEAD^ --hard
   # Delete branches that have been merged into main
   cleanup = "!f() { local targetBranch=$(git main) && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
-  link = "!f() { ~/.dotfiles/git_scripts/git-link.rb \"$1\"; }; f"
+  link = "!f() { ~/.config/git/scripts/git-link.rb \"$1\"; }; f"
   diff-image = "!f() { cd -- \"${GIT_PREFIX:-.}\"; GIT_DIFF_IMAGE_ENABLED=1 git diff \"$@\"; }; f"
   main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
 
