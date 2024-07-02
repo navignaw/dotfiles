@@ -18,11 +18,11 @@ return {
             ["cmp.entry.get_documentation"] = true,
           },
           presets = {
-            bottom_search = true, -- use a classic bottom cmdline for search
-            command_palette = true, -- position the cmdline and popupmenu together
+            bottom_search = true,         -- use a classic bottom cmdline for search
+            command_palette = true,       -- position the cmdline and popupmenu together
             long_message_to_split = true, -- long messages will be sent to a split
-            inc_rename = false, -- enables an input dialog for inc-rename.nvim
-            lsp_doc_border = false, -- add a border to hover docs and signature help
+            inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+            lsp_doc_border = false,       -- add a border to hover docs and signature help
           },
         },
         -- Default options for redirecting output
@@ -31,6 +31,14 @@ return {
           filter = { event = "msg_show" },
         },
         routes = {
+          {
+            filter = {
+              -- Search for rainbow CSV messages
+              event = "msg_show",
+              find = "Col %d+",
+            },
+            view = "mini",
+          },
           {
             -- Suppress a bunch of noisy messages
             filter = {
@@ -49,14 +57,14 @@ return {
                 { find = "%d+ lines yanked" },
                 { find = "^Hunk %d+ of %d+$" },
                 { find = "%d+L, %d+B$" },
-                { find = "^[/?].*" }, -- Searching up/down
+                { find = "^[/?].*" },                  -- Searching up/down
                 { find = "E486: Pattern not found:" }, -- Searcingh not found
-                { find = "%d+ changes?;" }, -- Undoing/redoing
-                { find = "%d+ fewer lines" }, -- Deleting multiple lines
-                { find = "%d+ more lines" }, -- Undoing deletion of multiple lines
-                { find = "%d+ lines " }, -- Performing some other verb on multiple lines
+                { find = "%d+ changes?;" },            -- Undoing/redoing
+                { find = "%d+ fewer lines" },          -- Deleting multiple lines
+                { find = "%d+ more lines" },           -- Undoing deletion of multiple lines
+                { find = "%d+ lines " },               -- Performing some other verb on multiple lines
                 { find = "Already at newest change" }, -- Redoing
-                { find = '"[^"]+" %d+L, %d+B' }, -- Saving
+                { find = '"[^"]+" %d+L, %d+B' },       -- Saving
 
                 -- Save
                 { find = " bytes written" },
@@ -112,6 +120,31 @@ return {
           },
         },
       })
+
+      local wk = require("which-key")
+      wk.register({
+        n = {
+          name = "Noice",
+          d = {
+            function()
+              require("noice.message.router").dismiss()
+            end,
+            "Dismiss messages",
+          },
+          h = {
+            function()
+              require("noice").cmd("telescope")
+            end,
+            "Message history",
+          },
+          l = {
+            function()
+              require("noice").cmd("last")
+            end,
+            "Last messages",
+          },
+        },
+      }, { prefix = "<leader>" })
     end,
   },
 }
