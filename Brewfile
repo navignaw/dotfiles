@@ -27,10 +27,12 @@ brew "zoxide"  # better cd
 brew "zsh"  # shell
 
 # -- Linters and formatters
+brew "actionlint"  # GHA linter
 brew "hadolint"  # Dockerfile linter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
 brew "fsouza/prettierd/prettierd" # Prettier daemon
+brew "yamllint" # YAML
 
 # -- Version control
 brew "git"
