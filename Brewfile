@@ -28,6 +28,7 @@ brew "zsh"  # shell
 
 # -- Linters and formatters
 brew "actionlint"  # GHA linter
+brew "buildifier"  # Bazel formatter
 brew "hadolint"  # Dockerfile linter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
