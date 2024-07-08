@@ -1,24 +1,13 @@
--- Testing and debugging
+-- Debugging Adapter Protocol (DAP) plugins
 
-local function getJestConfigFile(file)
-  if string.find(file, "/frontend/") then
-    -- Traverse up the file tree until we find a jest.config.ts
-    return file:match("(.-/frontend/[^/]+)") .. "jest.config.ts"
-  end
-
-  return vim.fn.getcwd() .. "/jest.config.ts"
-end
-
-local function getFrontendRoot(file)
-  if string.find(file, "/frontend/") then
-    return file:match("(.-/frontend/[^/]+)")
-  end
-
-  return vim.fn.getcwd()
-end
+local js_filetypes = {
+  "javascript",
+  "javascriptreact",
+  "typescript",
+  "typescriptreact",
+}
 
 return {
-
   -- Debug Adapter Protocol client implementation for Neovim
   {
     "mfussenegger/nvim-dap",
@@ -69,7 +58,6 @@ return {
       },
 
       -- An extension for nvim-dap, providing default configurations for python and methods to debug individual test methods or classes.
-      -- Note: requires :MasonInstall debugpy
       {
         "mfussenegger/nvim-dap-python",
         config = function()
@@ -86,8 +74,30 @@ return {
           require("nvim-dap-virtual-text").setup({})
         end,
       },
+
+      -- Automatically install debug adapters for nvim-dap
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = {
+          "williamboman/mason.nvim",
+        },
+        config = function()
+          require("mason-nvim-dap").setup({
+            automatic_installation = false,
+            ensure_installed = {
+              -- Due to a bug with the latest version of vscode-js-debug, need to lock to specific version
+              -- See: https://github.com/mxsdev/nvim-dap-vscode-js/issues/58#issuecomment-2213230558
+              "js@v1.76.1",
+              "python",
+            },
+          })
+        end,
+      },
     },
     config = function()
+      local dap = require("dap")
+
+      -- Set highlights and signs
       vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
       vim.fn.sign_define(
         "DapStopped",
@@ -100,8 +110,80 @@ return {
       )
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
       vim.fn.sign_define("DapLogPoint", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+
+      -- Set up configs
+      for _, language in ipairs(js_filetypes) do
+        dap.configurations[language] = {
+          -- Debug single nodejs files
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+            sourceMaps = true,
+            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          },
+          -- Debug nodejs processes (make sure to add --inspect when you run the process)
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach",
+            processId = require("dap.utils").pick_process,
+            sourceMaps = true,
+            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          },
+          -- Debug web applications
+          {
+            type = "pwa-chrome",
+            request = "launch",
+            name = "Launch & Debug Chrome",
+            url = function()
+              local co = coroutine.running()
+              return coroutine.create(function()
+                vim.ui.input({
+                  prompt = "Enter URL: ",
+                  default = "http://localhost:3000",
+                }, function(url)
+                  if url == nil or url == "" then
+                    return
+                  end
+                  coroutine.resume(co, url)
+                end)
+              end)
+            end,
+            webRoot = "${workspaceFolder}",
+            skipFiles = { "<node_internals>/**/*.js" },
+            protocol = "inspector",
+            sourceMaps = true,
+            userDataDir = false,
+          },
+          -- Divider for the launch.json derived configs
+          {
+            name = "----- launch.json configs -----",
+            type = "",
+            request = "launch",
+          },
+        }
+      end
     end,
     keys = {
+      {
+        "<leader>da",
+        function()
+          if vim.fn.filereadable(".vscode/launch.json") then
+            local dap_vscode = require("dap.ext.vscode")
+            dap_vscode.load_launchjs(nil, {
+              ["pwa-node"] = js_filetypes,
+              ["pwa-chrome"] = js_filetypes,
+            })
+          else
+            vim.notify("No launch.json found", vim.log.levels.ERROR, { title = "DAP" })
+          end
+          require("dap").continue()
+        end,
+        desc = "Attach debugger",
+      },
       {
         "<leader>dB",
         function()
@@ -223,99 +305,27 @@ return {
       },
     },
   },
-  --{ 'mxsdev/nvim-dap-vscode-js' },
-
   {
-    "nvim-neotest/neotest",
+    "mxsdev/nvim-dap-vscode-js",
     dependencies = {
-      "nvim-neotest/nvim-nio",
-      "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "folke/neodev.nvim",
-      -- Language plugins
-      "nvim-neotest/neotest-jest",
-      "nvim-neotest/neotest-python",
+      -- NOTE: Requires manually installing js-debug-adapter via Mason
+      -- TODO: make this automated somehow
+      --   {
+      --     -- Adapter for debugging JS/TS
+      --     "microsoft/vscode-js-debug",
+      --     build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      --   },
     },
     config = function()
-      require("neodev").setup({
-        library = { plugins = { "neotest" }, types = true },
-      })
-      require("neotest").setup({
+      require("dap-vscode-js").setup({
+        -- Set the path to the Mason installation directory
+        debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter"),
+        debugger_cmd = { "js-debug-adapter" },
         adapters = {
-          require("neotest-jest")({
-            jestCommand = "yarn jest",
-            jestConfigFile = getJestConfigFile,
-            cwd = getFrontendRoot,
-          }),
-          require("neotest-python")({
-            dap = { justMyCode = false },
-          }),
+          "pwa-node",
+          "pwa-chrome",
         },
-        status = { enabled = true, virtual_text = true },
-        output = { enabled = true, open_on_run = true },
       })
     end,
-    keys = {
-      {
-        "<leader>tn",
-        function()
-          local neotest = require("neotest")
-          neotest.run.run()
-          neotest.output.open({
-            open_win = function()
-              vim.cmd("vsplit")
-            end,
-          })
-        end,
-        desc = "Test nearest",
-      },
-      {
-        "<leader>tf",
-        function()
-          local neotest = require("neotest")
-          neotest.run.run(vim.fn.expand("%"))
-          neotest.output.open({
-            open_win = function()
-              vim.cmd("vsplit")
-            end,
-          })
-        end,
-        desc = "Test file",
-        -- NOTE: pytest is currently set up in nvim-dev-container to run inside docker.
-        ft = { "javascript", "typescript", "typescriptreact" },
-      },
-      {
-        "<leader>ts",
-        function()
-          require("neotest").summary.toggle()
-        end,
-        desc = "Open test summary",
-      },
-      {
-        "<leader>to",
-        function()
-          require("neotest").output_panel.toggle()
-        end,
-        desc = "Toggle Output Panel",
-      },
-      {
-        "<silent>[t",
-        function()
-          require("neotest").jump.prev({ status = "failed" })
-        end,
-        desc = "Jump to next failed test",
-      },
-      {
-        "<silent>]t",
-        function()
-          require("neotest").jump.next({ status = "failed" })
-        end,
-        desc = "Jump to next failed test",
-      },
-
-      -- TODO: Debug DAP for jest and python
-      --{ "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Test nearest (debug)" },
-    },
   },
 }
