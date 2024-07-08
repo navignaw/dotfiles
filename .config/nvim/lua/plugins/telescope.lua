@@ -14,7 +14,7 @@ local function find_files_frecency()
 end
 
 local function live_grep_from_project_git_root()
-  local opts = {}
+  local opts = nil
 
   if is_git_repo() then
     opts = {
@@ -22,7 +22,7 @@ local function live_grep_from_project_git_root()
     }
   end
 
-  require("telescope.builtin").live_grep(opts)
+  require("telescope").extensions.live_grep_args.live_grep_args(opts)
 end
 
 local function edit_neovim()
@@ -44,7 +44,7 @@ return {
       "tpope/vim-fugitive",
     },
     keys = {
-      { "<C-p>", find_files_frecency, desc = "Find files by frecency" },
+      { "<C-p>",       find_files_frecency,                       desc = "Find files by frecency" },
       {
         "<C-f>",
         live_grep_from_project_git_root,
@@ -63,16 +63,16 @@ return {
         mode = { "c" },
         desc = "Search previous commands",
       },
-      { "<C-h>", "<cmd>Telescope help_tags<CR>", desc = "Help tags" },
-      { "<leader>jb", "<cmd>Telescope buffers<CR>", desc = "Open buffers" },
-      { "<leader>jd", "<cmd>Telescope lsp_definitions<CR>", desc = "Jump to definitions (LSP)" },
-      { "<leader>ji", "<cmd>Telescope lsp_implementations<CR>", desc = "Jump to implementations (LSP)" },
-      { "<leader>jk", "<cmd>Telescope keymaps<CR>", desc = "Show mappings" },
-      { "<leader>jq", "<cmd>Telescope quickfix<CR>", desc = "Quickfix list" },
-      { "<leader>jr", "<cmd>Telescope lsp_references<CR>", desc = "Jump to references (LSP)" },
-      { "<leader>jt", "<cmd>Telescope lsp_type_definitions<CR>", desc = "Jump to type definitions (LSP)" },
-      { "<leader>jv", edit_neovim, desc = "Edit neovim" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
+      { "<C-h>",       "<cmd>Telescope help_tags<CR>",            desc = "Help tags" },
+      { "<leader>jb",  "<cmd>Telescope buffers<CR>",              desc = "Open buffers" },
+      { "<leader>jd",  "<cmd>Telescope lsp_definitions<CR>",      desc = "Jump to definitions (LSP)" },
+      { "<leader>ji",  "<cmd>Telescope lsp_implementations<CR>",  desc = "Jump to implementations (LSP)" },
+      { "<leader>jk",  "<cmd>Telescope keymaps<CR>",              desc = "Show mappings" },
+      { "<leader>jq",  "<cmd>Telescope quickfix<CR>",             desc = "Quickfix list" },
+      { "<leader>jr",  "<cmd>Telescope lsp_references<CR>",       desc = "Jump to references (LSP)" },
+      { "<leader>jty", "<cmd>Telescope lsp_type_definitions<CR>", desc = "Jump to type definitions (LSP)" },
+      { "<leader>jv",  edit_neovim,                               desc = "Edit neovim" },
+      { "<leader>gs",  "<cmd>Telescope git_status<CR>",           desc = "Git status" },
     },
     config = function()
       local actions = require("telescope.actions")
@@ -186,5 +186,28 @@ return {
       "kkharji/sqlite.lua",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
+  },
+
+  -- live grep with arguments
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    config = function()
+      local telescope = require("telescope")
+      local lga_actions = require("telescope-live-grep-args.actions")
+      telescope.setup({
+        extensions = {
+          live_grep_args = {
+            auto_quoting = true,
+            mappings = {
+              i = {
+                ["<C-f>"] = lga_actions.quote_prompt({ postfix = " --iglob " }), -- filter by file pattern (case insensitive)
+                ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }),      -- filter by filetype
+              },
+            },
+          },
+        },
+      })
+      telescope.load_extension("live_grep_args")
+    end,
   },
 }

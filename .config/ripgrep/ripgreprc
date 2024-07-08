@@ -15,6 +15,7 @@ web:*.{html,css,js,jsx,ts,tsx}*
 # Ignore files
 --glob=!{.git,.svn,node_modules,vendor}
 --glob=!*.lock
+--glob=!.yarn/releases/yarn-*.cjs
 
 # Case insensitive
 --smart-case

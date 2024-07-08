@@ -52,14 +52,14 @@ return {
     end,
     keys = {
       {
-        "<leader>gt",
+        "<leader>jte",
         function()
           require("other-nvim").open()
         end,
         desc = "Go to test file",
       },
       {
-        "<leader>gs",
+        "<leader>js",
         function()
           require("other-nvim").open("story")
         end,
