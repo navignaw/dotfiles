@@ -44,7 +44,7 @@ return {
       "tpope/vim-fugitive",
     },
     keys = {
-      { "<C-p>",       find_files_frecency,                       desc = "Find files by frecency" },
+      { "<C-p>",      find_files_frecency,                       desc = "Find files by frecency" },
       {
         "<C-f>",
         live_grep_from_project_git_root,
@@ -63,16 +63,16 @@ return {
         mode = { "c" },
         desc = "Search previous commands",
       },
-      { "<C-h>",       "<cmd>Telescope help_tags<CR>",            desc = "Help tags" },
-      { "<leader>jb",  "<cmd>Telescope buffers<CR>",              desc = "Open buffers" },
-      { "<leader>jd",  "<cmd>Telescope lsp_definitions<CR>",      desc = "Jump to definitions (LSP)" },
-      { "<leader>ji",  "<cmd>Telescope lsp_implementations<CR>",  desc = "Jump to implementations (LSP)" },
-      { "<leader>jk",  "<cmd>Telescope keymaps<CR>",              desc = "Show mappings" },
-      { "<leader>jq",  "<cmd>Telescope quickfix<CR>",             desc = "Quickfix list" },
-      { "<leader>jr",  "<cmd>Telescope lsp_references<CR>",       desc = "Jump to references (LSP)" },
-      { "<leader>jty", "<cmd>Telescope lsp_type_definitions<CR>", desc = "Jump to type definitions (LSP)" },
-      { "<leader>jv",  edit_neovim,                               desc = "Edit neovim" },
-      { "<leader>gs",  "<cmd>Telescope git_status<CR>",           desc = "Git status" },
+      { "<C-h>",      "<cmd>Telescope help_tags<CR>",            desc = "Help tags" },
+      { "<leader>jb", "<cmd>Telescope buffers<CR>",              desc = "Open buffers" },
+      { "<leader>jd", "<cmd>Telescope lsp_definitions<CR>",      desc = "Jump to definitions (LSP)" },
+      { "<leader>ji", "<cmd>Telescope lsp_implementations<CR>",  desc = "Jump to implementations (LSP)" },
+      { "<leader>jk", "<cmd>Telescope keymaps<CR>",              desc = "Show mappings" },
+      { "<leader>jq", "<cmd>Telescope quickfix<CR>",             desc = "Quickfix list" },
+      { "<leader>jr", "<cmd>Telescope lsp_references<CR>",       desc = "Jump to references (LSP)" },
+      { "<leader>jy", "<cmd>Telescope lsp_type_definitions<CR>", desc = "Jump to type definitions (LSP)" },
+      { "<leader>jv", edit_neovim,                               desc = "Edit neovim" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>",           desc = "Git status" },
     },
     config = function()
       local actions = require("telescope.actions")
@@ -208,6 +208,80 @@ return {
         },
       })
       telescope.load_extension("live_grep_args")
+    end,
+  },
+
+  -- Easily switch to test and other files
+  {
+    "sshelll/telescope-switch.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    lazy = true,
+    keys = {
+      { "<leader>jt", "<cmd>Telescope switch<CR>", desc = "Jump to related files" },
+    },
+    config = function()
+      local telescope = require("telescope")
+      telescope.setup({
+        extensions = {
+          switch = {
+            matchers = {
+              -- Python test file
+              {
+                from = "(.*)/tests/test_(.*).py$",
+                to = "%1/%2.py",
+                name = "implementation",
+              },
+              {
+                from = "(.*)/(.*).py$",
+                to = "%1/tests/test_%2.py",
+                name = "test",
+              },
+              -- TS(X) test file
+              {
+                name = "implementation",
+                from = "(.*)/(.*).snapshot.test.ts(x?)$",
+                to = "%1/%2.ts%3",
+              },
+              {
+                name = "implementation",
+                from = "(.*)/(.*).test.ts(x?)$",
+                to = "%1/%2.ts%3",
+              },
+              {
+                name = "test",
+                from = "(.*)/(.*).ts(x?)$",
+                to = "%1/%2.test.ts%3",
+              },
+              {
+                name = "snapshot test",
+                from = "(.*)/(.*).ts(x?)$",
+                to = "%1/%2.snapshot.test.ts%3",
+              },
+              {
+                name = "story",
+                from = "(.*)/(.*).stories.ts(x?)$",
+                to = "%1/%2.ts%3",
+              },
+              {
+                name = "story",
+                from = "(.*)/(.*).ts(x?)$",
+                to = "%1/%2.stories.ts%3",
+              },
+            },
+            picker = {
+              -- seperator = "⇒",
+              layout_strategy = "horizontal",
+              layout_config = {
+                width = 0.8,
+                height = 0.9,
+                preview_cutoff = 120,
+              },
+              preview = true,
+            },
+          },
+        },
+      })
+      telescope.load_extension("switch")
     end,
   },
 }
