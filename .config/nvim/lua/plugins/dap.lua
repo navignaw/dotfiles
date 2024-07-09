@@ -23,7 +23,7 @@ return {
             desc = "Dap UI",
           },
           {
-            "<leader>de",
+            "H",
             function()
               require("dapui").eval()
             end,
@@ -70,6 +70,9 @@ return {
 
       {
         "theHamsta/nvim-dap-virtual-text",
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+        },
         config = function()
           require("nvim-dap-virtual-text").setup({})
         end,
@@ -84,12 +87,7 @@ return {
         config = function()
           require("mason-nvim-dap").setup({
             automatic_installation = false,
-            ensure_installed = {
-              -- Due to a bug with the latest version of vscode-js-debug, need to lock to specific version
-              -- See: https://github.com/mxsdev/nvim-dap-vscode-js/issues/58#issuecomment-2213230558
-              "js@v1.76.1",
-              "python",
-            },
+            ensure_installed = { "js", "python" },
           })
         end,
       },
@@ -103,13 +101,32 @@ return {
         "DapStopped",
         { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine", numhl = "" }
       )
-      vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" })
       vim.fn.sign_define(
         "DapBreakpointCondition",
         { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" }
       )
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
       vim.fn.sign_define("DapLogPoint", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+
+      -- Set up adapters
+      for _, type in ipairs({ "chrome", "pwa-node", "pwa-chrome" }) do
+        dap.adapters[type] = {
+          type = "server",
+          host = "localhost",
+          port = "${port}",
+          executable = {
+            command = "node",
+            -- 💀 Make sure to update this path to point to your installation
+            args = {
+              vim.fn.resolve(
+                vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js"
+              ),
+              "${port}",
+            },
+          },
+        }
+      end
 
       -- Set up configs
       for _, language in ipairs(js_filetypes) do
@@ -131,9 +148,8 @@ return {
             name = "Attach",
             processId = require("dap.utils").pick_process,
             sourceMaps = true,
-            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           },
-          -- Debug web applications
+          -- Debug web applications (client side)
           {
             type = "pwa-chrome",
             request = "launch",
@@ -141,26 +157,25 @@ return {
             url = function()
               local co = coroutine.running()
               return coroutine.create(function()
-                vim.ui.input({
-                  prompt = "Enter URL: ",
-                  default = "http://localhost:3000",
-                }, function(url)
+                vim.ui.input({ prompt = "Enter URL: ", default = "http://localhost:3000" }, function(url)
                   if url == nil or url == "" then
                     return
+                  else
+                    coroutine.resume(co, url)
                   end
-                  coroutine.resume(co, url)
                 end)
               end)
             end,
-            webRoot = "${workspaceFolder}",
-            skipFiles = { "<node_internals>/**/*.js" },
-            protocol = "inspector",
+            -- Note: webRoot must be the root of the package, not the workspace.
+            -- Consider automatically detecting this via package.json
+            -- See: https://github.com/serranomorante/.dotfiles/blob/main/docs/nvim-dap-node-cli.md
+            webRoot = vim.fn.getcwd(),
             sourceMaps = true,
-            userDataDir = false,
           },
+
           -- Divider for the launch.json derived configs
           {
-            name = "----- launch.json configs -----",
+            name = "----- ↓ launch.json configs ↓ -----",
             type = "",
             request = "launch",
           },
@@ -171,13 +186,7 @@ return {
       {
         "<leader>da",
         function()
-          if vim.fn.filereadable(".vscode/launch.json") then
-            local dap_vscode = require("dap.ext.vscode")
-            dap_vscode.load_launchjs(nil, {
-              ["pwa-node"] = js_filetypes,
-              ["pwa-chrome"] = js_filetypes,
-            })
-          else
+          if not vim.fn.filereadable(".vscode/launch.json") then
             vim.notify("No launch.json found", vim.log.levels.ERROR, { title = "DAP" })
           end
           require("dap").continue()
@@ -304,28 +313,5 @@ return {
         desc = "Removes all breakpoints",
       },
     },
-  },
-  {
-    "mxsdev/nvim-dap-vscode-js",
-    dependencies = {
-      -- NOTE: Requires manually installing js-debug-adapter via Mason
-      -- TODO: make this automated somehow
-      --   {
-      --     -- Adapter for debugging JS/TS
-      --     "microsoft/vscode-js-debug",
-      --     build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-      --   },
-    },
-    config = function()
-      require("dap-vscode-js").setup({
-        -- Set the path to the Mason installation directory
-        debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter"),
-        debugger_cmd = { "js-debug-adapter" },
-        adapters = {
-          "pwa-node",
-          "pwa-chrome",
-        },
-      })
-    end,
   },
 }
