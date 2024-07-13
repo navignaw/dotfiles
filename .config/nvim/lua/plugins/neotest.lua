@@ -34,20 +34,29 @@ return {
       require("neodev").setup({
         library = { plugins = { "neotest" }, types = true },
       })
+      local jest_adapter = require("neotest-jest")({
+        jestCommand = "yarn jest",
+        jestConfigFile = getJestConfigFile,
+        cwd = getFrontendRoot,
+        strategy_config = function(default_strategy, _)
+          default_strategy["resolveSourceMapLocations"] = {
+            "${workspaceFolder}/**",
+            "!**/node_modules/**",
+          }
+          return default_strategy
+        end,
+      })
+      -- Override jest adapter's is_test_file to include native or web tests
+      local jt_is_test_file = jest_adapter.is_test_file
+      jest_adapter.is_test_file = function(file)
+        return jt_is_test_file(file)
+          or string.match(file, "%.test%.native%.ts(x?)$")
+          or string.match(file, "%.test%.web%.ts(x?)$")
+      end
+
       require("neotest").setup({
         adapters = {
-          require("neotest-jest")({
-            jestCommand = "yarn jest",
-            jestConfigFile = getJestConfigFile,
-            cwd = getFrontendRoot,
-            strategy_config = function(default_strategy, _)
-              default_strategy["resolveSourceMapLocations"] = {
-                "${workspaceFolder}/**",
-                "!**/node_modules/**",
-              }
-              return default_strategy
-            end,
-          }),
+          jest_adapter,
           require("neotest-python")({
             dap = { justMyCode = false },
           }),

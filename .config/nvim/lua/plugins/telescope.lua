@@ -235,6 +235,7 @@ return {
                 from = "(.*)/(.*).py$",
                 to = "%1/tests/test_%2.py",
                 name = "test",
+                ignore_by = { "implementation" },
               },
               -- TS(X) test file
               {
@@ -251,11 +252,13 @@ return {
                 name = "test",
                 from = "(.*)/(.*).ts(x?)$",
                 to = "%1/%2.test.ts%3",
+                ignore_by = { "implementation" },
               },
               {
                 name = "snapshot test",
                 from = "(.*)/(.*).ts(x?)$",
                 to = "%1/%2.snapshot.test.ts%3",
+                ignore_by = { "implementation" },
               },
               {
                 name = "story",
