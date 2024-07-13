@@ -2,6 +2,17 @@
 
 local lsps = { "dockerls", "eslint", "lua_ls", "pyright", "ruff", "tailwindcss", "tsserver" }
 
+local border = {
+  { "╭", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "╮", "FloatBorder" },
+  { "│", "FloatBorder" },
+  { "╯", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "╰", "FloatBorder" },
+  { "│", "FloatBorder" },
+}
+
 return {
   { "folke/neodev.nvim" },
 
@@ -69,13 +80,23 @@ return {
         })
       end
 
+      local handlers = {
+        ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+        ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+      }
+
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       for _, lsp in pairs(lsps) do
         lspconfig[lsp].setup({
           on_attach = on_attach,
           capabilities = capabilities,
+          handlers = handlers,
         })
       end
+
+      vim.diagnostic.config({
+        float = { border = border },
+      })
     end,
   },
 }
