@@ -22,11 +22,11 @@ local function cmap(shortcut, command)
   map("c", shortcut, command)
 end
 
-imap("jk", "<Esc>") -- Exit insert mode
+imap("jk", "<Esc>")             -- Exit insert mode
 nmap("<C-l>", ":nohl<CR><C-l>") -- Remove highlighting
-nmap("j", "gj") -- Move down visual line
-nmap("k", "gk") -- Move up visual line
-nmap(";", ":") -- Enter command mode
+nmap("j", "gj")                 -- Move down visual line
+nmap("k", "gk")                 -- Move up visual line
+nmap(";", ":")                  -- Enter command mode
 
 -- Copy paste from system clipboard
 vmap("YY", '"+y<CR>')

@@ -8,7 +8,7 @@ return {
       require("package-info").setup({
         colors = {
           up_to_date = "#3c4048", -- Text color for up to date dependency virtual text
-          outdated = "#d19a66", -- Text color for outdated dependency virtual text
+          outdated = "#d19a66",   -- Text color for outdated dependency virtual text
         },
         package_manager = "yarn",
       })

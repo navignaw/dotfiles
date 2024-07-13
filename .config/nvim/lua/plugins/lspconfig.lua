@@ -23,14 +23,15 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = lsps,
       })
-      local map = function(type, key, value)
-        vim.api.nvim_buf_set_keymap(0, type, key, value, { noremap = true, silent = true })
-      end
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
-          map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-          map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-          map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+          local wk = require("which-key")
+          wk.register({
+            H = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostics" },
+            K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show LSP hover" },
+            ["<leader>ca"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>" },
+            ["<leader>rn"] = { "<cmd>lua vim.lsp.buf.rename()<CR>" },
+          })
         end,
       })
       local on_attach = function(client, bufnr)

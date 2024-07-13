@@ -23,7 +23,7 @@ return {
             desc = "Dap UI",
           },
           {
-            "H",
+            "<C-h>",
             function()
               require("dapui").eval()
             end,
