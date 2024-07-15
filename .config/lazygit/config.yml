@@ -1,0 +1,13 @@
+customCommands:
+  - key: "<C-R>"
+    context: "global"
+    prompts:
+      - type: "input"
+        title: "Enter topics, or press [Enter] to upload all"
+        key: "RevupTopics"
+        initialValue: ""
+    command: "revup upload {{.Form.RevupTopics}}"
+    subprocess: true
+
+gui:
+  nerdFontsVersion: "3"

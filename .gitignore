@@ -3,4 +3,6 @@ backups/
 __pycache__/
 
 Brewfile.lock.json
+
+.config/lazygit/state.yml
 .config/nvim/lua/custom/

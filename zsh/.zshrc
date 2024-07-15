@@ -75,6 +75,9 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 
+# Set lazygit config directory
+export CONFIG_DIR=~/.config/lazygit
+
 # autocomplete
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit

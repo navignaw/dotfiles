@@ -72,7 +72,7 @@ return {
     end,
   },
 
-  { "tpope/vim-fugitive" },
+  -- { "tpope/vim-fugitive" },
   {
     "akinsho/git-conflict.nvim",
     version = "*",
@@ -84,6 +84,25 @@ return {
         list_opener = "copen",
       })
     end,
+  },
+
+  -- Better Git UI
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
   },
 
   -- PR Reviews in Neovim!
