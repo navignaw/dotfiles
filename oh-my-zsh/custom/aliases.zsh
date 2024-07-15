@@ -45,8 +45,8 @@ alias python=python3
 alias pip=pip3
 
 # Neovim
-alias v=nvim
-alias vim=nvim
+alias v='nvim --listen $NVIM_SERVER_FILE'
+alias vim='nvim --listen $NVIM_SERVER_FILE'
 
 # Docker
 alias dex='docker exec -it'

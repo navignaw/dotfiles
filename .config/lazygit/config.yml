@@ -9,5 +9,14 @@ customCommands:
     command: "revup upload {{.Form.RevupTopics}}"
     subprocess: true
 
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+
 gui:
   nerdFontsVersion: "3"
+
+os:
+  editCommand: "nvim"
+  editCommandTemplate: "{{editor}} --server /tmp/nvim-server.pipe --remote-tab {{filename}}"
