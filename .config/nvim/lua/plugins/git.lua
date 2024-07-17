@@ -25,13 +25,13 @@ return {
 
           -- Navigation
           wk.register({
-            ["[c"] = {
+            ["[h"] = {
               function()
                 nav_hunk("prev")
               end,
               "Previous changed hunk",
             },
-            ["]c"] = {
+            ["]h"] = {
               function()
                 nav_hunk("next")
               end,

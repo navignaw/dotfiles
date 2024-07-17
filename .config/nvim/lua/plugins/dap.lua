@@ -186,8 +186,8 @@ return {
       {
         "<leader>da",
         function()
-          if not vim.fn.filereadable(".vscode/launch.json") then
-            vim.notify("No launch.json found", vim.log.levels.ERROR, { title = "DAP" })
+          if vim.fn.filereadable(".vscode/launch.json") then
+            require("dap.ext.vscode").load_launchjs()
           end
           require("dap").continue()
         end,
