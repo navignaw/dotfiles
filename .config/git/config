@@ -52,3 +52,6 @@
 
 [diff "image"]
   command = ~/dev/github/git-diff-image/git_diff_image
+
+[advice]
+  skippedCherryPicks = false

@@ -1,10 +1,5 @@
 # Aliases
 
-alias ls='ls --color'
-alias ll='ls -l --color'
-
-alias back='cd $OLDPWD'
-
 # Copy current working directory to clipboard
 alias cpwd='pwd | xclip -selection clipboard'
 
@@ -15,6 +10,7 @@ alias svenv='source .venv/bin/activate'
 
 # Zoxide and eza
 alias cd="z"
+alias ll="eza --color=always --long --git --icons=always"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 
 # Git aliases
@@ -55,3 +51,6 @@ alias dcb='docker-compose build'
 alias dcu='docker-compose up'
 
 alias k=kubectl
+
+# Don't expand these aliases automatically
+GLOBALIAS_FILTER_VALUES=( ls ll glog v )

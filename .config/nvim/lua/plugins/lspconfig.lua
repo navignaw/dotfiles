@@ -40,8 +40,13 @@ return {
           wk.register({
             H = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostics" },
             K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show LSP hover" },
-            ["<leader>ca"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>" },
-            ["<leader>rn"] = { "<cmd>lua vim.lsp.buf.rename()<CR>" },
+            ["<C-I>"] = {
+              function()
+                vim.lsp.buf.code_action()
+              end,
+              "Code actions",
+            },
+            ["<leader>rn"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename symbol" },
           })
         end,
       })
