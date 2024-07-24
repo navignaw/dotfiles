@@ -1,13 +1,6 @@
--- Fuzzy finder
-local function is_git_repo()
-  vim.fn.system("git rev-parse --is-inside-work-tree")
-  return vim.v.shell_error == 0
-end
+local utils = require("utils")
 
-local function get_git_root()
-  local dot_git_path = vim.fn.finddir(".git", ".;")
-  return vim.fn.fnamemodify(dot_git_path, ":h")
-end
+-- Fuzzy finder
 
 local function find_files_frecency()
   require("telescope").extensions.smart_open.smart_open()
@@ -16,9 +9,9 @@ end
 local function live_grep_from_project_git_root()
   local opts = nil
 
-  if is_git_repo() then
+  if utils.is_git_repo() then
     opts = {
-      cwd = get_git_root(),
+      cwd = utils.get_git_root(),
     }
   end
 
@@ -44,7 +37,7 @@ return {
       "tpope/vim-fugitive",
     },
     keys = {
-      { "<C-p>", find_files_frecency, desc = "Find files by frecency" },
+      { "<C-p>",      find_files_frecency,                       desc = "Find files by frecency" },
       {
         "<C-f>",
         live_grep_from_project_git_root,
@@ -63,25 +56,18 @@ return {
         mode = { "c" },
         desc = "Search previous commands",
       },
-      { "<C-h>", "<cmd>Telescope help_tags<CR>", desc = "Help tags" },
-      { "<leader>jb", "<cmd>Telescope buffers<CR>", desc = "Open buffers" },
-      { "<leader>jd", "<cmd>Telescope lsp_definitions<CR>", desc = "Jump to definitions (LSP)" },
-      { "<leader>ji", "<cmd>Telescope lsp_implementations<CR>", desc = "Jump to implementations (LSP)" },
-      { "<leader>jk", "<cmd>Telescope keymaps<CR>", desc = "Show mappings" },
-      { "<leader>jq", "<cmd>Telescope quickfix<CR>", desc = "Quickfix list" },
-      { "<leader>jr", "<cmd>Telescope lsp_references<CR>", desc = "Jump to references (LSP)" },
+      { "<C-h>",      "<cmd>Telescope help_tags<CR>",            desc = "Help tags" },
+      { "<leader>jb", "<cmd>Telescope buffers<CR>",              desc = "Open buffers" },
+      { "<leader>jd", "<cmd>Telescope lsp_definitions<CR>",      desc = "Jump to definitions (LSP)" },
+      { "<leader>ji", "<cmd>Telescope lsp_implementations<CR>",  desc = "Jump to implementations (LSP)" },
+      { "<leader>jk", "<cmd>Telescope keymaps<CR>",              desc = "Show mappings" },
+      { "<leader>jq", "<cmd>Telescope quickfix<CR>",             desc = "Quickfix list" },
+      { "<leader>jr", "<cmd>Telescope lsp_references<CR>",       desc = "Jump to references (LSP)" },
       { "<leader>jy", "<cmd>Telescope lsp_type_definitions<CR>", desc = "Jump to type definitions (LSP)" },
-      { "<leader>jv", edit_neovim, desc = "Edit neovim" },
+      { "<leader>jv", edit_neovim,                               desc = "Edit neovim" },
     },
     config = function()
       local actions = require("telescope.actions")
-      local commit = function()
-        vim.cmd("Git commit")
-      end
-      local commit_amend = function()
-        vim.cmd("Git commit --amend")
-      end
-
       require("telescope").setup({
         pickers = {
           buffers = {
@@ -192,7 +178,7 @@ return {
             mappings = {
               i = {
                 ["<C-f>"] = lga_actions.quote_prompt({ postfix = " --iglob " }), -- filter by file pattern (case insensitive)
-                ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }), -- filter by filetype
+                ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }),      -- filter by filetype
               },
             },
           },

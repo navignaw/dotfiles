@@ -32,7 +32,9 @@ end
 
 local function run_pytest(nearest)
   -- Find the "service" name from the nearest devcontainer.json file
+  -- TODO: Add support for customizing which container to run
   local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
+  local service = devcontainer and devcontainer.service or "devcontainer"
   -- Find the current file relative to the root of the git repository
   local current_file = get_file_relative_to_root()
 
@@ -44,14 +46,74 @@ local function run_pytest(nearest)
     end
   end
 
-  require("devcontainer.container").exec(
+  require("devcontainer.container").exec(service, {
+    command = { "pytest", current_file, unpack(args) },
+    tty = true,
+  })
+end
+
+local function run_bazel(command)
+  command = command or "build"
+  -- Find the "service" name from the nearest devcontainer.json file
   -- TODO: Add support for customizing which container to run
-    devcontainer and devcontainer.service or "service",
-    {
-      command = { "pytest", current_file, unpack(args) },
-      tty = true,
-    }
-  )
+  local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
+  local service = devcontainer and devcontainer.service or "devcontainer"
+  local nearest_bazel_dir = utils.get_nearest_bazel_dir()
+  local commands = { "bazel", "query" }
+  if command == "test" then
+    table.insert(commands, "kind('test rule', /" .. nearest_bazel_dir .. "/...)")
+  else
+    table.insert(commands, "/" .. nearest_bazel_dir .. "/...")
+  end
+
+  local container = require("devcontainer.container")
+  container.exec(service, {
+    command = commands,
+    capture_output = true,
+    on_success = function(output)
+      local lines = vim.split(output or "", "\n", { trimempty = true })
+      if #lines == 0 then
+        vim.notify("No targets found")
+        return
+      end
+
+      local run_command = function(targets)
+        vim.notify("Running bazel " .. command .. ": " .. table.concat(targets, " "))
+        container.exec(service, {
+          command = { "bazel", command, unpack(targets) },
+          tty = true,
+        })
+      end
+
+      if #lines == 1 then
+        run_command(lines)
+        return
+      end
+
+      -- Choose test targets to run via telescope
+      local pickers = require("telescope.pickers")
+      local finders = require("telescope.finders")
+      local sorters = require("telescope.sorters")
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+      pickers
+        .new({
+          prompt_title = "Bazel targets",
+          finder = finders.new_table({
+            results = lines,
+          }),
+          sorter = sorters.get_generic_fuzzy_sorter({}),
+          attach_mappings = function()
+            actions.select_default:replace(function()
+              local targets = action_state.get_selected_entry()
+              run_command(targets)
+            end)
+            return true
+          end,
+        }, {})
+        :find()
+    end,
+  })
 end
 
 return {
@@ -81,6 +143,21 @@ return {
         end,
         desc = "Test nearest",
         ft = { "python" },
+      },
+      { "<leader>bb", run_bazel, desc = "Bazel build" },
+      {
+        "<leader>br",
+        function()
+          run_bazel("run")
+        end,
+        desc = "Bazel run",
+      },
+      {
+        "<leader>tb",
+        function()
+          run_bazel("test")
+        end,
+        desc = "Bazel tests",
       },
     },
   },
