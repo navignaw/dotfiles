@@ -39,7 +39,6 @@ return {
           local wk = require("which-key")
           wk.register({
             H = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostics" },
-            K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show LSP hover" },
             ["<C-I>"] = {
               function()
                 vim.lsp.buf.code_action()

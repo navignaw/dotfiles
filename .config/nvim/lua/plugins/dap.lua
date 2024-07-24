@@ -7,6 +7,15 @@ local js_filetypes = {
   "typescriptreact",
 }
 
+-- Evaluate DAP variable if in session or show LSP hover
+local function dap_eval_or_lsp_buf_hover()
+  if require("dap").session() then
+    require("dapui").eval()
+  else
+    vim.lsp.buf.hover()
+  end
+end
+
 return {
   -- Debug Adapter Protocol client implementation for Neovim
   {
@@ -23,11 +32,9 @@ return {
             desc = "Dap UI",
           },
           {
-            "<C-h>",
-            function()
-              require("dapui").eval()
-            end,
-            desc = "Eval",
+            "K",
+            dap_eval_or_lsp_buf_hover,
+            desc = "Show DAP or LSP hover",
             mode = { "n", "v" },
           },
         },
@@ -257,14 +264,14 @@ return {
         desc = "Up",
       },
       {
-        "<leader>do",
+        "<leader>dO",
         function()
           require("dap").step_out()
         end,
         desc = "Step Out",
       },
       {
-        "<leader>dO",
+        "<leader>do",
         function()
           require("dap").step_over()
         end,
