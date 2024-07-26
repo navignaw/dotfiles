@@ -13,6 +13,29 @@ local border = {
   { "│", "FloatBorder" },
 }
 
+local function get_python_path(workspace)
+  local configs = require("lspconfig/configs")
+  local util = require("lspconfig/util")
+
+  local path = util.path
+
+  -- Use activated virtualenv.
+  if vim.env.VIRTUAL_ENV then
+    return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
+  end
+
+  -- Find and use virtualenv in workspace directory.
+  for _, pattern in ipairs({ ".venv", "venv" }) do
+    local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
+    if match ~= "" then
+      return path.join(path.dirname(match), "bin", "python")
+    end
+  end
+
+  -- Fallback to system Python.
+  return exepath("python3") or exepath("python") or "python"
+end
+
 return {
   { "folke/neodev.nvim" },
 
@@ -91,11 +114,17 @@ return {
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       for _, lsp in pairs(lsps) do
-        lspconfig[lsp].setup({
+        local lsp_settings = {
           on_attach = on_attach,
           capabilities = capabilities,
           handlers = handlers,
-        })
+        }
+        if lsp == "pyright" then
+          lsp_settings.before_init = function(_, config)
+            config.settings.python.pythonPath = get_python_path(config.root_dir)
+          end
+        end
+        lspconfig[lsp].setup(lsp_settings)
       end
 
       vim.diagnostic.config({

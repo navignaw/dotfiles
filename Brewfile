@@ -12,6 +12,7 @@ brew "n"  # Node.js version manager
 brew "uv"  # faster python package installer
 
 # -- Terminal utilities
+brew "bat"  # better cat
 brew "catimg"  # image viewer
 brew "eza"  # better ls
 brew "fd"  # better find
