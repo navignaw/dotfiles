@@ -55,7 +55,6 @@ end
 local function run_bazel(command)
   command = command or "build"
   -- Find the "service" name from the nearest devcontainer.json file
-  -- TODO: Add support for customizing which container to run
   local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
   local service = devcontainer and devcontainer.service or "devcontainer"
   local nearest_bazel_dir = utils.get_nearest_bazel_dir()
@@ -79,6 +78,9 @@ local function run_bazel(command)
 
       local run_command = function(targets)
         vim.notify("Running bazel " .. command .. ": " .. table.concat(targets, " "))
+        if command == "test" then
+          table.insert(targets, "--test_arg=--color=yes")
+        end
         container.exec(service, {
           command = { "bazel", command, unpack(targets) },
           tty = true,
@@ -90,28 +92,12 @@ local function run_bazel(command)
         return
       end
 
-      -- Choose test targets to run via telescope
-      local pickers = require("telescope.pickers")
-      local finders = require("telescope.finders")
-      local sorters = require("telescope.sorters")
-      local actions = require("telescope.actions")
-      local action_state = require("telescope.actions.state")
-      pickers
-        .new({
-          prompt_title = "Bazel targets",
-          finder = finders.new_table({
-            results = lines,
-          }),
-          sorter = sorters.get_generic_fuzzy_sorter({}),
-          attach_mappings = function()
-            actions.select_default:replace(function()
-              local targets = action_state.get_selected_entry()
-              run_command(targets)
-            end)
-            return true
-          end,
-        }, {})
-        :find()
+      -- Choose test targets to run
+      vim.ui.select(lines, {
+        prompt = "Bazel targets",
+      }, function(selected)
+        run_command({ selected })
+      end)
     end,
   })
 end

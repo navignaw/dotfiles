@@ -46,7 +46,7 @@ local function git_link_file()
   local current_line = vim.fn.line(".")
   local git_root = utils.get_git_root()
   if git_root == "" then
-    print("Not a git repository")
+    vim.notify("Not a git repository")
     return
   end
   local git_file = current_file:gsub(git_root .. "/", "")
@@ -59,7 +59,7 @@ wk.register({
   q = { "<cmd>bd<CR>", "Close buffer" },
   qa = { "<cmd>q<CR>", "Close all buffers" },
   bc = { "<cmd>%bd|e#<CR>", "Close all buffers except current" },
-  sv = { "<cmd>so ~/.config/nvim/init.lua<CR>", "Source neovim" },
+  vs = { "<cmd>so ~/.config/nvim/init.lua<CR>", "Source neovim" },
   up = { "<cmd>!revup upload<CR>", "Upload to revup" },
   cd = { open_current_directory, "Open directory of the current file" },
   g = {

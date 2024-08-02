@@ -18,9 +18,9 @@ return {
       "kyazdani42/nvim-web-devicons",
     },
     config = function()
-      require("gitsigns").setup({
+      local gitsigns = require("gitsigns")
+      gitsigns.setup({
         on_attach = function()
-          local gitsigns = require("gitsigns")
           local wk = require("which-key")
 
           -- Navigation
