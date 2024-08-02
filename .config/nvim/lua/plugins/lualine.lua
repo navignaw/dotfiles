@@ -37,6 +37,20 @@ return {
                 return package.loaded["dap"] and require("dap").status() ~= ""
               end,
             },
+            {
+              -- Show DBUI status
+              function()
+                return vim.fn["db_ui#statusline"]({
+                  show = { "db_name", "table" },
+                  separator = " - ",
+                  prefix = "⛁ ",
+                })
+              end,
+              cond = function()
+                local fts = { "sql", "mysql", "plsql", "dbui", "dbout" }
+                return package.loaded["plugins.vim-dadbod"] and vim.tbl_contains(fts, vim.bo.filetype)
+              end,
+            },
           },
           lualine_y = { "filetype" },
           lualine_z = {},
