@@ -1,6 +1,7 @@
 HOME = os.getenv("HOME")
 
 -- Display
+vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.showmode = false
 vim.opt.colorcolumn = "80"
