@@ -1,6 +1,6 @@
 -- LSP and installers
 
-local lsps = { "dockerls", "eslint", "lua_ls", "pyright", "ruff", "tailwindcss", "tsserver" }
+local lsps = { "dockerls", "eslint", "lua_ls", "pyright", "ruff", "rust_analyzer", "tailwindcss", "tsserver" }
 
 local border = {
   { "╭", "FloatBorder" },

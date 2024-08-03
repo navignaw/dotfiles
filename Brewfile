@@ -8,6 +8,7 @@ brew "go"
 brew "java"
 brew "pyenv"
 brew "ruby"
+brew "rust"
 brew "n"  # Node.js version manager
 brew "uv"  # faster python package installer
 
@@ -35,6 +36,7 @@ brew "jesseduffield/lazygit/lazygit"  # better Git UI
 brew "actionlint"  # GHA linter
 brew "buildifier"  # Bazel formatter
 brew "hadolint"  # Dockerfile linter
+brew "rustfmt"  # Rust formatter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
 brew "fsouza/prettierd/prettierd" # Prettier daemon
