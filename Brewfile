@@ -36,6 +36,7 @@ brew "jesseduffield/lazygit/lazygit"  # better Git UI
 brew "actionlint"  # GHA linter
 brew "buildifier"  # Bazel formatter
 brew "hadolint"  # Dockerfile linter
+brew "markdownlint-cli"  # Markdown linter
 brew "rustfmt"  # Rust formatter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua

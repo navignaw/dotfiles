@@ -1,12 +1,12 @@
--- Renders markdown directly in normal mode
+-- Renders markdown preview in .md files
 
 return {
   {
-    "MeanderingProgrammer/markdown.nvim",
-    name = "render-markdown",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("render-markdown").setup({})
-    end,
+    "OXY2DEV/markview.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    ft = "markdown",
   },
 }
