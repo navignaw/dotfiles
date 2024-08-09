@@ -18,10 +18,13 @@ return {
           null_ls.builtins.diagnostics.hadolint,
           null_ls.builtins.diagnostics.markdownlint,
           null_ls.builtins.diagnostics.yamllint,
+          -- Note: most formatters are already handled by the LSP, e.g. ruff/prettier.
+          -- Only include formatters that don't have an LSP equivalent.
+          null_ls.builtins.formatting.buildifier,
           null_ls.builtins.hover.printenv,
         },
         should_attach = function(bufnr)
-          -- Don't run on files matching yarn.loc
+          -- Don't run on files matching yarn.lock
           return not vim.api.nvim_buf_get_name(bufnr):match("yarn.lock")
         end,
       })
