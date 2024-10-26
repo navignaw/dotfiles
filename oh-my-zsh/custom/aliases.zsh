@@ -34,6 +34,8 @@ alias gp='git push origin HEAD'
 alias grb='git rebase -i'
 alias grbo='git rebase-onto'
 alias dev='git checkout develop'
+
+alias lg='lazygit'
 alias up='revup upload'
 
 # Python default
