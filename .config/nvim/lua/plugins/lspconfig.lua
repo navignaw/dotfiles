@@ -14,7 +14,6 @@ local border = {
 }
 
 local function get_python_path(workspace)
-  local configs = require("lspconfig/configs")
   local util = require("lspconfig/util")
 
   local path = util.path
@@ -58,7 +57,8 @@ return {
         ensure_installed = lsps,
       })
       vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function()
+        group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+        callback = function(args)
           local wk = require("which-key")
           wk.register({
             H = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostics" },
@@ -70,6 +70,15 @@ return {
             },
             ["<leader>rn"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename symbol" },
           })
+
+          -- Disable hover for Ruff in favor of Pyright
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client == nil then
+            return
+          end
+          if client.name == "ruff" then
+            client.server_capabilities.hoverProvider = false
+          end
         end,
       })
       local on_attach = function(client, bufnr)
@@ -105,6 +114,18 @@ return {
             vim.lsp.buf.format({ async = false })
           end,
         })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = { "*.py" },
+          group = augroup,
+          callback = function()
+            vim.lsp.buf.code_action({
+              context = {
+                only = { "source.organizeImports.ruff" }, -- Automatically run Ruff's sort command on save
+              },
+              apply = true,
+            })
+          end,
+        })
       end
 
       local handlers = {
@@ -123,6 +144,12 @@ return {
           lsp_settings.before_init = function(_, config)
             config.settings.python.pythonPath = get_python_path(config.root_dir)
           end
+          lsp_settings.settings = {
+            pyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+            },
+          }
         end
         lspconfig[lsp].setup(lsp_settings)
       end

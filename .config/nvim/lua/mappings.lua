@@ -22,11 +22,18 @@ local function cmap(shortcut, command)
   map("c", shortcut, command)
 end
 
-imap("jk", "<Esc>")             -- Exit insert mode
+local function show_filename()
+  -- Show full path to file
+  local filename = vim.fn.expand("%:p")
+  vim.notify(filename)
+end
+
+imap("jk", "<Esc>") -- Exit insert mode
 nmap("<C-l>", ":nohl<CR><C-l>") -- Remove highlighting
-nmap("j", "gj")                 -- Move down visual line
-nmap("k", "gk")                 -- Move up visual line
-nmap(";", ":")                  -- Enter command mode
+nmap("j", "gj") -- Move down visual line
+nmap("k", "gk") -- Move up visual line
+nmap(";", ":") -- Enter command mode
+nmap("<C-g>", show_filename) -- Show filename
 
 -- Copy paste from system clipboard
 vmap("YY", '"+y<CR>')
