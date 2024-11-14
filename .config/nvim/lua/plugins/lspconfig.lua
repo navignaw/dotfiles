@@ -108,13 +108,6 @@ return {
         -- Format on save (LSPs)
         local augroup = vim.api.nvim_create_augroup("LspAutoFormatting", {})
         vim.api.nvim_create_autocmd("BufWritePre", {
-          pattern = { "*.lua", "*.py" },
-          group = augroup,
-          callback = function()
-            vim.lsp.buf.format({ async = false })
-          end,
-        })
-        vim.api.nvim_create_autocmd("BufWritePre", {
           pattern = { "*.py" },
           group = augroup,
           callback = function()
@@ -150,6 +143,8 @@ return {
               disableOrganizeImports = true,
             },
           }
+        elseif lsp == "ruff" then
+          lsp_settings.cmd = { "ruff", "server" } -- no preview
         end
         lspconfig[lsp].setup(lsp_settings)
       end
