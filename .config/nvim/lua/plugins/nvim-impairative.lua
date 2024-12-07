@@ -190,6 +190,13 @@ local unimpaired = function()
       backward = require("impairative.helpers").encode_xml,
       forward = require("impairative.helpers").decode_xml,
     })
+    :text_manipulation({
+      key = "c",
+      line_key = true,
+      desc = "convert to {lower|upper} case",
+      backward = string.lower,
+      forward = string.upper,
+    })
 end
 
 return {
