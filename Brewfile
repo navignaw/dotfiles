@@ -3,6 +3,9 @@
 # -- Editors
 brew "neovim"
 
+# -- Terminal
+cask "ghostty"
+
 # -- Languages and version managers
 brew "go"
 brew "java"
