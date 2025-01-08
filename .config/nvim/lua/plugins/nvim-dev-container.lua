@@ -1,14 +1,5 @@
 local utils = require("utils")
 
-local function get_file_relative_to_root()
-  local current_file = vim.fn.expand("%:p")
-  local git_root = utils.get_git_root()
-  if git_root == "" then
-    return current_file
-  end
-  return current_file:gsub(git_root, "")
-end
-
 local function nearest_test()
   local ts_utils = require("nvim-treesitter.ts_utils")
   local current_node = ts_utils.get_node_at_cursor()
@@ -30,29 +21,7 @@ local function nearest_test()
   --return (vim.treesitter.get_node_text(expr:child(1)))[1]
 end
 
-local function run_pytest(nearest)
-  -- Find the "service" name from the nearest devcontainer.json file
-  -- TODO: Add support for customizing which container to run
-  local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
-  local service = devcontainer and devcontainer.service or "devcontainer"
-  -- Find the current file relative to the root of the git repository
-  local current_file = get_file_relative_to_root()
-
-  local args = {}
-  if nearest then
-    local nearest_test_name = nearest_test()
-    if nearest_test_name ~= "" then
-      args = { "-k " .. nearest_test_name }
-    end
-  end
-
-  require("devcontainer.container").exec(service, {
-    command = { "pytest", current_file, unpack(args) },
-    tty = true,
-  })
-end
-
-local function run_bazel(command)
+local function run_bazel(command, additional_args)
   command = command or "build"
   -- Find the "service" name from the nearest devcontainer.json file
   local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
@@ -80,6 +49,10 @@ local function run_bazel(command)
         vim.notify("Running bazel " .. command .. ": " .. table.concat(targets, " "))
         if command == "test" then
           table.insert(targets, "--test_arg=--color=yes")
+          table.insert(targets, "--experimental_ui_max_stdouterr_bytes=999999999")
+        end
+        if additional_args then
+          table.insert(targets, "--test_arg=" .. additional_args)
         end
         container.exec(service, {
           command = { "bazel", command, unpack(targets) },
@@ -100,6 +73,20 @@ local function run_bazel(command)
       end)
     end,
   })
+end
+
+local function run_bazel_pytest(nearest)
+  local args
+  if nearest then
+    local nearest_test_name = nearest_test()
+    if nearest_test_name ~= "" then
+      args = "-k=" .. nearest_test_name
+    else
+      args = "-k=" .. vim.fn.expand("%:t")
+    end
+  end
+
+  run_bazel("test", args)
 end
 
 return {
@@ -144,11 +131,16 @@ return {
       })
     end,
     keys = {
-      { "<leader>tf", run_pytest, desc = "Test file", ft = { "python" } },
+      {
+        "<leader>tf",
+        run_bazel_pytest,
+        desc = "Test file",
+        ft = { "python" },
+      },
       {
         "<leader>tn",
         function()
-          run_pytest(true)
+          run_bazel_pytest(true)
         end,
         desc = "Test nearest",
         ft = { "python" },
