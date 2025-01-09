@@ -84,6 +84,8 @@ local function run_bazel_pytest(nearest)
     else
       args = "-k=" .. vim.fn.expand("%:t")
     end
+  else
+    args = "-k=" .. vim.fn.expand("%:t") -- Grab test file
   end
 
   run_bazel("test", args)

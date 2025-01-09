@@ -7,15 +7,20 @@ local function find_files_frecency()
 end
 
 local function live_grep_from_project_git_root()
-  local opts = nil
+  local opts = {
+    prompt_title = "Live Grep (#ft >folder &file)",
+  }
 
   if utils.is_git_repo() then
-    opts = {
-      cwd = utils.get_git_root(),
-    }
+    opts["cwd"] = utils.get_git_root()
   end
 
-  require("telescope").extensions.live_grep_args.live_grep_args(opts)
+  -- Check if in visual mode; if so, grab z register
+  if vim.fn.mode() == "v" then
+    opts["default_text"] = utils.get_visual_selection()
+  end
+
+  require("telescope").extensions.egrepify.egrepify(opts)
 end
 
 local function edit_neovim()
@@ -41,14 +46,8 @@ return {
       {
         "<C-f>",
         live_grep_from_project_git_root,
-        mode = { "n" },
+        mode = { "n", "v", "x" },
         desc = "Live grep",
-      },
-      {
-        "<C-f>",
-        "<cmd>Telescope grep_string<CR>",
-        mode = { "x" },
-        desc = "Grep highlighted string",
       },
       {
         "<C-f>",
@@ -166,26 +165,17 @@ return {
     },
   },
 
-  -- live grep with arguments
+  -- Prefixes:
+  --   #file1,file2: search by file type
+  --   >folder: search in **/folder*/**
+  --   &file: search by file name
   {
-    "nvim-telescope/telescope-live-grep-args.nvim",
+    "fdschmidt93/telescope-egrepify.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+
     config = function()
       local telescope = require("telescope")
-      local lga_actions = require("telescope-live-grep-args.actions")
-      telescope.setup({
-        extensions = {
-          live_grep_args = {
-            auto_quoting = true,
-            mappings = {
-              i = {
-                ["<C-f>"] = lga_actions.quote_prompt({ postfix = " --iglob " }), -- filter by file pattern (case insensitive)
-                ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }), -- filter by filetype
-              },
-            },
-          },
-        },
-      })
-      telescope.load_extension("live_grep_args")
+      telescope.load_extension("egrepify")
     end,
   },
 
