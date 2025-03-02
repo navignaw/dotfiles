@@ -10,8 +10,27 @@
   diff-image = "!f() { cd -- \"${GIT_PREFIX:-.}\"; GIT_DIFF_IMAGE_ENABLED=1 git diff \"$@\"; }; f"
   main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
 
+[branch]
+  sort = -committerdate  # Sort branches by commit date
+
+[column]
+  ui = auto  # Enable column mode for all commands that support it
+
+[tag]
+  sort = version:refname
+
 [push]
   default = simple
+  autoSetupRemote = true
+
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+
+[rerere]
+  enabled = true
+  autoupdate = true
 
 [core]
   editor = nvim
@@ -28,7 +47,7 @@
   tabs = 4
 
 [merge]
-  conflictstyle = diff3
+  conflictstyle = zdiff3
 
 [pager]
   branch = false
@@ -37,7 +56,9 @@
   rebase = true
 
 [rebase]
+  autoSquash = true
   autoStash = true
+  updateRefs = true
 
 #[commit]
   #gpgsign = true
@@ -49,7 +70,10 @@
   defaultBranch = main
 
 [diff]
+  algorithm = histogram
   colorMoved = default
+  mnemonicPrefix = true
+  renames = true
 
 [diff "image"]
   command = ~/dev/github/git-diff-image/git_diff_image
