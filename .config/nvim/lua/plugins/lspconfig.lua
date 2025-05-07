@@ -1,6 +1,7 @@
 -- LSP and installers
 
-local lsps = { "dockerls", "eslint", "lua_ls", "pyright", "ruff", "rust_analyzer", "tailwindcss", "tsserver" }
+local lsps =
+  { "buf_ls", "dockerls", "eslint", "gopls", "lua_ls", "pyright", "ruff", "rust_analyzer", "tailwindcss", "ts_ls" }
 
 local border = {
   { "╭", "FloatBorder" },
@@ -37,6 +38,9 @@ end
 
 return {
   { "folke/neodev.nvim" },
+  -- Lock to specific version until breaking change fixed: https://github.com/LazyVim/LazyVim/issues/6039
+  { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
+  { "williamboman/mason.nvim", version = "1.11.0" },
 
   {
     "neovim/nvim-lspconfig",

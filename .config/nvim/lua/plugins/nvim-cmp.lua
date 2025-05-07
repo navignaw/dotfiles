@@ -29,6 +29,10 @@ return {
             suggestion = {
               auto_trigger = true,
             },
+            filetypes = {
+              rust = false, -- Disable for rust while learning!
+              text = false,
+            },
           })
         end,
       },
