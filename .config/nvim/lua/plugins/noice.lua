@@ -129,29 +129,30 @@ return {
       })
 
       local wk = require("which-key")
-      wk.register({
-        n = {
-          name = "Noice",
-          d = {
-            function()
-              require("noice.message.router").dismiss()
-            end,
-            "Dismiss messages",
-          },
-          h = {
-            function()
-              require("noice").cmd("telescope")
-            end,
-            "Message history",
-          },
-          l = {
-            function()
-              require("noice").cmd("last")
-            end,
-            "Last messages",
-          },
+      wk.add({
+        { "<leader>n", group = "Noice" },
+        {
+          "<leader>nd",
+          function()
+            require("noice.message.router").dismiss()
+          end,
+          desc = "Dismiss messages",
         },
-      }, { prefix = "<leader>" })
+        {
+          "<leader>nh",
+          function()
+            require("noice").cmd("telescope")
+          end,
+          desc = "Message history",
+        },
+        {
+          "<leader>nl",
+          function()
+            require("noice").cmd("last")
+          end,
+          desc = "Last messages",
+        },
+      })
     end,
   },
 }

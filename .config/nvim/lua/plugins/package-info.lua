@@ -8,45 +8,48 @@ return {
       require("package-info").setup({
         colors = {
           up_to_date = "#3c4048", -- Text color for up to date dependency virtual text
-          outdated = "#d19a66",   -- Text color for outdated dependency virtual text
+          outdated = "#d19a66", -- Text color for outdated dependency virtual text
         },
         package_manager = "yarn",
       })
 
       local wk = require("which-key")
-      wk.register({
-        ["<leader>pi"] = {
-          name = "Package Info",
-          t = {
-            function()
-              require("package-info").toggle()
-            end,
-            "Toggle package info",
-          },
-          u = {
-            function()
-              require("package-info").update()
-            end,
-            "Update package",
-          },
-          d = {
-            function()
-              require("package-info").delete()
-            end,
-            "Delete package",
-          },
-          i = {
-            function()
-              require("package-info").install()
-            end,
-            "Install package",
-          },
-          v = {
-            function()
-              require("package-info").change_version()
-            end,
-            "Change package version",
-          },
+      wk.add({
+        { "<leader>pi", group = "Package Info" },
+        {
+          "<leader>pid",
+          function()
+            require("package-info").delete()
+          end,
+          desc = "Delete package",
+        },
+        {
+          "<leader>pii",
+          function()
+            require("package-info").install()
+          end,
+          desc = "Install package",
+        },
+        {
+          "<leader>pit",
+          function()
+            require("package-info").toggle()
+          end,
+          desc = "Toggle package info",
+        },
+        {
+          "<leader>piu",
+          function()
+            require("package-info").update()
+          end,
+          desc = "Update package",
+        },
+        {
+          "<leader>piv",
+          function()
+            require("package-info").change_version()
+          end,
+          desc = "Change package version",
         },
       })
     end,

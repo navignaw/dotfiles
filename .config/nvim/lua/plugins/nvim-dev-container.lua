@@ -25,7 +25,7 @@ local function run_bazel(command, additional_args)
   command = command or "build"
   -- Find the "service" name from the nearest devcontainer.json file
   local devcontainer = require("devcontainer.config_file.parse").parse_nearest_devcontainer_config()
-  local service = devcontainer and devcontainer.service or "devcontainer"
+  local service = devcontainer and devcontainer.service or "docker"
   local nearest_bazel_dir = utils.get_nearest_bazel_dir()
   local commands = { "bazel", "query" }
   if command == "test" then

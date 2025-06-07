@@ -24,49 +24,51 @@ return {
           local wk = require("which-key")
 
           -- Navigation
-          wk.register({
-            ["[h"] = {
+          wk.add({
+            {
+              "[h",
               function()
                 nav_hunk("prev")
               end,
-              "Previous changed hunk",
+              desc = "Previous changed hunk",
             },
-            ["]h"] = {
+            {
+              "]h",
               function()
                 nav_hunk("next")
               end,
-              "Next changed hunk",
+              desc = "Next changed hunk",
             },
           })
 
           -- Hunk actions
-          wk.register({
-            name = "+Hunk",
-            s = { gitsigns.stage_hunk, "Stage hunk" },
-            r = { gitsigns.reset_hunk, "Reset hunk" },
-            S = { gitsigns.stage_buffer, "Stage buffer" },
-            u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
-            R = { gitsigns.reset_buffer, "Reset buffer" },
-            p = { gitsigns.preview_hunk, "Preview hunk" },
-            b = {
-              function()
-                gitsigns.blame_line({ full = true })
-              end,
-              "Blame line",
-            },
-            d = { gitsigns.diffthis, "Diff hunk" },
-            D = {
+          wk.add({
+            { "<leader>h", group = "Hunk" },
+            {
+              "<leader>hD",
               function()
                 gitsigns.diffthis("~")
               end,
-              "Diff hunk (reverse)",
+              desc = "Diff hunk (reverse)",
             },
-            t = {
-              name = "Toggle",
-              b = { gitsigns.toggle_current_line_blame, "Toggle blame" },
-              d = { gitsigns.toggle_deleted, "Toggle deleted" },
+            { "<leader>hR", gitsigns.reset_buffer, desc = "Reset buffer" },
+            { "<leader>hS", gitsigns.stage_buffer, desc = "Stage buffer" },
+            {
+              "<leader>hb",
+              function()
+                gitsigns.blame_line({ full = true })
+              end,
+              desc = "Blame line",
             },
-          }, { prefix = "<leader>h" })
+            { "<leader>hd", gitsigns.diffthis, desc = "Diff hunk" },
+            { "<leader>hp", gitsigns.preview_hunk, desc = "Preview hunk" },
+            { "<leader>hr", gitsigns.reset_hunk, desc = "Reset hunk" },
+            { "<leader>hs", gitsigns.stage_hunk, desc = "Stage hunk" },
+            { "<leader>ht", group = "Toggle" },
+            { "<leader>htb", gitsigns.toggle_current_line_blame, desc = "Toggle blame" },
+            { "<leader>htd", gitsigns.toggle_deleted, desc = "Toggle deleted" },
+            { "<leader>hu", gitsigns.undo_stage_hunk, desc = "Undo stage hunk" },
+          })
         end,
       })
     end,
@@ -108,62 +110,42 @@ return {
       })
 
       local wk = require("which-key")
-      wk.register({
-        -- Shortcuts for pull request
-        pr = {
-          name = "+PR",
-          o = { "<cmd>GHOpenPR<cr>", "Open" },
-          r = { "<cmd>GHRequestedReview<cr>", "Requested Review" },
-          s = { "<cmd>GHSearchPRs<cr>", "Search" },
-        },
-        g = {
-          name = "+Git",
-          h = {
-            name = "+Github",
-            c = {
-              name = "+Commits",
-              c = { "<cmd>GHCloseCommit<cr>", "Close" },
-              e = { "<cmd>GHExpandCommit<cr>", "Expand" },
-              o = { "<cmd>GHOpenToCommit<cr>", "Open To" },
-              p = { "<cmd>GHPopOutCommit<cr>", "Pop Out" },
-              z = { "<cmd>GHCollapseCommit<cr>", "Collapse" },
-            },
-            i = {
-              name = "+Issues",
-              p = { "<cmd>GHPreviewIssue<cr>", "Preview" },
-            },
-            l = {
-              name = "+Litee",
-              t = { "<cmd>LTPanel<cr>", "Toggle Panel" },
-            },
-            r = {
-              name = "+Review",
-              b = { "<cmd>GHStartReview<cr>", "Begin" },
-              c = { "<cmd>GHCloseReview<cr>", "Close" },
-              d = { "<cmd>GHDeleteReview<cr>", "Delete" },
-              e = { "<cmd>GHExpandReview<cr>", "Expand" },
-              s = { "<cmd>GHSubmitReview<cr>", "Submit" },
-              z = { "<cmd>GHCollapseReview<cr>", "Collapse" },
-            },
-            p = {
-              name = "+Pull Request",
-              c = { "<cmd>GHClosePR<cr>", "Close" },
-              d = { "<cmd>GHPRDetails<cr>", "Details" },
-              e = { "<cmd>GHExpandPR<cr>", "Expand" },
-              p = { "<cmd>GHPopOutPR<cr>", "PopOut" },
-              r = { "<cmd>GHRefreshPR<cr>", "Refresh" },
-              t = { "<cmd>GHOpenToPR<cr>", "Open To" },
-              z = { "<cmd>GHCollapsePR<cr>", "Collapse" },
-            },
-            t = {
-              name = "+Threads",
-              c = { "<cmd>GHCreateThread<cr>", "Create" },
-              n = { "<cmd>GHNextThread<cr>", "Next" },
-              t = { "<cmd>GHToggleThread<cr>", "Toggle" },
-            },
-          },
-        },
-      }, { prefix = "<leader>" })
+      wk.add({
+        { "<leader>gh", group = "Github" },
+        { "<leader>ghc", group = "Commits" },
+        { "<leader>ghcc", "<cmd>GHCloseCommit<cr>", desc = "Close" },
+        { "<leader>ghce", "<cmd>GHExpandCommit<cr>", desc = "Expand" },
+        { "<leader>ghco", "<cmd>GHOpenToCommit<cr>", desc = "Open To" },
+        { "<leader>ghcp", "<cmd>GHPopOutCommit<cr>", desc = "Pop Out" },
+        { "<leader>ghcz", "<cmd>GHCollapseCommit<cr>", desc = "Collapse" },
+        { "<leader>ghi", group = "Issues" },
+        { "<leader>ghip", "<cmd>GHPreviewIssue<cr>", desc = "Preview" },
+        { "<leader>ghl", group = "Litee" },
+        { "<leader>ghlt", "<cmd>LTPanel<cr>", desc = "Toggle Panel" },
+        { "<leader>ghp", group = "Pull Request" },
+        { "<leader>ghpc", "<cmd>GHClosePR<cr>", desc = "Close" },
+        { "<leader>ghpd", "<cmd>GHPRDetails<cr>", desc = "Details" },
+        { "<leader>ghpe", "<cmd>GHExpandPR<cr>", desc = "Expand" },
+        { "<leader>ghpp", "<cmd>GHPopOutPR<cr>", desc = "PopOut" },
+        { "<leader>ghpr", "<cmd>GHRefreshPR<cr>", desc = "Refresh" },
+        { "<leader>ghpt", "<cmd>GHOpenToPR<cr>", desc = "Open To" },
+        { "<leader>ghpz", "<cmd>GHCollapsePR<cr>", desc = "Collapse" },
+        { "<leader>ghr", group = "Review" },
+        { "<leader>ghrb", "<cmd>GHStartReview<cr>", desc = "Begin" },
+        { "<leader>ghrc", "<cmd>GHCloseReview<cr>", desc = "Close" },
+        { "<leader>ghrd", "<cmd>GHDeleteReview<cr>", desc = "Delete" },
+        { "<leader>ghre", "<cmd>GHExpandReview<cr>", desc = "Expand" },
+        { "<leader>ghrs", "<cmd>GHSubmitReview<cr>", desc = "Submit" },
+        { "<leader>ghrz", "<cmd>GHCollapseReview<cr>", desc = "Collapse" },
+        { "<leader>ght", group = "Threads" },
+        { "<leader>ghtc", "<cmd>GHCreateThread<cr>", desc = "Create" },
+        { "<leader>ghtn", "<cmd>GHNextThread<cr>", desc = "Next" },
+        { "<leader>ghtt", "<cmd>GHToggleThread<cr>", desc = "Toggle" },
+        { "<leader>pr", group = "PR" },
+        { "<leader>pro", "<cmd>GHOpenPR<cr>", desc = "Open" },
+        { "<leader>prr", "<cmd>GHRequestedReview<cr>", desc = "Requested Review" },
+        { "<leader>prs", "<cmd>GHSearchPRs<cr>", desc = "Search" },
+      })
     end,
   },
 }

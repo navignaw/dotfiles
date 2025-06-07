@@ -61,16 +61,14 @@ local function git_link_file()
 end
 
 local wk = require("which-key")
-wk.register({
-  w = { "<cmd>w<CR>", "Save" },
-  q = { "<cmd>bd<CR>", "Close buffer" },
-  qa = { "<cmd>q<CR>", "Close all buffers" },
-  bc = { "<cmd>%bd|e#<CR>", "Close all buffers except current" },
-  vs = { "<cmd>so ~/.config/nvim/init.lua<CR>", "Source neovim" },
-  up = { "<cmd>!revup upload<CR>", "Upload to revup" },
-  cd = { open_current_directory, "Open directory of the current file" },
-  g = {
-    name = "Git",
-    l = { git_link_file, "Open Github link to the current line" },
-  },
-}, { prefix = "<leader>" })
+wk.add({
+  { "<leader>bc", "<cmd>%bd|e#<CR>", desc = "Close all buffers except current" },
+  { "<leader>cd", open_current_directory, desc = "Open directory of the current file" },
+  { "<leader>g", group = "Git" },
+  { "<leader>gl", git_link_file, desc = "Open Github link to the current line" },
+  { "<leader>q", "<cmd>bd<CR>", desc = "Close buffer" },
+  { "<leader>qa", "<cmd>q<CR>", desc = "Close all buffers" },
+  { "<leader>up", "<cmd>!revup upload<CR>", desc = "Upload to revup" },
+  { "<leader>vs", "<cmd>so ~/.config/nvim/init.lua<CR>", desc = "Source neovim" },
+  { "<leader>w", "<cmd>w<CR>", desc = "Save" },
+})

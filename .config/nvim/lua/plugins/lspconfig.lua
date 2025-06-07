@@ -64,15 +64,16 @@ return {
         group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
         callback = function(args)
           local wk = require("which-key")
-          wk.register({
-            H = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostics" },
-            ["<C-I>"] = {
+          wk.add({
+            {
+              "<C-I>",
               function()
                 vim.lsp.buf.code_action()
               end,
-              "Code actions",
+              desc = "Code actions",
             },
-            ["<leader>rn"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename symbol" },
+            { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename symbol" },
+            { "H", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show diagnostics" },
           })
 
           -- Disable hover for Ruff in favor of Pyright
