@@ -47,12 +47,10 @@ local function run_bazel(command, additional_args)
 
       local run_command = function(targets)
         vim.notify("Running bazel " .. command .. ": " .. table.concat(targets, " "))
-        if command == "test" then
-          table.insert(targets, "--test_arg=--color=yes")
-          table.insert(targets, "--experimental_ui_max_stdouterr_bytes=999999999")
-        end
         if additional_args then
-          table.insert(targets, "--test_arg=" .. additional_args)
+          for _, arg_pair in ipairs(additional_args) do
+            table.insert(targets, "--" .. arg_pair[1] .. "=" .. arg_pair[2])
+          end
         end
         container.exec(service, {
           command = { "bazel", command, unpack(targets) },
@@ -75,17 +73,34 @@ local function run_bazel(command, additional_args)
   })
 end
 
-local function run_bazel_pytest(nearest)
-  local args
+local function get_nearest_test(nearest)
   if nearest then
     local nearest_test_name = nearest_test()
     if nearest_test_name ~= "" then
-      args = "-k=" .. nearest_test_name
+      return nearest_test_name
     else
-      args = "-k=" .. vim.fn.expand("%:t")
+      return vim.fn.expand("%:t")
     end
   else
-    args = "-k=" .. vim.fn.expand("%:t") -- Grab test file
+    return vim.fn.expand("%:t") -- Grab test file
+  end
+end
+
+local function run_bazel_test(nearest)
+  local args
+  if vim.bo.filetype == "python" then
+    args = {
+      { "test_arg", "-k=" .. get_nearest_test(nearest) },
+      { "test_arg", "--color=yes" },
+      { "experimental_ui_max_stdouterr_bytes", "999999999" },
+    }
+  elseif vim.bo.filetype == "go" then
+    args = {
+      { "test_filter", get_nearest_test(nearest) },
+    }
+  else
+    vim.notify("Nearest test is not supported for this language")
+    return
   end
 
   run_bazel("test", args)
@@ -135,17 +150,17 @@ return {
     keys = {
       {
         "<leader>tf",
-        run_bazel_pytest,
+        run_bazel_test,
         desc = "Test file",
-        ft = { "python" },
+        ft = { "python", "go" },
       },
       {
         "<leader>tn",
         function()
-          run_bazel_pytest(true)
+          run_bazel_test(true)
         end,
         desc = "Test nearest",
-        ft = { "python" },
+        ft = { "python", "go" },
       },
       { "<leader>bb", run_bazel, desc = "Bazel build" },
       {
