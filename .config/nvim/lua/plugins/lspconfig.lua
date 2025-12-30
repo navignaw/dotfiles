@@ -1,7 +1,18 @@
 -- LSP and installers
 
-local lsps =
-  { "buf_ls", "dockerls", "eslint", "gopls", "lua_ls", "pyright", "ruff", "rust_analyzer", "tailwindcss", "ts_ls" }
+local lsps = {
+  "buf_ls",
+  "dockerls",
+  "eslint",
+  "gopls",
+  "lua_ls",
+  "pyright",
+  "ruff",
+  "rust_analyzer",
+  "starpls",
+  "tailwindcss",
+  "ts_ls",
+}
 
 local border = {
   { "╭", "FloatBorder" },
@@ -150,6 +161,21 @@ return {
           }
         elseif lsp == "ruff" then
           lsp_settings.cmd = { "ruff", "server" } -- no preview
+        elseif lsp == "starpls" then
+          lsp_settings.cmd = {
+            "starpls",
+            "server",
+            "--experimental_infer_ctx_attributes",
+            "--experimental_use_code_flow_analysis",
+            "--experimental_enable_label_completions",
+          }
+          lsp_settings.settings = {
+            bazel = {
+              buildifierFixOnFormat = true,
+              queriesShareServer = false,
+              enableCodeLens = true,
+            },
+          }
         end
         lspconfig[lsp].setup(lsp_settings)
       end
