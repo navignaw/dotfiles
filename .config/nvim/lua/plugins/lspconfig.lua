@@ -6,12 +6,12 @@ local lsps = {
   "eslint",
   "gopls",
   "lua_ls",
-  "pyright",
   "ruff",
   "rust_analyzer",
   "starpls",
   "tailwindcss",
   "ts_ls",
+  "ty",
 }
 
 local border = {
@@ -93,7 +93,7 @@ return {
             { "H", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show diagnostics" },
           })
 
-          -- Disable hover for Ruff in favor of Pyright
+          -- Disable hover for Ruff in favor of Ty
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           if client == nil then
             return
@@ -155,12 +155,12 @@ return {
           capabilities = capabilities,
           handlers = handlers,
         }
-        if lsp == "pyright" then
+        if lsp == "ty" then
           lsp_settings.before_init = function(_, config)
             config.settings.python.pythonPath = get_python_path(config.root_dir)
           end
           lsp_settings.settings = {
-            pyright = {
+            ty = {
               -- Using Ruff's import organizer
               disableOrganizeImports = true,
             },
