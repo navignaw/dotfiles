@@ -52,27 +52,25 @@ end
 
 return {
   { "folke/neodev.nvim" },
-  -- Lock to specific version until breaking change fixed: https://github.com/LazyVim/LazyVim/issues/6039
-  { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
-  { "williamboman/mason.nvim", version = "1.11.0" },
+  { "mason-org/mason-lspconfig.nvim" },
+  { "mason-org/mason.nvim" },
 
   {
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = { "mason-org/mason.nvim" },
       },
     },
     config = function()
       require("neodev").setup({}) -- set up neovim config for Lua LSP
-      local lspconfig = require("lspconfig")
-      lspconfig.eslint.setup({
+      vim.lsp.config.eslint = {
         settings = {
           workingDirectories = { mode = "auto" }, -- Walk up directories in monorepo
         },
-      })
+      }
       require("mason").setup({
         PATH = "prepend",
       })
@@ -185,7 +183,7 @@ return {
             },
           }
         end
-        lspconfig[lsp].setup(lsp_settings)
+        vim.lsp.config[lsp] = lsp_settings
       end
 
       vim.diagnostic.config({
