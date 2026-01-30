@@ -97,6 +97,7 @@ local function run_bazel_test(nearest)
   elseif vim.bo.filetype == "go" then
     args = {
       { "test_filter", get_nearest_test(nearest) },
+      { "experimental_ui_max_stdouterr_bytes", "999999999" },
     }
   else
     vim.notify("Nearest test is not supported for this language")

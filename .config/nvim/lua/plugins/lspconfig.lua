@@ -39,7 +39,10 @@ local function get_python_path(workspace)
   for _, pattern in ipairs({ ".venv", "venv" }) do
     local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
     if match ~= "" then
-      return path.join(path.dirname(match), "bin", "python")
+      local newpath = path.join(path.dirname(match), "bin", "python")
+      return newpath
+    else
+      vim.notify("No match found for venv" .. pattern .. " in " .. workspace, vim.log.levels.INFO)
     end
   end
 
@@ -65,6 +68,11 @@ return {
     config = function()
       require("neodev").setup({}) -- set up neovim config for Lua LSP
       local lspconfig = require("lspconfig")
+      lspconfig.eslint.setup({
+        settings = {
+          workingDirectories = { mode = "auto" }, -- Walk up directories in monorepo
+        },
+      })
       require("mason").setup({
         PATH = "prepend",
       })

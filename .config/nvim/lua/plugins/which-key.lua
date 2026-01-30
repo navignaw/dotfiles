@@ -8,11 +8,6 @@ return {
     end,
     opts = {
       notify = false,
-      triggers_blacklist = {
-        n = { "q", "Q", ";" },
-        i = { "j", "k" },
-        v = { "j", "k" },
-      },
     },
   },
 }
