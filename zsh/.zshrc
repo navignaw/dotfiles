@@ -79,7 +79,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $real
 export CONFIG_DIR=~/.config/lazygit
 
 # Update neovim remote server
-export NVIM_SERVER_FILE=/tmp/nvim-server.pipe
+export NVIM_SERVER_FILE=/tmp/nvim-$TMUX_PANE.pipe
 export EDITOR="nvim --server $NVIM_SERVER_FILE --remote-tab"
 
 # autocomplete
