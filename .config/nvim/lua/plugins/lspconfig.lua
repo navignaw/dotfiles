@@ -165,8 +165,18 @@ return {
               disableOrganizeImports = true,
             },
           }
+          lsp_settings.capabilities = vim.tbl_deep_extend("force", capabilities, {
+            general = {
+              positionEncodings = { "utf-16" },
+            },
+          })
         elseif lsp == "ruff" then
           lsp_settings.cmd = { "ruff", "server" } -- no preview
+          lsp_settings.capabilities = vim.tbl_deep_extend("force", capabilities, {
+            general = {
+              positionEncodings = { "utf-16" },
+            },
+          })
         elseif lsp == "starpls" then
           lsp_settings.cmd = {
             "starpls",
