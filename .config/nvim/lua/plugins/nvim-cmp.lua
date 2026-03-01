@@ -33,6 +33,35 @@ return {
               rust = false, -- Disable for rust while learning!
               text = false,
             },
+            disable_limit_reached_message = true,
+            should_attach = function(bufnr)
+              local filename = vim.api.nvim_buf_get_name(bufnr)
+
+              -- Check if the file is a common Git configuration file at the root of a repo
+              local git_files = {
+                ".gitignore",
+                ".gitattributes",
+                ".gitmodules",
+                "COMMIT_EDITMSG", -- common file for commit messages
+                "MERGE_MSG",
+              }
+
+              local basename = vim.fn.fnamemodify(filename, ":t")
+              for _, file in ipairs(git_files) do
+                if basename == file then
+                  return false
+                end
+              end
+
+              -- Check filetypes that are often related to git operations but might be general
+              local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+              if filetype == "gitcommit" or filetype == "gitrebase" then
+                return false
+              end
+
+              -- Default to attaching if none of the exclusion criteria are met
+              return true
+            end,
           })
         end,
       },
