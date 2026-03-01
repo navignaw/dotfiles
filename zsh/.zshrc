@@ -21,11 +21,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(bazel git fzf fzf-tab git-open-pr globalias docker docker-compose kubectl web-search yarn zsh-autosuggestions zsh-syntax-highlighting zoxide)
+plugins=(bazel git fzf fzf-tab git-open-pr globalias docker docker-compose kubectl yarn zsh-autosuggestions zsh-syntax-highlighting zoxide)
 
-ZSH_WEB_SEARCH_ENGINES=(
-  so "https://stackoverflow.com/search?q="
-)
+# Make custom completions available before Oh My Zsh runs compinit.
+fpath+=~/.zfunc
 
 source $ZSH/oh-my-zsh.sh
 
@@ -82,8 +81,5 @@ export CONFIG_DIR=~/.config/lazygit
 export NVIM_SERVER_FILE=/tmp/nvim-$TMUX_PANE.pipe
 export EDITOR="nvim --server $NVIM_SERVER_FILE --remote-tab"
 
-# autocomplete
-fpath+=~/.zfunc
-autoload -Uz compinit && compinit
 
 #zprof
