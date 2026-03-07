@@ -41,8 +41,6 @@ local function get_python_path(workspace)
     if match ~= "" then
       local newpath = path.join(path.dirname(match), "bin", "python")
       return newpath
-    else
-      vim.notify("No match found for venv" .. pattern .. " in " .. workspace, vim.log.levels.INFO)
     end
   end
 
@@ -156,13 +154,11 @@ return {
           handlers = handlers,
         }
         if lsp == "ty" then
-          lsp_settings.before_init = function(_, config)
-            config.settings.python.pythonPath = get_python_path(config.root_dir)
-          end
           lsp_settings.settings = {
             ty = {
               -- Using Ruff's import organizer
               disableOrganizeImports = true,
+              interpreter = { get_python_path(vim.fn.getcwd()) },
             },
           }
           lsp_settings.capabilities = vim.tbl_deep_extend("force", capabilities, {
