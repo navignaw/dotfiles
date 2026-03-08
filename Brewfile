@@ -31,10 +31,6 @@ brew "tree"  # file tree visualizer
 brew "zoxide"  # better cd
 brew "zsh"  # shell
 
-# -- Git utilities
-tap  "jesseduffield/lazygit"
-brew "jesseduffield/lazygit/lazygit"  # better Git UI
-
 # -- Linters and formatters
 brew "actionlint"  # GHA linter
 brew "buildifier"  # Bazel formatter
@@ -52,7 +48,10 @@ brew "yamllint" # YAML
 brew "git"
 brew "gh"  # GitHub CLI
 brew "git-delta"  # git pager
+tap  "jesseduffield/lazygit"
+brew "jesseduffield/lazygit/lazygit"  # better Git UI
 brew "pre-commit"
+brew "worktrunk"
 
 # -- Fonts
 cask "font-caskaydia-cove-nerd-font"

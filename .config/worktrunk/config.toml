@@ -1,0 +1,8 @@
+# # User Configuration
+#
+# Controls where new worktrees are created.
+worktree-path = "{{ repo_path }}/.worktrees/{{ branch | sanitize }}"
+
+# After switching worktrees, update the tmux window name.
+[post-switch]
+tmux = "[ -n \"$TMUX\" ] && tmux rename-window {{ branch | sanitize }}"

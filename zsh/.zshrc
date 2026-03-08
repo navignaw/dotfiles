@@ -81,5 +81,6 @@ export CONFIG_DIR=~/.config/lazygit
 export NVIM_SERVER_FILE=/tmp/nvim-$TMUX_PANE.pipe
 export EDITOR="nvim --server $NVIM_SERVER_FILE --remote-tab"
 
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
 #zprof

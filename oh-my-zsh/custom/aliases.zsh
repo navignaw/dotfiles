@@ -38,6 +38,12 @@ alias dev='git checkout develop'
 alias lg='lazygit'
 alias up='revup upload'
 
+# Worktrees
+alias ws='wt switch'
+alias wc='wt switch --create'
+alias wl='wt list'
+alias wr='wt remove'
+
 # Python default
 alias python=python3
 alias pip=pip3
