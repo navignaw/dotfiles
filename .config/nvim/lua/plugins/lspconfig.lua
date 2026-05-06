@@ -12,6 +12,7 @@ local lsps = {
   "tailwindcss",
   "ts_ls",
   "ty",
+  "yamlls",
 }
 
 local border = {
@@ -186,6 +187,17 @@ return {
               buildifierFixOnFormat = true,
               queriesShareServer = false,
               enableCodeLens = true,
+            },
+          }
+        elseif lsp == "yamlls" then
+          lsp_settings.settings = {
+            yaml = {
+              validate = true,
+              hover = true,
+              completion = true,
+              schemaStore = {
+                enable = false,
+              },
             },
           }
         end

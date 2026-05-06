@@ -9,37 +9,17 @@ return {
       require("conform").setup({
         formatters_by_ft = {
           lua = { "stylua" },
-          javascript = {
-            "prettierd",
-            "prettier",
-            stop_after_first = true,
-          },
-          javascriptreact = {
-            "prettierd",
-            "prettier",
-            stop_after_first = true,
-          },
-          json = {
-            "prettierd",
-            "prettier",
-            stop_after_first = true,
-          },
+          javascript = { "oxfmt" },
+          javascriptreact = { "oxfmt" },
+          json = { "oxfmt" },
           markdown = {
             "prettierd",
             "prettier",
             stop_after_first = true,
           },
           sh = { "shfmt" },
-          typescript = {
-            "prettierd",
-            "prettier",
-            stop_after_first = true,
-          },
-          typescriptreact = {
-            "prettierd",
-            "prettier",
-            stop_after_first = true,
-          },
+          typescript = { "oxfmt" },
+          typescriptreact = { "oxfmt" },
           yaml = {
             "prettierd",
             "prettier",

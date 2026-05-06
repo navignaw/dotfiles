@@ -32,7 +32,9 @@ alias gl='git pull --prune'
 alias glog="git log --color --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gp='git push origin HEAD'
 alias grb='git rebase -i'
-alias grbo='git rebase-onto'
+alias grc='git rebase --continue'
+alias gro='git rebase -i --onto origin/main'
+alias grs='git rebase --skip'
 alias dev='git checkout develop'
 
 alias lg='lazygit'
