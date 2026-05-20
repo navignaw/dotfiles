@@ -24,8 +24,12 @@ end
 absolute_filename = File.expand_path(filename)
 
 Dir.chdir File.dirname(filename) do
-	repo_root = File.expand_path(`git rev-parse --show-toplevel`.strip)
+	worktree_root = File.expand_path(`git rev-parse --show-toplevel`.strip)
 	abort unless $?.exitstatus === 0
+
+	git_common_dir = File.expand_path(`git rev-parse --git-common-dir`.strip)
+	abort unless $?.exitstatus === 0
+	url_repo_root = File.dirname(git_common_dir)
 
 	remote_origin = `git remote get-url origin`.strip
 	abort unless $?.exitstatus === 0
@@ -51,7 +55,8 @@ Dir.chdir File.dirname(filename) do
 		hash
 	end
 
-	relative_filename = Pathname.new(absolute_filename).relative_path_from(repo_root).to_s
+	repo_relative_filename = Pathname.new(absolute_filename).relative_path_from(worktree_root).to_s
+	relative_filename = Pathname.new(File.join(url_repo_root, repo_relative_filename)).relative_path_from(url_repo_root).to_s
 
   line_url = if line_number != nil
 		line_number.start_with?("L") ? "\##{line_number}" : "\#L#{line_number}"
