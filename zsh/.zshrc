@@ -30,9 +30,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# Start tmux automatically
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    tmux new-session -A -s main
+# Start herdr automatically
+if command -v herdr &> /dev/null && [ -n "$PS1" ] && [[ -z "$HERDR_ENV" ]] ; then
+    herdr
 fi
 
 # # Auto-add SSH agent

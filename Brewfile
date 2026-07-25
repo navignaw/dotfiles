@@ -21,12 +21,12 @@ brew "catimg"  # image viewer
 brew "eza"  # better ls
 brew "fd"  # better find
 brew "fzf"  # Fuzzy finder
+brew "herdr"  # terminal multiplexer
 brew "imagemagick"  # image processing
 brew "jq"  # JSON processor
 brew "optipng"  # image optimization
 brew "ripgrep"  # better search
 brew "stow"  # symlink manager
-brew "tmux"  # terminal multiplexer
 brew "tree"  # file tree visualizer
 brew "zoxide"  # better cd
 brew "zsh"  # shell
