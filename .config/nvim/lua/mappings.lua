@@ -1,6 +1,7 @@
 -- Mappings, using which-key
 
 local utils = require("utils")
+require("herdr_navigator").setup()
 
 local function map(mode, shortcut, command)
   vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })

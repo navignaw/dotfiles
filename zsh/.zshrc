@@ -35,7 +35,10 @@ if command -v herdr &> /dev/null && [ -n "$PS1" ] && [[ -z "$HERDR_ENV" ]] ; the
     herdr
 fi
 
-[[ ! -r ~/.config/herdr/scripts/kubecontext.zsh ]] || source ~/.config/herdr/scripts/kubecontext.zsh
+for script in ~/.config/herdr/scripts/*(N); do
+    [[ -f "$script" && -r "$script" ]] || continue
+    source "$script"
+done
 
 # # Auto-add SSH agent
 # if [ -z "$SSH_AUTH_SOCK" ] ; then
