@@ -5,7 +5,6 @@ alias cpwd='pwd | xclip -selection clipboard'
 
 # Source dotfiles
 alias srczsh='source ~/.zshrc'
-alias srctmux='tmux source-file ~/.config/tmux/tmux.conf'
 alias svenv='source .venv/bin/activate'
 
 # Zoxide and eza
@@ -51,8 +50,8 @@ alias python=python3
 alias pip=pip3
 
 # Neovim
-alias v='nvim --listen $NVIM_SERVER_FILE'
-alias vim='nvim --listen $NVIM_SERVER_FILE'
+alias v='nvim'
+alias vim='nvim'
 
 # Docker
 alias dex='docker exec -it'

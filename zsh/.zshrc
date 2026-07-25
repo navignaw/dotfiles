@@ -35,6 +35,8 @@ if command -v herdr &> /dev/null && [ -n "$PS1" ] && [[ -z "$HERDR_ENV" ]] ; the
     herdr
 fi
 
+[[ ! -r ~/.config/herdr/scripts/kubecontext.zsh ]] || source ~/.config/herdr/scripts/kubecontext.zsh
+
 # # Auto-add SSH agent
 # if [ -z "$SSH_AUTH_SOCK" ] ; then
 #     eval "$(ssh-agent -s)"
@@ -77,9 +79,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $real
 # Set lazygit config directory
 export CONFIG_DIR=~/.config/lazygit
 
-# Update neovim remote server
-export NVIM_SERVER_FILE=/tmp/nvim-$TMUX_PANE.pipe
-export EDITOR="nvim --server $NVIM_SERVER_FILE --remote-tab"
+export EDITOR="nvim"
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
