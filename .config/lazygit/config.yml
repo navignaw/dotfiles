@@ -1,22 +1,9 @@
-customCommands:
-  - key: "<C-R>"
-    context: "global"
-    prompts:
-      - type: "input"
-        title: "Enter topics, or press [Enter] to upload all"
-        key: "RevupTopics"
-        initialValue: ""
-    command: "revup upload {{.Form.RevupTopics}}"
-    subprocess: true
-
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
-
+  diffRenderers:
+    - colorArg: always
+      command: delta --dark --paging=never
 gui:
   nerdFontsVersion: "3"
-
 os:
   editTemplate: "nvim --server /tmp/nvim-server.pipe --remote-tab {{filename}}"
   editAtLineTemplate: "nvim +{{line}} --server /tmp/nvim-server.pipe --remote-tab {{filename}}"

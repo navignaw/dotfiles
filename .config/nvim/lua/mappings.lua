@@ -69,7 +69,6 @@ wk.add({
   { "<leader>gl", git_link_file, desc = "Open Github link to the current line" },
   { "<leader>q", "<cmd>bd<CR>", desc = "Close buffer" },
   { "<leader>qa", "<cmd>q<CR>", desc = "Close all buffers" },
-  { "<leader>up", "<cmd>!revup upload<CR>", desc = "Upload to revup" },
   { "<leader>vs", "<cmd>so ~/.config/nvim/init.lua<CR>", desc = "Source neovim" },
   { "<leader>w", "<cmd>w<CR>", desc = "Save" },
 })

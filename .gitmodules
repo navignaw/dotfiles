@@ -1,9 +1,3 @@
-[submodule "lib/spotify-now"]
-	path = lib/spotify-now
-	url = https://github.com/getmicah/spotify-now.git
-[submodule "lib/gcalcli"]
-	path = lib/gcalcli
-	url = https://github.com/insanum/gcalcli.git
 [submodule "oh-my-zsh/custom/powerlevel10k"]
 	path = oh-my-zsh/custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
