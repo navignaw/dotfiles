@@ -4,5 +4,7 @@ __pycache__/
 
 Brewfile.lock.json
 
+.config/herdr/herdr-*.log
+.config/herdr/session.json
 .config/lazygit/state.yml
 .config/nvim/lua/custom/
