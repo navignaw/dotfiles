@@ -41,7 +41,7 @@ brew "markdownlint-cli"  # Markdown linter
 brew "rustfmt"  # Rust formatter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
-brew "fsouza/prettierd/prettierd" # Prettier daemon
+brew "prettierd" # Prettier daemon
 brew "yamllint" # YAML
 
 # -- Version control
