@@ -2,3 +2,4 @@ font-family = "CaskaydiaCove Nerd Font Mono"
 font-size = 18
 theme = "OneHalfDark"
 background = "black"
+command = "/opt/homebrew/bin/herdr"

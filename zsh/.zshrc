@@ -30,11 +30,6 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# Start herdr automatically
-if command -v herdr &> /dev/null && [ -n "$PS1" ] && [[ -z "$HERDR_ENV" ]] ; then
-    herdr
-fi
-
 for script in ~/.config/herdr/scripts/*(N); do
     [[ -f "$script" && -r "$script" ]] || continue
     source "$script"
