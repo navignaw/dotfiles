@@ -6,5 +6,8 @@ Brewfile.lock.json
 
 .config/herdr/herdr-*.log
 .config/herdr/session.json
+.config/herdr/session-snapshots/
+.config/herdr/release-notes.json
+.config/herdr/*.sock*
 .config/lazygit/state.yml
 .config/nvim/lua/custom/
