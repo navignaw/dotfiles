@@ -142,17 +142,11 @@ return {
         })
       end
 
-      local handlers = {
-        ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-        ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-      }
-
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       for _, lsp in pairs(lsps) do
         local lsp_settings = {
           on_attach = on_attach,
           capabilities = capabilities,
-          handlers = handlers,
         }
         if lsp == "ty" then
           lsp_settings.settings = {
