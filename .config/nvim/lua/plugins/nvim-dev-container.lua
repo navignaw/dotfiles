@@ -1,12 +1,11 @@
 local utils = require("utils")
 
 local function nearest_test()
-  local ts_utils = require("nvim-treesitter.ts_utils")
-  local current_node = ts_utils.get_node_at_cursor()
+  local current_node = vim.treesitter.get_node()
   if not current_node then
     return ""
   end
-  --@type ts_utils.TSNode?
+  ---@type TSNode?
   local expr = current_node
   while expr do
     if expr:type() == "function_definition" then
@@ -17,8 +16,8 @@ local function nearest_test()
   if not expr then
     return ""
   end
-  return ts_utils.get_node_text(expr:child(1))[1]
-  --return (vim.treesitter.get_node_text(expr:child(1)))[1]
+  local name = expr:child(1)
+  return name and vim.treesitter.get_node_text(name, 0) or ""
 end
 
 local function run_bazel(command, additional_args)

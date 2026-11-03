@@ -41,6 +41,7 @@ brew "markdownlint-cli"  # Markdown linter
 brew "rustfmt"  # Rust formatter
 brew "shfmt"  # bash scripts
 brew "stylua"  # Lua
+brew "tree-sitter-cli"  # compiles nvim-treesitter parsers
 brew "prettierd" # Prettier daemon
 brew "yamllint" # YAML
 
